@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Selected Work · Sudipta Biswas</title>
+<meta name="description" content="A gallery of 20 websites designed and built by Sudipta Biswas — plumbing, roofing, HVAC, med spa, e-commerce and interactive builds." />
+<meta name="theme-color" content="#fafafa" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%23fafafa'/%3E%3Ctext x='24' y='34' font-family='Georgia,serif' font-size='27' font-style='italic' font-weight='700' fill='%232563eb' text-anchor='middle'%3Esb%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..800&family=Hanken+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#fafafa; --ink-1:#ffffff; --ink-2:#f4f4f5; --ink-3:#e8ecf0;
+    --paper:#18181b; --paper-dim:#3f3f46; --muted:#71717a; --faint:#a1a1aa;
+    --blue:#2563eb; --blue-lo:#1d4ed8; --blue-hi:#3b82f6;
+    --line:#e4e4e7; --line-2:#eeeef1;
+    --maxw:1320px; --ease:cubic-bezier(.2,.7,.2,1);
+    --serif:"Fraunces",Georgia,serif; --sans:"Hanken Grotesk",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--ink); color:var(--paper); font-family:var(--sans); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--blue); color:#fff; }
+  a{ color:inherit; text-decoration:none; }
+  img{ display:block; max-width:100%; }
+  h1,h2{ margin:0; font-family:var(--serif); font-weight:500; letter-spacing:-.02em; line-height:1; }
+  .wrap{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 40px; }
+  .eyebrow{ font-family:var(--mono); font-size:11.5px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--blue); }
+
+  /* nav */
+  header.nav{ position:sticky; top:0; z-index:50; background:rgba(255,255,255,.82); backdrop-filter:blur(14px) saturate(150%); -webkit-backdrop-filter:blur(14px) saturate(150%); border-bottom:1px solid var(--line); }
+  .nav-in{ display:flex; align-items:center; justify-content:space-between; height:70px; }
+  .mark{ font-family:var(--serif); font-style:italic; font-weight:600; font-size:23px; }
+  .mark b{ color:var(--blue); font-weight:600; }
+  .back{ display:inline-flex; align-items:center; gap:9px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--paper-dim); transition:color .25s; }
+  .back svg{ width:15px; height:15px; color:var(--blue); transition:transform .25s var(--ease); }
+  .back:hover{ color:var(--paper); } .back:hover svg{ transform:translateX(-4px); }
+
+  /* header */
+  .head{ padding:70px 0 44px; }
+  .head h1{ font-size:clamp(40px,7vw,88px); margin-top:16px; }
+  .head h1 em{ font-style:italic; color:var(--blue); }
+  .head p{ color:var(--muted); font-size:17px; margin-top:18px; max-width:56ch; }
+  .head .count{ display:inline-flex; align-items:center; gap:8px; margin-top:22px; font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--paper-dim); border:1px solid var(--line); border-radius:999px; padding:7px 15px; background:#fff; }
+  .head .count b{ color:var(--blue); }
+
+  /* grid */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(360px,1fr)); gap:26px; padding-bottom:100px; }
+  .card{ position:relative; background:var(--ink-1); border:1px solid var(--line); border-radius:14px; overflow:hidden; cursor:pointer; transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s; display:flex; flex-direction:column; }
+  .card:hover{ transform:translateY(-6px); border-color:rgba(37,99,235,.4); box-shadow:0 30px 60px -34px rgba(37,99,235,.55); }
+  .thumb{ position:relative; aspect-ratio:16/10; overflow:hidden; background:var(--ink-2); border-bottom:1px solid var(--line); }
+  .thumb img{ width:100%; height:100%; object-fit:cover; object-position:top; transition:transform .6s var(--ease); }
+  .card:hover .thumb img{ transform:scale(1.04); }
+  .thumb .no{ position:absolute; left:12px; top:11px; font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; color:#fff; background:rgba(24,24,27,.7); backdrop-filter:blur(4px); padding:4px 9px; border-radius:999px; }
+  .thumb .zoom{ position:absolute; right:12px; bottom:12px; width:34px; height:34px; border-radius:50%; background:var(--blue); color:#fff; display:grid; place-items:center; opacity:0; transform:scale(.8); transition:.3s var(--ease); }
+  .thumb .zoom svg{ width:15px; height:15px; }
+  .card:hover .thumb .zoom{ opacity:1; transform:scale(1); }
+  .meta{ padding:18px 20px 20px; }
+  .meta .cn{ font-family:var(--serif); font-size:21px; font-weight:500; letter-spacing:-.01em; line-height:1.1; }
+  .meta .cc{ font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue); margin-top:7px; }
+  .meta .ct{ display:flex; flex-wrap:wrap; gap:6px; margin-top:13px; }
+  .meta .ct span{ font-family:var(--mono); font-size:10.5px; color:var(--paper-dim); border:1px solid var(--line); padding:3px 8px; border-radius:4px; }
+
+  /* lightbox */
+  .lb{ position:fixed; inset:0; z-index:90; display:none; align-items:center; justify-content:center; padding:5vw; }
+  .lb.on{ display:flex; }
+  .lb .sc{ position:absolute; inset:0; background:rgba(244,244,245,.86); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); cursor:zoom-out; }
+  .lb .box{ position:relative; z-index:2; max-width:1120px; width:100%; }
+  .lb .box img{ width:100%; border:1px solid var(--line); border-radius:8px; box-shadow:0 50px 120px -30px rgba(0,0,0,.5); }
+  .lb .cap{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px; flex-wrap:wrap; }
+  .lb .cap .t{ font-family:var(--serif); font-size:22px; }
+  .lb .cap .m{ font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); }
+  .lb .x{ position:absolute; top:-46px; right:0; width:38px; height:38px; border:1px solid var(--line); border-radius:50%; background:#fff; color:var(--paper); display:grid; place-items:center; cursor:pointer; transition:.25s var(--ease); }
+  .lb .x:hover{ background:var(--blue); color:#fff; border-color:var(--blue); }
+  .lb .x svg{ width:16px; height:16px; }
+
+  footer{ border-top:1px solid var(--line); padding:26px 0; }
+  .ft{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; font-family:var(--mono); font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  .ft a{ color:var(--paper-dim); } .ft a:hover{ color:var(--blue); }
+
+  .rv{ opacity:0; transform:translateY(24px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+  .rv.in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none!important; transition:none!important; } .rv{ opacity:1; transform:none; } }
+  @media (max-width:640px){ .wrap{ padding:0 20px; } .grid{ grid-template-columns:1fr; gap:20px; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <span class="mark">Sudipta <b>Biswas</b></span>
+    <a class="back" href="index.html#work"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back to portfolio</a>
+  </div>
+</header>
+
+<section class="head">
+  <div class="wrap">
+    <span class="eyebrow rv">Selected Work · Full Gallery</span>
+    <h1 class="rv">Twenty of my <em>favourite</em> builds.</h1>
+    <p class="rv">A cross-section of real websites I've designed and developed, across plumbing and home-service trades, med spa, e-commerce and interactive builds. Click any project to view the full screenshot.</p>
+    <div class="count rv"><b>20</b> projects · from 64 built</div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="grid" id="grid"></div>
+</section>
+
+<footer>
+  <div class="wrap ft">
+    <span>© 2026 · Sudipta Biswas · Web Developer</span>
+    <a href="index.html#contact">Get in touch →</a>
+  </div>
+</footer>
+
+<div class="lb" id="lb" aria-hidden="true" role="dialog" aria-label="Project preview">
+  <div class="sc" data-close></div>
+  <div class="box">
+    <button class="x" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <img id="lbImg" src="" alt="" />
+    <div class="cap"><span class="t" id="lbTitle"></span><span class="m" id="lbCat"></span></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var PROJECTS = [
+    {s:'ironhand',        n:'IRONHAND Plumbing',        c:'Plumbing',        t:['React','TypeScript','Tailwind']},
+    {s:'hargrove',        n:'Hargrove & Sons Plumbing', c:'Plumbing',        t:['React','Node','Leaflet']},
+    {s:'blueline',        n:'BlueLine Plumbing',        c:'Plumbing',        t:['React','TypeScript']},
+    {s:'tidewell',        n:'TIDEWELL Plumbing',        c:'Plumbing',        t:['React','TypeScript']},
+    {s:'roofing',         n:'Ridgeline Roofing',        c:'Roofing',         t:['Next.js','Core Web Vitals']},
+    {s:'salem-auto',      n:'Salem Auto-Electric',      c:'Automotive',      t:['Next.js','Animation']},
+    {s:'hvac',            n:'TrueComfort Heating & Air', c:'HVAC',           t:['React','Responsive']},
+    {s:'concrete',        n:'Ironform Concrete',        c:'Concrete',        t:['React','SEO']},
+    {s:'electrical',      n:'Voltline Electric',        c:'Electrical',      t:['React','Tailwind']},
+    {s:'landscaping',     n:'Greenfield Landscape',     c:'Landscaping',     t:['React','Responsive']},
+    {s:'pool',            n:'Azure Pools & Spas',       c:'Pool',            t:['React','Animation']},
+    {s:'deck',            n:'Lantern Decks',            c:'Deck Builder',    t:['React','Tailwind']},
+    {s:'pressure-washing',n:'Crisp Exterior Wash',      c:'Pressure Washing',t:['React','SEO']},
+    {s:'garage-door',     n:'Overhead & Co.',           c:'Garage Door',     t:['React','Responsive']},
+    {s:'neon-drive',      n:'Neon Drive',               c:'Interactive',     t:['WebGL','Canvas','Animation']},
+    {s:'nightscape',      n:'Nightscape',               c:'Interactive',     t:['Canvas','Motion']},
+    {s:'nova',            n:'NOVA Electronics',         c:'E-commerce',      t:['React','Cart UX']},
+    {s:'figura',          n:'Figura Medspa',            c:'Med Spa',         t:['React','Booking']},
+    {s:'glo',             n:'Glo Med Spa',              c:'Med Spa',         t:['React','Responsive']},
+    {s:'skin-couture',    n:'Skin Couture Med Spa',     c:'Med Spa',         t:['React','Booking']}
+  ];
+  var grid = document.getElementById('grid');
+  PROJECTS.forEach(function(p, i){
+    var no = String(i+1).padStart(2,'0');
+    var tags = p.t.map(function(x){ return '<span>'+x+'</span>'; }).join('');
+    var img = 'assets/work/'+p.s+'.png';
+    var card = document.createElement('a');
+    card.className = 'card rv';
+    card.href = img;
+    card.setAttribute('data-img', img);
+    card.setAttribute('data-title', p.n);
+    card.setAttribute('data-cat', p.c+' · '+p.t.join(' · '));
+    card.innerHTML =
+      '<div class="thumb"><span class="no">'+no+'</span>'+
+        '<img src="'+img+'" alt="'+p.n+'" loading="lazy" />'+
+        '<span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>'+
+      '</div>'+
+      '<div class="meta"><div class="cn">'+p.n+'</div><div class="cc">'+p.c+'</div><div class="ct">'+tags+'</div></div>';
+    grid.appendChild(card);
+  });
+
+  // reveal
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); }, {threshold:.08, rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  // lightbox
+  var lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), lbTitle=document.getElementById('lbTitle'), lbCat=document.getElementById('lbCat');
+  function open(img,title,cat){ lbImg.src=img; lbImg.alt=title; lbTitle.textContent=title; lbCat.textContent=cat; lb.classList.add('on'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+  function close(){ lb.classList.remove('on'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  grid.addEventListener('click', function(e){
+    var card = e.target.closest('.card'); if(!card) return;
+    e.preventDefault();
+    open(card.getAttribute('data-img'), card.getAttribute('data-title'), card.getAttribute('data-cat'));
+  });
+  lb.querySelectorAll('[data-close]').forEach(function(el){ el.addEventListener('click', close); });
+  window.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+</body>
+</html>

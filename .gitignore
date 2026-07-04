@@ -1,0 +1,4 @@
+*.light-bak-*
+.DS_Store
+*.log
+Thumbs.db
