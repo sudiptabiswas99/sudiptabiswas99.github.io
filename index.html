@@ -595,9 +595,11 @@
 
   /* ============ FOOTER ============ */
   footer{ border-top:1px solid var(--line); padding:40px 0 30px; position:relative; z-index:3; }
-  .ft-word{ display:block; width:100%; height:auto; margin-bottom:26px; overflow:visible; }
-  .ft-word text{ font-family:var(--serif); font-weight:500; }
-  .ft-bot{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--muted); text-transform:uppercase; }
+  .ft-word{ display:block; width:100%; max-width:1080px; height:auto; margin:0 auto 22px; overflow:visible; }
+  /* fills come from the theme — a hardcoded light fill vanished on the bright default */
+  .ft-word text{ font-family:var(--serif); font-weight:500; fill:var(--paper); }
+  .ft-word tspan{ fill:var(--copper); }
+  .ft-bot{ display:flex; align-items:center; justify-content:space-between; gap:10px 28px; flex-wrap:wrap; font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--muted); text-transform:uppercase; }
   .ft-bot a{ color:var(--paper-dim); transition:color .25s; }
   .ft-bot a:hover{ color:var(--copper); }
   .totop{ display:inline-flex; align-items:center; gap:8px; }
@@ -1304,11 +1306,11 @@
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="wrap">
-    <svg class="ft-word" viewBox="0 0 1200 205" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Sudipta Biswas">
-      <text x="600" y="158" text-anchor="middle" textLength="1180" lengthAdjust="spacingAndGlyphs" font-size="184" letter-spacing="-5" fill="#e8eefc">Sudipta <tspan font-style="italic" fill="#60a5fa">Biswas</tspan></text>
+    <svg class="ft-word" viewBox="0 0 1200 150" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Sudipta Biswas">
+      <text x="600" y="112" text-anchor="middle" textLength="1100" lengthAdjust="spacingAndGlyphs" font-size="118" letter-spacing="-3">Sudipta <tspan font-style="italic">Biswas</tspan></text>
     </svg>
     <div class="ft-bot">
-      <span>© 2026 · Designed &amp; developed by Sudipta Biswas · Dhaka</span>
+      <span>© 2026 · Designed &amp; developed by Sudipta Biswas</span>
       <span>Dhaka, Bangladesh · CSE ’26</span>
       <a class="totop" href="#top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg>Back to top</a>
     </div>
