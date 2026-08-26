@@ -3,7 +3,7 @@
 
   var canvas = document.getElementById('cyberbg');
   if (!canvas) return;
-  var ctx = canvas.getContext('2d', { alpha: false });
+  var ctx = canvas.getContext('2d'); // alpha ON: the field must sit transparently over .page-bg
   if (!ctx) return;
 
   var reduce = window.matchMedia &&
@@ -15,7 +15,7 @@
   var AMP     = 10;   // wave amplitude
   var MAX_R   = 3.0;
 
-  var CAM_Y = 60, HORIZON = 0.28, NEAR_Z = 90, GRID_SPAN = 900;
+  var CAM_Y = 60, HORIZON = 0.68, NEAR_Z = 90, GRID_SPAN = 900;  // horizon low: the wave sits along the bottom
   var W = 0, H = 0, dpr = 1, FOCAL = 1, GRID_W = 1500, stepX = 1, stepZ = 1;
 
   // ---- pre-render ONE glow dot to an offscreen sprite (drawn once) ----
@@ -24,17 +24,35 @@
   var SPR = 64;
   var sprite = document.createElement('canvas');
   sprite.width = sprite.height = SPR;
-  (function buildSprite() {
+  // palette comes from CSS custom properties so the field follows the theme
+  var PAL = { bg:'#05070d', core:'rgba(150,196,255,1)', body:'rgba(59,130,246,0.55)', fade:'5,7,13', dark:true };
+  function readPalette() {
+    var cs = getComputedStyle(document.documentElement);
+    var g = function (n, d) { var v = cs.getPropertyValue(n).trim(); return v || d; };
+    PAL.bg   = g('--canvas-bg', '#05070d');
+    PAL.core = g('--canvas-core', 'rgba(150,196,255,1)');
+    PAL.body = g('--canvas-body', 'rgba(59,130,246,0.55)');
+    PAL.fade = g('--canvas-fade', '5,7,13');
+    PAL.dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+
+  function buildSprite() {
     var s = sprite.getContext('2d');
+    s.clearRect(0, 0, SPR, SPR);
     var g = s.createRadialGradient(SPR / 2, SPR / 2, 0, SPR / 2, SPR / 2, SPR / 2);
-    g.addColorStop(0.0, 'rgba(150,196,255,1)');   // hot core
-    g.addColorStop(0.4, 'rgba(59,130,246,0.55)'); // neon body
-    g.addColorStop(1.0, 'rgba(59,130,246,0)');
+    g.addColorStop(0.0, PAL.core);
+    g.addColorStop(0.4, PAL.body);
+    g.addColorStop(1.0, PAL.body.replace(/[\d.]+\)$/, '0)'));
     s.fillStyle = g;
     s.beginPath();
     s.arc(SPR / 2, SPR / 2, SPR / 2, 0, 6.2832);
     s.fill();
-  })();
+  }
+  readPalette();
+  buildSprite();
+
+  // called by the theme toggle
+  window.__cyberbgRefresh = function () { readPalette(); buildSprite(); };
 
   function resize() {
     // soft background: 1.5x DPR is plenty and roughly halves fill cost vs 2x
@@ -63,10 +81,10 @@
   function frame() {
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
-    ctx.fillStyle = '#05070d';
-    ctx.fillRect(0, 0, W, H);
+    ctx.clearRect(0, 0, W, H);   // transparent: .page-bg shows through beneath
 
-    ctx.globalCompositeOperation = 'lighter'; // additive glow
+    // additive glow reads as nothing on a light page — blend normally there
+    ctx.globalCompositeOperation = PAL.dark ? 'lighter' : 'source-over';
     for (var iz = AMOUNTZ - 1; iz >= 0; iz--) {
       var z = NEAR_Z + iz * stepZ;
       var depthT = iz / (AMOUNTZ - 1);
@@ -91,13 +109,8 @@
 
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
-    var vg = ctx.createLinearGradient(0, 0, 0, H);
-    vg.addColorStop(0,    'rgba(5,7,13,0.82)');
-    vg.addColorStop(0.32, 'rgba(5,7,13,0.30)');
-    vg.addColorStop(0.6,  'rgba(5,7,13,0)');
-    vg.addColorStop(1,    'rgba(5,7,13,0.35)');
-    ctx.fillStyle = vg;
-    ctx.fillRect(0, 0, W, H);
+    // vignette removed — .page-bg::after now supplies the scrim, and an opaque
+    // fill here would hide the Background.jpeg scene sitting underneath
 
     count += 0.06;
     if (!reduce && running) rafId = requestAnimationFrame(frame);

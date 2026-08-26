@@ -12,47 +12,112 @@
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%230f0e0c'/%3E%3Ctext x='24' y='34' font-family='Georgia,serif' font-size='27' font-style='italic' font-weight='700' fill='%23d67a34' text-anchor='middle'%3Esb%3C/text%3E%3C/svg%3E" />
 
+<script>
+(function(){
+  var r = document.documentElement;
+  try { if (localStorage.getItem("pf-theme") === "dark") r.setAttribute("data-theme","dark"); } catch(e){}
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..800&family=Orbitron:wght@600;700;800;900&family=Hanken+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
+  /* ===== THEME · BRIGHT (default) — tuned to the daylight/greenery of the profile photo ===== */
   :root{
-    --ink:#05070d;          /* page background (dark cyberpunk) */
-    --ink-1:#0a0e18;        /* cards / alternating sections */
-    --ink-2:#0e1424;        /* subtle alt surface */
-    --ink-3:#141c30;        /* muted panel */
-    --paper:#e8eefc;        /* primary text (light) */
-    --paper-dim:#9fb0cf;    /* secondary text */
-    --muted:#6c7fa6;        /* muted text */
-    --faint:#3d4a66;        /* faint text */
-    --copper:#3b82f6;       /* neon blue accent */
-    --copper-lo:#2563eb;    /* deeper neon (hover) */
-    --copper-hi:#60a5fa;    /* lighter neon */
-    --brass:#22d3ee;        /* cyan accent */
-    --line:rgba(120,150,210,.16);   /* border */
-    --line-2:rgba(120,150,210,.10); /* subtle border */
+    --ink:#f3f6f2;          /* page background */
+    --ink-1:#ffffff;        /* cards / raised */
+    --ink-2:#ecf1ec;        /* alt surface */
+    --ink-3:#e2e9e3;        /* muted panel */
+    --paper:#101a14;        /* primary text */
+    --paper-dim:#3f4d45;    /* secondary text */
+    --muted:#65756b;        /* muted text */
+    --faint:#93a298;        /* faint text */
+    --copper:#1d63d8;       /* accent (deepened so it holds on white) */
+    --copper-lo:#164fb0;
+    --copper-hi:#4f8ef0;
+    --brass:#0e8fa3;        /* cyan accent */
+    --line:rgba(18,48,32,.15);
+    --line-2:rgba(18,48,32,.08);
+
+    --on-accent:#ffffff;    /* text on an accent fill */
+    --nav-bg:rgba(255,255,255,.84);
+    --glass:rgba(255,255,255,.86);
+    --scrim:rgba(240,244,240,.90);
+    --panel-grad:linear-gradient(180deg, rgba(255,255,255,.92), rgba(236,241,236,.86));
+    --pfp-fade:rgba(243,246,242,.42);
+    --shadow-lg:0 40px 90px rgba(40,60,45,.18);
+    --shadow-md:0 24px 60px -24px rgba(40,60,45,.28);
+    --toast-bg:#101a14; --toast-fg:#ffffff;
+    --grain-op:.022; --grain-blend:multiply;
+    --page-bg-op:.55;       /* Background.jpeg — bottom layer, fixed for the whole page */
+    --page-bg-filter:saturate(1.05) contrast(1.02) brightness(1.04);
+    --page-scrim:linear-gradient(180deg, rgba(243,246,242,.80), rgba(243,246,242,.70) 45%, rgba(243,246,242,.84));
+    --glass-panel:rgba(255,255,255,.55);
+    --glass-strip:rgba(255,255,255,.62);
+
+    --canvas-bg:#f3f6f2;    /* read by cyberbg.js */
+    --canvas-core:rgba(29,99,216,.95);
+    --canvas-body:rgba(29,99,216,.42);
+    --canvas-fade:243,246,242;
+
     --maxw:1300px;
     --ease:cubic-bezier(.2,.7,.2,1);
     --serif:"Orbitron", sans-serif;
     --sans:"Hanken Grotesk", system-ui, sans-serif;
     --mono:"JetBrains Mono", ui-monospace, monospace;
   }
+
+  /* ===== THEME · DARK (the original cyber palette) ===== */
+  :root[data-theme="dark"]{
+    --ink:#05070d; --ink-1:#0a0e18; --ink-2:#0e1424; --ink-3:#141c30;
+    --paper:#e8eefc; --paper-dim:#9fb0cf; --muted:#8496b8; --faint:#5b6b8c;
+    --copper:#3b82f6; --copper-lo:#2563eb; --copper-hi:#60a5fa; --brass:#22d3ee;
+    --line:rgba(120,150,210,.16); --line-2:rgba(120,150,210,.10);
+
+    --on-accent:#ffffff;
+    --nav-bg:rgba(5,7,13,.82);
+    --glass:rgba(10,14,24,.82);
+    --scrim:rgba(5,7,13,.88);
+    --panel-grad:linear-gradient(180deg, rgba(20,28,48,.6), rgba(10,14,24,.5));
+    --pfp-fade:rgba(5,7,13,.5);
+    --shadow-lg:0 40px 90px rgba(0,0,0,.6);
+    --shadow-md:0 24px 60px -24px rgba(0,0,0,.45);
+    --toast-bg:#e8eefc; --toast-fg:#05070d;
+    --grain-op:.03; --grain-blend:multiply;
+    --page-bg-op:.30;
+    --page-bg-filter:grayscale(.35) contrast(1.05) brightness(.72);
+    --page-scrim:linear-gradient(180deg, rgba(5,7,13,.84), rgba(5,7,13,.74) 45%, rgba(5,7,13,.88));
+    --glass-panel:rgba(10,14,24,.46);
+    --glass-strip:rgba(10,14,24,.55);
+
+    --canvas-bg:#05070d;
+    --canvas-core:rgba(150,196,255,1);
+    --canvas-body:rgba(59,130,246,.55);
+    --canvas-fade:5,7,13;
+  }
+
+  .theme-ready body, .theme-ready header.nav, .theme-ready .card,
+  .theme-ready .prj, .theme-ready #cyberbg{
+    transition:background-color .45s var(--ease), color .45s var(--ease), border-color .45s var(--ease);
+  }
+
   *,*::before,*::after{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+  html{ background:var(--ink); }
   body{
-    margin:0; background:var(--ink); color:var(--paper);
+    margin:0; background:transparent; color:var(--paper);
     font-family:var(--sans); font-size:17px; line-height:1.6; font-weight:400;
     -webkit-font-smoothing:antialiased; overflow-x:hidden;
   }
-  ::selection{ background:var(--copper); color:#05070d; }
+  ::selection{ background:var(--copper); color:var(--on-accent); }
   a{ color:inherit; text-decoration:none; }
   img{ display:block; max-width:100%; }
   h1,h2,h3,h4{ margin:0; font-family:var(--serif); font-weight:500; line-height:1; letter-spacing:-.015em; }
 
   /* grain + vignette atmosphere */
   body::before{
-    content:""; position:fixed; inset:0; z-index:2; pointer-events:none; opacity:.03; mix-blend-mode:multiply;
+    content:""; position:fixed; inset:0; z-index:2; pointer-events:none; opacity:var(--grain-op); mix-blend-mode:var(--grain-blend);
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   body::after{
@@ -71,7 +136,7 @@
     position:fixed; top:0; left:0; right:0; z-index:60; transition:background .4s var(--ease), border-color .4s, backdrop-filter .4s;
     border-bottom:1px solid transparent;
   }
-  header.nav.solid{ background:rgba(255,255,255,.82); backdrop-filter:blur(14px) saturate(150%); -webkit-backdrop-filter:blur(14px) saturate(150%); border-color:var(--line); }
+  header.nav.solid{ background:var(--nav-bg); backdrop-filter:blur(14px) saturate(150%); -webkit-backdrop-filter:blur(14px) saturate(150%); border-color:var(--line); }
   .nav-in{ display:flex; align-items:center; justify-content:space-between; height:76px; }
   .mark{ display:flex; align-items:baseline; gap:11px; }
   .mark .sig{ font-family:var(--serif); font-style:italic; font-weight:600; font-size:25px; letter-spacing:-.02em; }
@@ -87,6 +152,207 @@
   .avail .dot{ width:8px; height:8px; border-radius:50%; background:#54d38a; box-shadow:0 0 0 0 rgba(84,211,138,.6); animation:pulse 2.4s infinite; }
   @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(84,211,138,.55); } 70%{ box-shadow:0 0 0 7px rgba(84,211,138,0); } 100%{ box-shadow:0 0 0 0 rgba(84,211,138,0); } }
   @media (max-width:860px){ .nav-links .nl{ display:none; } }
+
+  .theme-btn{
+    width:38px; height:38px; flex:none; padding:0; cursor:pointer;
+    display:grid; place-items:center; border-radius:50%;
+    border:1px solid var(--line); background:var(--ink-1); color:var(--muted);
+    transition:color .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .theme-btn:hover{ color:var(--copper); border-color:var(--copper); transform:translateY(-2px); }
+  .theme-btn svg{ width:16px; height:16px; }
+  .theme-btn .i-sun{ display:none; }
+  :root[data-theme="dark"] .theme-btn .i-sun{ display:block; }
+  :root[data-theme="dark"] .theme-btn .i-moon{ display:none; }
+
+  /* ===== FIXED BACKGROUND STACK — scene at the very back, field above it, content over both ===== */
+  .page-bg{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:url("assets/bg-hero.jpg") center 28% / cover no-repeat;
+    opacity:var(--page-bg-op); filter:var(--page-bg-filter);
+  }
+  .page-bg::after{ content:""; position:absolute; inset:0; background:var(--page-scrim); }
+
+  /* ============ SERVICES ============ */
+  .svc-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(14px,1.6vw,20px); margin-top:clamp(34px,4vw,54px); }
+  .svc{
+    position:relative; padding:clamp(22px,2.4vw,32px) clamp(22px,2.4vw,32px) clamp(26px,2.6vw,34px);
+    border:1px solid var(--line); border-radius:4px;
+    background:var(--glass-panel); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+    overflow:hidden; transition:border-color .4s var(--ease), transform .4s var(--ease);
+  }
+  .svc::before{
+    content:""; position:absolute; top:0; left:0; height:2px; width:0;
+    background:linear-gradient(90deg, var(--copper), var(--brass));
+    transition:width .7s var(--ease);
+  }
+  .svc:hover::before{ width:100%; }
+  .svc:hover{ border-color:var(--copper); transform:translateY(-4px); }
+  .svc::after{
+    content:""; position:absolute; right:14px; bottom:14px; width:13px; height:13px;
+    border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .svc .n{ font-family:var(--mono); font-size:10.5px; letter-spacing:.24em; color:var(--copper); }
+  .svc h3{ font-family:var(--serif); font-size:clamp(18px,1.75vw,23px); line-height:1.16; margin-top:14px; }
+  .svc p{ margin-top:12px; font-size:14.5px; line-height:1.62; color:var(--paper-dim); }
+  .svc .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:18px; }
+  .svc .tags span{
+    font-family:var(--mono); font-size:10px; letter-spacing:.05em; color:var(--muted);
+    border:1px solid var(--line); border-radius:2px; padding:5px 8px;
+  }
+  @media (max-width:820px){ .svc-grid{ grid-template-columns:1fr; } }
+
+  /* ============ WORK · ART TILES ============ */
+  .wfilter{ display:flex; flex-wrap:wrap; gap:8px; margin-top:clamp(26px,3vw,38px); }
+  .wfilter button{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted); background:transparent; border:1px solid var(--line);
+    border-radius:100px; padding:9px 17px; cursor:pointer; transition:all .35s var(--ease);
+  }
+  .wfilter button:hover{ color:var(--paper); border-color:var(--copper); }
+  .wfilter button.on{ color:var(--on-accent); background:var(--copper); border-color:var(--copper); }
+
+  .wgrid{
+    display:grid; grid-template-columns:repeat(6,1fr);
+    gap:clamp(10px,1vw,14px); margin-top:clamp(24px,2.6vw,34px);
+  }
+  /* the tile: a square piece of art, nothing else */
+  .wc{
+    position:relative; display:block; aspect-ratio:1; border-radius:14px; overflow:hidden;
+    border:1px solid var(--line); background:var(--ink-2); cursor:pointer;
+    transition:transform .55s var(--ease), box-shadow .55s var(--ease), border-color .55s var(--ease);
+  }
+  .wc img{
+    width:100%; height:100%; object-fit:cover; object-position:top center;
+    transition:transform 1.2s var(--ease);
+  }
+  .wc:hover{ transform:translateY(-7px); border-color:var(--copper); box-shadow:var(--shadow-lg); }
+  .wc:hover img{ transform:scale(1.07); }
+  .wc-veil{
+    position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(180deg, transparent 38%, rgba(4,8,16,.88));
+    opacity:.62; transition:opacity .5s var(--ease);
+  }
+  .wc:hover .wc-veil{ opacity:1; }
+  .wc-cap{
+    position:absolute; left:0; right:0; bottom:0; z-index:2; padding:0 11px 11px;
+    transform:translateY(5px); transition:transform .5s var(--ease);
+  }
+  .wc:hover .wc-cap{ transform:none; }
+  .wc-cap .k{ font-family:var(--mono); font-size:7.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--copper-hi); }
+  .wc-cap .t{ font-family:var(--serif); font-size:11px; line-height:1.22; color:#fff; margin-top:4px;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .wc-go{
+    position:absolute; top:9px; right:9px; z-index:2; width:26px; height:26px;
+    display:grid; place-items:center; border-radius:50%; color:#fff;
+    background:rgba(6,10,18,.5); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.24);
+    opacity:0; transform:scale(.85); transition:all .45s var(--ease);
+  }
+  .wc-go svg{ width:11px; height:11px; }
+  .wc:hover .wc-go{ opacity:1; transform:none; }
+
+  /* hidden until "show more" */
+  .wc.extra{ display:none; }
+  .wc.extra.shown{ display:block; animation:tilein .62s var(--ease) both; }
+  @keyframes tilein{ from{ opacity:0; transform:translateY(24px) scale(.96); } to{ opacity:1; transform:none; } }
+  .wc.hide{ display:none !important; }
+
+  /* show-more: ink fills from below, chevron flips, ring pulses out */
+  .smwrap{ display:flex; justify-content:center; margin-top:clamp(28px,3.2vw,44px); }
+  .showmore{
+    position:relative; overflow:hidden; cursor:pointer;
+    display:inline-flex; align-items:center; gap:13px;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--paper); background:transparent;
+    border:1px solid var(--line-2); border-radius:100px; padding:16px 32px;
+    transition:color .4s var(--ease), border-color .4s var(--ease);
+  }
+  .showmore i{
+    content:""; position:absolute; inset:0; background:var(--copper);
+    transform:translateY(101%); transition:transform .55s var(--ease); z-index:0;
+  }
+  .showmore:hover i{ transform:translateY(0); }
+  .showmore:hover{ color:var(--on-accent); border-color:var(--copper); }
+  .showmore span, .showmore svg{ position:relative; z-index:1; }
+  .showmore svg{ width:14px; height:14px; transition:transform .55s var(--ease); }
+  .showmore.open svg{ transform:rotate(180deg); }
+  .showmore::after{
+    content:""; position:absolute; inset:-1px; border-radius:100px;
+    border:1px solid var(--copper); opacity:0; pointer-events:none;
+  }
+  .showmore:hover::after{ animation:smring 1.5s ease-out infinite; }
+  @keyframes smring{ 0%{ opacity:.55; transform:scale(1); } 100%{ opacity:0; transform:scale(1.13); } }
+
+  .lb .cap .d{ display:block; margin-top:8px; font-size:13.5px; line-height:1.55; color:var(--paper-dim); max-width:70ch; }
+
+  @media (max-width:1180px){ .wgrid{ grid-template-columns:repeat(5,1fr); } }
+  @media (max-width:980px){ .wgrid{ grid-template-columns:repeat(4,1fr); } }
+  @media (max-width:760px){ .wgrid{ grid-template-columns:repeat(3,1fr); } }
+  @media (max-width:480px){ .wgrid{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ============ EXPERIENCE · PROPORTIONAL BOXES ============ */
+  /* box area scales with time served: 6 months = the big panel, 3 months = half of it */
+  .xpgrid{
+    display:grid; grid-template-columns:repeat(6,1fr);
+    gap:clamp(12px,1.3vw,18px); margin-top:clamp(34px,4vw,54px);
+  }
+  .xp{
+    position:relative; overflow:hidden;
+    border:1px solid var(--line); border-radius:16px;
+    background:var(--glass-panel); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    padding:clamp(16px,1.6vw,22px);
+    transition:border-color .45s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease);
+  }
+  .xp:hover{ border-color:var(--copper); transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+  .xp::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:linear-gradient(180deg, var(--copper), var(--brass)); opacity:.85;
+  }
+  .xp.lg{ grid-column:span 4; grid-row:span 2; }   /* 6 months */
+  .xp.md{ grid-column:span 2; }                    /* 3 months */
+  .xp.res{ grid-column:span 6; }                   /* research */
+
+  .xp-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .xp-dur{ display:flex; align-items:baseline; gap:7px; }
+  .xp-dur b{ font-family:var(--serif); font-size:clamp(22px,2.2vw,32px); line-height:.9; color:var(--copper); }
+  .xp-dur span{ font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+  .xp-when{ font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); text-align:right; }
+
+  .xp h3{ font-family:var(--serif); font-size:clamp(16px,1.5vw,20px); line-height:1.16; margin-top:12px; }
+  .xp .org{ margin-top:6px; font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--copper-hi); }
+
+  /* the time meter — fraction of the longest stint */
+  .xp-meter{ height:2px; background:var(--line); border-radius:2px; margin-top:12px; overflow:hidden; }
+  .xp-meter i{ display:block; height:100%; width:0; background:linear-gradient(90deg,var(--copper),var(--brass));
+    transition:width 1.5s var(--ease) .15s; }
+  .xp.seen .xp-meter i{ width:var(--w); }
+
+  .xp .lead{ margin-top:11px; font-size:13.2px; line-height:1.55; color:var(--paper-dim); }
+  .xp .most{
+    margin-top:11px; padding:10px 12px; border-radius:8px;
+    background:var(--ember-wash, rgba(37,99,235,.07)); border:1px solid var(--line);
+    font-size:12.6px; line-height:1.5; color:var(--paper);
+  }
+  .xp .most b{ font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--copper); display:block; margin-bottom:6px; font-weight:500; }
+  .xp ul{ list-style:none; margin:11px 0 0; padding:0; display:grid; gap:6px; }
+  .xp li{ position:relative; padding-left:15px; font-size:12.6px; line-height:1.5; color:var(--paper-dim); }
+  .xp li::before{ content:""; position:absolute; left:2px; top:9px; width:6px; height:1px; background:var(--copper); }
+  .xp li b{ color:var(--paper); font-weight:600; }
+  .xp .chips{ display:flex; flex-wrap:wrap; gap:5px; margin-top:12px; }
+  .xp .chips span{ font-family:var(--mono); font-size:9.5px; color:var(--muted);
+    border:1px solid var(--line); border-radius:2px; padding:4px 7px; }
+
+  @media (max-width:900px){
+    .xpgrid{ grid-template-columns:repeat(2,1fr); }
+    .xp.lg{ grid-column:span 2; grid-row:auto; }
+    .xp.md{ grid-column:span 1; }
+    .xp.res{ grid-column:span 2; }
+  }
+  @media (max-width:620px){
+    .xpgrid{ grid-template-columns:1fr; }
+    .xp.lg,.xp.md,.xp.res{ grid-column:span 1; }
+  }
 
   /* ============ HERO ============ */
   .hero{ position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:52px; overflow:hidden; }
@@ -107,7 +373,7 @@
   .hero-lead b{ color:var(--paper); font-weight:600; }
   .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; }
   .btn{ display:inline-flex; align-items:center; gap:11px; font-family:var(--mono); font-size:12.5px; letter-spacing:.09em; text-transform:uppercase; font-weight:500;
-    padding:15px 26px; border-radius:2px; border:1px solid var(--copper); background:var(--copper); color:#ffffff; position:relative; overflow:hidden; transition:transform .25s var(--ease), color .3s; }
+    padding:15px 26px; border-radius:2px; border:1px solid var(--copper); background:var(--copper); color:var(--on-accent); position:relative; overflow:hidden; transition:transform .25s var(--ease), color .3s; }
   .btn svg{ width:15px; height:15px; }
   .btn::after{ content:""; position:absolute; inset:0; background:var(--paper); transform:translateY(101%); transition:transform .4s var(--ease); z-index:0; }
   .btn span,.btn svg{ position:relative; z-index:1; }
@@ -115,7 +381,7 @@
   .btn:hover::after{ transform:translateY(0); }
   .btn.ghost{ background:transparent; color:var(--paper); border-color:var(--line); }
   .btn.ghost::after{ background:var(--copper); }
-  .btn.ghost:hover{ color:#ffffff; border-color:var(--copper); }
+  .btn.ghost:hover{ color:var(--on-accent); border-color:var(--copper); }
   .hero-stats{ display:flex; gap:46px; margin-top:44px; padding-top:26px; border-top:1px solid var(--line); flex-wrap:wrap; }
   .hst .n{ font-family:var(--serif); font-weight:400; font-size:clamp(30px,3.4vw,46px); line-height:1; }
   .hst .n em{ font-style:italic; color:var(--copper); }
@@ -124,8 +390,94 @@
   .scrollcue .ln{ width:1px; height:56px; background:linear-gradient(var(--copper),transparent); }
   @media (max-width:900px){ .scrollcue{ display:none; } .hero{ padding-bottom:40px; } }
 
+  /* ============ HERO PORTRAIT · faint wash + tilted orbit + floating photo ============ */
+
+  /* Background.jpeg, held far back so it reads as atmosphere, never as a picture */
+  .hero-photo{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:url("assets/bg-hero.jpg") center 20% / cover no-repeat;
+    opacity:var(--hero-photo-op);
+    filter:var(--hero-photo-filter);
+    mask-image:radial-gradient(120% 100% at 64% 24%, #000 10%, transparent 74%);
+    -webkit-mask-image:radial-gradient(120% 100% at 64% 24%, #000 10%, transparent 74%);
+  }
+
+  /* two-column hero: copy left, portrait right */
+  .hero-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) clamp(290px,29vw,430px);
+    gap:clamp(28px,4vw,72px); align-items:center;
+  }
+  .hero-grid .hero-copy{ min-width:0; }
+  .hero-grid h1{ font-size:clamp(56px,10.6vw,176px); }
+
+  .portrait-rig{ position:relative; width:100%; aspect-ratio:1; }
+
+  /* the tilted circle — an ellipse, so the tilt actually reads */
+  .orbit{
+    position:absolute; inset:0; width:100%; height:100%;
+    transform:rotate(-18deg); overflow:visible;
+  }
+  .orbit .dash{ animation:orbit-dash 26s linear infinite; }
+
+  /* soft light pooled inside the ring */
+  .orbit-glow{
+    position:absolute; left:50%; top:52%; width:78%; aspect-ratio:1;
+    transform:translate(-50%,-50%); pointer-events:none; z-index:0;
+    background:radial-gradient(circle, rgba(37,99,235,.20), rgba(34,211,238,.06) 45%, transparent 70%);
+    filter:blur(6px);
+  }
+
+  /* the photo: sits ABOVE the ellipse's box, breaking out of the top */
+  .pfp{
+    position:absolute; left:50%; top:-7%; z-index:2;
+    width:63%; aspect-ratio:1; margin:0;
+    border-radius:50%; overflow:hidden;
+    border:1px solid rgba(120,150,210,.30);
+    box-shadow:var(--shadow-lg), 0 0 0 12px rgba(37,99,235,.06);
+    animation:floaty 7.5s ease-in-out infinite;
+    will-change:transform;
+  }
+  .pfp img{ width:100%; height:100%; object-fit:cover; }
+  .pfp::after{
+    content:""; position:absolute; inset:0; border-radius:50%; pointer-events:none;
+    background:linear-gradient(190deg, transparent 42%, var(--pfp-fade));
+  }
+
+  /* small orbiting chip, echoing the ring */
+  .orbit-chip{
+    position:absolute; z-index:3; left:6%; top:46%;
+    font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--paper-dim); background:var(--glass); backdrop-filter:blur(8px);
+    border:1px solid var(--line); border-radius:100px; padding:7px 13px; white-space:nowrap;
+    animation:floaty 9s ease-in-out infinite reverse;
+  }
+  .orbit-chip .dot{ display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--brass); margin-right:7px; vertical-align:middle; }
+
+  @keyframes floaty{
+    0%,100%{ transform:translate(-46%,0); }
+    50%    { transform:translate(-46%,-17px); }
+  }
+  @keyframes orbit-dash{ to{ stroke-dashoffset:-260; } }
+
+  @media (max-width:900px){
+    /* clear the fixed nav — the rig sits first in the stack */
+    .hero{ justify-content:center; padding-top:104px; }
+    .hero-grid{ grid-template-columns:1fr; gap:22px; }
+    .portrait-rig{ width:min(232px,56vw); margin:0 auto; order:-1; }
+    /* centre the chip so it can't run off the left edge */
+    .orbit-chip{ left:50%; top:auto; bottom:-3%; transform:translateX(-50%); animation:none; }
+    .hero-grid h1{ font-size:clamp(52px,14vw,232px); }
+    .hero .eyebrow{ margin-bottom:18px; gap:10px; font-size:10px; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .pfp,.orbit-chip{ animation:none; transform:translate(-46%,0); }
+    .orbit-chip{ transform:none; }
+    .orbit .dash{ animation:none; }
+  }
+
   /* ============ MARQUEE ============ */
-  .strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--ink-1); overflow:hidden; }
+  .strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--glass-strip); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); overflow:hidden; }
   .mq{ display:flex; overflow:hidden; user-select:none; }
   .mq__t{ display:flex; flex:none; gap:0; min-width:100%; animation:mq 42s linear infinite; }
   .mq__t .it{ display:inline-flex; align-items:center; gap:20px; padding:16px 0; white-space:nowrap; font-family:var(--serif); font-style:italic; font-size:22px; color:var(--paper-dim); }
@@ -135,7 +487,7 @@
   /* ============ SECTION HEADER ============ */
   .sh{ display:flex; align-items:baseline; gap:22px; margin-bottom:56px; flex-wrap:wrap; }
   .sh .no{ font-family:var(--mono); font-size:12px; letter-spacing:.2em; color:var(--copper); }
-  .sh h2{ font-size:clamp(34px,5vw,64px); font-weight:400; letter-spacing:-.03em; }
+  .sh h2{ font-size:clamp(26px,3.2vw,42px); font-weight:400; letter-spacing:-.025em; line-height:1.06; }
   .sh h2 em{ font-style:italic; color:var(--copper); }
   .section{ padding:130px 0; }
 
@@ -154,7 +506,7 @@
   @media (max-width:920px){ .about-grid{ grid-template-columns:1fr; gap:44px; } }
 
   /* ============ WORK / PROJECT INDEX ============ */
-  .work{ background:var(--ink-1); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .work{ background:var(--glass-panel); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
   .index{ border-top:1px solid var(--line); }
   .prj{ position:relative; display:grid; grid-template-columns:64px 1fr auto; gap:30px; align-items:center;
     padding:34px 12px; border-bottom:1px solid var(--line); cursor:pointer; transition:padding .4s var(--ease), background .4s; }
@@ -170,7 +522,7 @@
   .prj .pmeta{ text-align:right; font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.06em; white-space:nowrap; display:flex; flex-direction:column; gap:8px; align-items:flex-end; }
   .prj .pmeta .yr{ color:var(--paper); font-size:13px; }
   .prj .arrow{ width:34px; height:34px; border:1px solid var(--line); border-radius:50%; display:grid; place-items:center; color:var(--copper); transition:.3s var(--ease); }
-  .prj:hover .arrow{ background:var(--copper); color:#ffffff; transform:rotate(-45deg); border-color:var(--copper); }
+  .prj:hover .arrow{ background:var(--copper); color:var(--on-accent); transform:rotate(-45deg); border-color:var(--copper); }
   .prj .arrow svg{ width:15px; height:15px; }
   /* inline image (mobile) */
   .prj .pshot{ display:none; grid-column:1 / -1; margin-top:20px; border:1px solid var(--line); border-radius:4px; overflow:hidden; }
@@ -178,11 +530,11 @@
 
   /* floating preview (desktop) */
   .preview{ position:fixed; z-index:40; top:0; left:0; width:400px; aspect-ratio:16/10; border-radius:6px; overflow:hidden;
-    border:1px solid var(--line); box-shadow:0 40px 90px rgba(0,0,0,.6); pointer-events:none; opacity:0; transform:translate(-50%,-50%) scale(.9) rotate(-3deg);
+    border:1px solid var(--line); box-shadow:var(--shadow-lg); pointer-events:none; opacity:0; transform:translate(-50%,-50%) scale(.9) rotate(-3deg);
     transition:opacity .35s var(--ease), transform .35s var(--ease); background:var(--ink-3); }
   .preview.on{ opacity:1; transform:translate(-50%,-50%) scale(1) rotate(-3deg); }
   .preview img{ width:100%; height:100%; object-fit:cover; object-position:top; }
-  .preview .tag{ position:absolute; left:12px; bottom:12px; font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#ffffff; background:var(--copper); padding:4px 10px; border-radius:2px; }
+  .preview .tag{ position:absolute; left:12px; bottom:12px; font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--on-accent); background:var(--copper); padding:4px 10px; border-radius:2px; }
   @media (max-width:900px){
     .prj{ grid-template-columns:44px 1fr; gap:16px; }
     .prj .pmeta{ display:none; }
@@ -213,7 +565,7 @@
   @media (max-width:560px){ .cap-grid{ grid-template-columns:1fr; } .cap:nth-child(even){ padding-left:0; border-left:0; } }
 
   /* ============ EXPERIENCE ============ */
-  .exp{ background:var(--ink-1); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .exp{ background:var(--glass-panel); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
   .tl{ border-top:1px solid var(--line); }
   .tl .e{ display:grid; grid-template-columns:200px 1fr; gap:40px; padding:38px 0; border-bottom:1px solid var(--line); }
   .tl .when{ font-family:var(--mono); font-size:12px; letter-spacing:.05em; color:var(--copper); padding-top:8px; }
@@ -229,16 +581,16 @@
   /* ============ CONTACT ============ */
   .contact{ padding:140px 0 90px; text-align:center; position:relative; overflow:hidden; }
   .contact .eyebrow{ margin-bottom:26px; display:block; }
-  .contact h2{ font-size:clamp(44px,8.5vw,140px); font-weight:400; letter-spacing:-.04em; line-height:.9; }
+  .contact h2{ font-size:clamp(30px,4.4vw,62px); font-weight:400; letter-spacing:-.03em; line-height:1.02; max-width:16ch; }
   .contact h2 em{ font-style:italic; color:var(--copper); }
   .contact .sub{ color:var(--paper-dim); font-size:19px; margin:34px auto 0; max-width:52ch; line-height:1.55; }
   .contact-links{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:44px; }
   .clink{ display:inline-flex; align-items:center; gap:11px; font-family:var(--mono); font-size:13px; letter-spacing:.05em; padding:16px 26px; border:1px solid var(--line); border-radius:2px; color:var(--paper); transition:.28s var(--ease); background:var(--ink-1); }
   .clink svg{ width:17px; height:17px; color:var(--copper); transition:color .28s; }
-  .clink:hover{ background:var(--copper); color:#ffffff; border-color:var(--copper); transform:translateY(-3px); }
-  .clink:hover svg{ color:#ffffff; }
-  .clink.primary{ background:var(--copper); color:#ffffff; border-color:var(--copper); }
-  .clink.primary svg{ color:#ffffff; }
+  .clink:hover{ background:var(--copper); color:var(--on-accent); border-color:var(--copper); transform:translateY(-3px); }
+  .clink:hover svg{ color:var(--on-accent); }
+  .clink.primary{ background:var(--copper); color:var(--on-accent); border-color:var(--copper); }
+  .clink.primary svg{ color:var(--on-accent); }
   .clink.primary:hover{ background:var(--copper-hi); border-color:var(--copper-hi); }
 
   /* ============ FOOTER ============ */
@@ -266,17 +618,17 @@
   /* ---- lightbox (view the real work) ---- */
   .lb{ position:fixed; inset:0; z-index:90; display:none; align-items:center; justify-content:center; padding:5vw; }
   .lb.on{ display:flex; }
-  .lb .sc{ position:absolute; inset:0; background:rgba(5,7,13,.88); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); cursor:zoom-out; opacity:0; transition:opacity .35s var(--ease); }
+  .lb .sc{ position:absolute; inset:0; background:var(--scrim); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); cursor:zoom-out; opacity:0; transition:opacity .35s var(--ease); }
   .lb.on .sc{ opacity:1; }
   .lb .box{ position:relative; z-index:2; max-width:1080px; width:100%; transform:scale(.96); opacity:0; transition:transform .4s var(--ease), opacity .4s var(--ease); }
   .lb.on .box{ transform:none; opacity:1; }
-  .lb .box img{ width:100%; border:1px solid var(--line); border-radius:6px; box-shadow:0 50px 120px rgba(0,0,0,.7); }
+  .lb .box img{ width:100%; border:1px solid var(--line); border-radius:6px; box-shadow:var(--shadow-lg); }
   .lb .cap{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px; flex-wrap:wrap; }
   .lb .cap .t{ font-family:var(--serif); font-size:21px; }
   .lb .cap .t em{ font-style:italic; color:var(--copper); }
   .lb .cap .m{ font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
   .lb .x{ position:absolute; top:-44px; right:0; width:38px; height:38px; border:1px solid var(--line); border-radius:50%; background:var(--ink-1); color:var(--paper); display:grid; place-items:center; cursor:pointer; transition:.25s var(--ease); }
-  .lb .x:hover{ background:var(--copper); color:#ffffff; border-color:var(--copper); }
+  .lb .x:hover{ background:var(--copper); color:var(--on-accent); border-color:var(--copper); }
   .lb .x svg{ width:16px; height:16px; }
   .lb .hint{ font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); text-align:center; margin-top:14px; }
 
@@ -286,7 +638,7 @@
               radial-gradient(52% 60% at 84% 94%, rgba(59,130,246,.14), transparent 62%); }
   .contact .wrap{ position:relative; z-index:1; }
   .glass-card{ position:relative; max-width:940px; margin:0 auto; padding:52px 46px 46px; border-radius:24px; overflow:hidden;
-    background:linear-gradient(180deg, rgba(20,28,48,.6), rgba(10,14,24,.5));
+    background:var(--panel-grad);
     backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
     border:1px solid rgba(120,150,210,.22);
     box-shadow:0 40px 90px -50px rgba(59,130,246,.6), 0 1px 0 rgba(120,150,210,.14) inset; }
@@ -304,7 +656,7 @@
     animation:bdspin 4.5s linear infinite; }
   /* animated beam connector */
   .beamline{ display:flex; align-items:center; justify-content:center; margin:8px 0 20px; }
-  .beamline .node{ width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:#0e1424;
+  .beamline .node{ width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--ink-2);
     display:grid; place-items:center; font-family:var(--mono); font-size:11px; letter-spacing:.03em; text-transform:uppercase;
     color:var(--muted); box-shadow:0 8px 20px -10px rgba(37,99,235,.6); flex:none; }
   .beamline .node.me{ color:var(--copper); border-color:rgba(37,99,235,.45); font-weight:600; }
@@ -315,14 +667,14 @@
   /* confetti + toast */
   #confetti{ position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:97; }
   .toast{ position:fixed; left:50%; bottom:40px; transform:translateX(-50%) translateY(16px); z-index:98;
-    background:var(--paper); color:#fff; font-family:var(--mono); font-size:12px; letter-spacing:.04em;
-    padding:12px 20px; border-radius:12px; box-shadow:0 24px 60px -24px rgba(0,0,0,.45); opacity:0;
+    background:var(--toast-bg); color:var(--toast-fg); font-family:var(--mono); font-size:12px; letter-spacing:.04em;
+    padding:12px 20px; border-radius:12px; box-shadow:var(--shadow-md); opacity:0;
     transition:opacity .3s var(--ease), transform .3s var(--ease); pointer-events:none; white-space:nowrap; }
   .toast.on{ opacity:1; transform:translateX(-50%) translateY(0); }
   @media (max-width:640px){ .glass-card{ padding:40px 22px 32px; } }
 
   /* ===== cyberpunk fixed background ===== */
-  #cyberbg{ position:fixed; inset:0; width:100%; height:100%; z-index:0; display:block; pointer-events:none; background:#05070d; }
+  #cyberbg{ position:fixed; inset:0; width:100%; height:100%; z-index:0; display:block; pointer-events:none; background:transparent; }
 
   /* ===== #skillstory — auto-rotating skills story (scoped) ===== */
   #skillstory{
@@ -418,6 +770,8 @@
 <canvas id="cyberbg" aria-hidden="true"></canvas>
 
 <!-- ===== NAV ===== -->
+<div class="page-bg" aria-hidden="true"></div>
+
 <header class="nav" id="nav">
   <div class="wrap nav-in">
     <a href="#top" class="mark" aria-label="Sudipta Biswas home">
@@ -427,8 +781,13 @@
     <nav class="nav-links" aria-label="Primary">
       <a class="nl" href="#work"><span class="idx">01</span>Work</a>
       <a class="nl" href="#about"><span class="idx">02</span>About</a>
-      <a class="nl" href="#skillstory"><span class="idx">03</span>Stack</a>
-      <a class="nl" href="#contact"><span class="idx">04</span>Contact</a>
+      <a class="nl" href="#services"><span class="idx">03</span>Services</a>
+      <a class="nl" href="#skillstory"><span class="idx">04</span>Stack</a>
+      <a class="nl" href="#contact"><span class="idx">05</span>Contact</a>
+      <button class="theme-btn" id="themeBtn" aria-label="Switch to dark theme" title="Switch theme">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
       <span class="avail"><span class="dot"></span>Available</span>
     </nav>
   </div>
@@ -439,6 +798,8 @@
   <canvas id="field" aria-hidden="true"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="wrap hero-in">
+   <div class="hero-grid">
+    <div class="hero-copy">
     <div class="eyebrow">
       <span>Portfolio · 2026</span>
       <span class="dim">/</span>
@@ -457,6 +818,30 @@
         <a class="btn ghost" href="assets/Sudipta_Biswas_CV.pdf" target="_blank" rel="noopener"><span>Download CV</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg></a>
       </div>
     </div>
+    </div><!-- /hero-copy -->
+
+    <!-- tilted orbit + floating portrait -->
+    <div class="portrait-rig">
+      <div class="orbit-glow" aria-hidden="true"></div>
+      <svg class="orbit" viewBox="0 0 400 400" aria-hidden="true">
+        <defs>
+          <linearGradient id="orbitStroke" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0"   stop-color="#60a5fa" stop-opacity=".95"/>
+            <stop offset=".48" stop-color="#22d3ee" stop-opacity=".55"/>
+            <stop offset="1"   stop-color="#3b82f6" stop-opacity=".10"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="200" cy="205" rx="188" ry="122" fill="none" stroke="url(#orbitStroke)" stroke-width="1.6"/>
+        <ellipse class="dash" cx="200" cy="205" rx="152" ry="99" fill="none"
+                 stroke="rgba(120,150,210,.30)" stroke-width="1" stroke-dasharray="3 10"/>
+      </svg>
+      <figure class="pfp">
+        <img src="assets/profile.jpg" alt="Sudipta Biswas, web developer, Dhaka" width="900" height="900" />
+      </figure>
+      <span class="orbit-chip"><span class="dot"></span>Dhaka · Available</span>
+    </div>
+   </div><!-- /hero-grid -->
+
     <div class="hero-stats">
       <div class="hst"><div class="n"><em>64</em></div><div class="l">Websites built</div></div>
       <div class="hst"><div class="n">18</div><div class="l">Industry niches</div></div>
@@ -503,72 +888,273 @@
 </section>
 
 <!-- ===== WORK ===== -->
+<!-- ===== SERVICES ===== -->
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="sh rv"><span class="no">03 / Services</span><h2>What you can <em>hire me</em> for.</h2></div>
+    <div class="svc-grid">
+      <article class="svc rv" data-d="1">
+        <div class="n">S1</div>
+        <h3>Marketing sites that book jobs</h3>
+        <p>Complete, responsive websites for home-service businesses: sticky call bar, multi-step quote forms, live service-area maps, before/after sliders and review walls. Judged on one thing, whether a visitor turns into a booked job.</p>
+        <div class="tags"><span>React</span><span>Next.js</span><span>TypeScript</span><span>Tailwind</span><span>Leaflet</span><span>Core Web Vitals</span></div>
+      </article>
+
+      <article class="svc rv" data-d="2">
+        <div class="n">S2</div>
+        <h3>Interactive 3D &amp; WebGL</h3>
+        <p>GPU-accelerated front-end work that earns its weight: rotating globe heroes, particle-text reveals, circular 3D galleries and scroll-driven motion, built as drop-in components and tuned so they never cost the page its load time.</p>
+        <div class="tags"><span>Three.js</span><span>WebGL</span><span>GLSL</span><span>Canvas</span><span>Scroll Motion</span></div>
+      </article>
+
+      <article class="svc rv" data-d="3">
+        <div class="n">S3</div>
+        <h3>Lead-generation systems</h3>
+        <p>An end-to-end pipeline in Python and Airtable: source prospects, enrich each record with decision-maker contact data, score against a written rubric with the rationale stored beside it, then track through a staged pipeline to close.</p>
+        <div class="tags"><span>Python</span><span>Playwright</span><span>Apify</span><span>Apollo.io</span><span>Airtable API</span></div>
+      </article>
+
+      <article class="svc rv" data-d="4">
+        <div class="n">S4</div>
+        <h3>AI video &amp; UGC ads</h3>
+        <p>Short-form vertical ads produced on a scripted pipeline, from character-consistent visuals through voice, burned captions and 9:16 delivery, so a campaign can ship without a shoot.</p>
+        <div class="tags"><span>AI Video</span><span>Character Lock</span><span>FFmpeg</span><span>Captions</span><span>9:16</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
 <section class="section work" id="work">
   <div class="wrap">
     <div class="sh rv"><span class="no">01 / Selected Work</span><h2>Things I've <em>built</em>.</h2></div>
-    <div class="index">
+    <div class="wfilter rv" id="wfilter"><button class="on" data-f="all">All</button><button class="" data-f="plumb">Plumbing</button><button class="" data-f="3d">3D &amp; Motion</button><button class="" data-f="video">AI Video</button><button class="" data-f="roof">Roofing</button><button class="" data-f="auto">Automotive</button><button class="" data-f="spa">Med Spa</button><button class="" data-f="shop">Retail</button><button class="" data-f="niche">Niche</button><button class="" data-f="system">System</button></div>
 
-      <a class="prj rv" data-img="assets/ironhand.png" data-tag="React · TypeScript" href="assets/ironhand.png">
-        <div class="pno">01</div>
-        <div class="pmid">
-          <div class="pt">Home-Service Website System</div>
-          <div class="pd">A family of dark, cinematic marketing sites for trade businesses: IRONHAND, Hargrove, Tidewell and Blueline. Sticky call bar, animated hero, service scroller, before/after slider, live service-area map and multi-step quote form, each re-skinned from a shared component base.</div>
-          <div class="ptags"><span>React</span><span>TypeScript</span><span>Tailwind</span><span>Leaflet</span><span>SEO</span></div>
-          <div class="pshot"><img src="assets/ironhand.png" alt="IRONHAND plumbing site hero" loading="lazy" /></div>
-        </div>
-        <div class="pmeta"><span class="yr">React</span><span>4 sites</span><span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span></div>
+    <div class="wgrid" id="wgrid">
+      <a class="wc rv" data-cat="plumb" data-img="assets/work/ironhand.png" data-tag="React" data-desc="Dark, cinematic trade site: sticky call bar, animated hero, before/after slider and a live service-area map." data-stack="React · TypeScript · Tailwind · Leaflet" href="assets/work/ironhand.png">
+        <img src="assets/thumbs/ironhand.jpg?v=3" alt="IRONHAND Plumbing Co." loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Plumbing</span><span class="t pt">IRONHAND Plumbing Co.</span></span>
       </a>
 
-      <a class="prj rv" data-img="assets/roofing.png" data-tag="Next.js" href="assets/roofing.png">
-        <div class="pno">02</div>
-        <div class="pmid">
-          <div class="pt">Ridgeline <em>Roofing</em></div>
-          <div class="pd">A production roofing site tuned to book inspections: photographic hero, Google-review trust strip, financing block, process timeline and a conversion-first mobile layout with fast Core Web Vitals.</div>
-          <div class="ptags"><span>Next.js</span><span>TypeScript</span><span>Responsive</span><span>Core Web Vitals</span></div>
-          <div class="pshot"><img src="assets/roofing.png" alt="Ridgeline Roofing site hero" loading="lazy" /></div>
-        </div>
-        <div class="pmeta"><span class="yr">Next.js</span><span>Roofing</span><span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span></div>
+      <a class="wc rv" data-cat="3d" data-img="assets/work/house-3d.png" data-tag="Three.js" data-desc="A cutaway residential DWV + supply model you can orbit, zoom and toggle system by system, with live labels and water flow." data-stack="Three.js · WebGL · Orbit Controls" href="assets/work/house-3d.png">
+        <img src="assets/thumbs/house-3d.jpg?v=3" alt="Interactive 3D House" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">3D · Three.js</span><span class="t pt">Interactive 3D House</span></span>
       </a>
 
-      <a class="prj rv" data-img="assets/salem-auto.png" data-tag="Next.js" href="assets/salem-auto.png">
-        <div class="pno">03</div>
-        <div class="pmid">
-          <div class="pt">Salem Auto-Electric</div>
-          <div class="pd">Bold, high-contrast marketing site for an auto-electrical shop: oversized kinetic headline, structured business data, reviews and a service-area section, built mobile-first to drive estimate requests.</div>
-          <div class="ptags"><span>Next.js</span><span>TypeScript</span><span>Animation</span><span>Local SEO</span></div>
-          <div class="pshot"><img src="assets/salem-auto.png" alt="Salem Auto-Electric site hero" loading="lazy" /></div>
-        </div>
-        <div class="pmeta"><span class="yr">Next.js</span><span>Automotive</span><span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span></div>
+      <a class="wc rv" data-cat="video" data-img="assets/work/reel-productivity-trap.jpg" data-tag="FFmpeg" data-desc="Short-form explainer built on the METR study, with an original animated bar chart and a synthesised score." data-stack="FFmpeg · TTS · Motion" href="assets/work/reel-productivity-trap.jpg">
+        <img src="assets/thumbs/reel-productivity-trap.jpg?v=3" alt="The Productivity Trap" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">AI Video</span><span class="t pt">The Productivity Trap</span></span>
       </a>
 
-      <a class="prj rv" data-img="assets/kit-demo.png" data-tag="React · Vite" href="assets/kit-demo.png">
-        <div class="pno">04</div>
-        <div class="pmid">
-          <div class="pt"><em>beautiful-websites-kit</em></div>
-          <div class="pd">A design-system-driven template engine: shared tokens, layout primitives and section components that let a full, distinctive business site be assembled and re-themed rapidly across 18 industry niches without rebuilding from scratch.</div>
-          <div class="ptags"><span>React</span><span>Vite</span><span>Design System</span><span>Component Architecture</span></div>
-          <div class="pshot"><img src="assets/kit-demo.png" alt="beautiful-websites-kit demo site" loading="lazy" /></div>
-        </div>
-        <div class="pmeta"><span class="yr">React</span><span>System</span><span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span></div>
+      <a class="wc rv" data-cat="system" data-img="assets/kit-demo.png" data-tag="React" data-desc="The template engine behind the rest: shared tokens, layout primitives and a rapid re-skin workflow across 18 niches." data-stack="React · Vite · Design System" href="assets/kit-demo.png">
+        <img src="assets/thumbs/kit-demo.jpg?v=3" alt="beautiful-websites-kit" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">System</span><span class="t pt">beautiful-websites-kit</span></span>
       </a>
 
-      <div class="prj live rv">
-        <div class="pno">05</div>
-        <div class="pmid">
-          <div class="pt">Interactive WebGL &amp; Canvas</div>
-          <div class="pd">A library of GPU-accelerated front-end effects: rotating globe backdrops, particle-text reveals, flow fields and scroll-expansion heroes. The tile on the right is a live particle field running in your browser right now, move your cursor across it.</div>
-          <div class="ptags"><span>Three.js</span><span>WebGL</span><span>GLSL</span><span>Canvas</span></div>
-          <div class="pshot">
-            <div class="livebox"><canvas id="demo"></canvas><span class="lbl">// live canvas · move your cursor</span></div>
-          </div>
-        </div>
-      </div>
+      <a class="wc rv" data-cat="roof" data-img="assets/work/roofing.png" data-tag="Next.js" data-desc="Conversion-first roofing build: review trust strip, financing block, process timeline, fast Core Web Vitals." data-stack="Next.js · TypeScript · Core Web Vitals" href="assets/work/roofing.png">
+        <img src="assets/thumbs/roofing.jpg?v=3" alt="Ridgeline Roofing" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Roofing</span><span class="t pt">Ridgeline Roofing</span></span>
+      </a>
 
+      <a class="wc rv" data-cat="3d" data-img="assets/work/aether-hero.png" data-tag="WebGL" data-desc="A GPU shader hero showcase: flowing noise fields rendered live in the browser as a drop-in background." data-stack="WebGL · GLSL · Canvas" href="assets/work/aether-hero.png">
+        <img src="assets/thumbs/aether-hero.jpg?v=3" alt="Aether Shader Hero" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">3D · Shader</span><span class="t pt">Aether Shader Hero</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="auto" data-img="assets/work/salem-auto.png" data-tag="Next.js" data-desc="Oversized kinetic headline, structured business data, reviews and a service-area section." data-stack="Next.js · Animation · Local SEO" href="assets/work/salem-auto.png">
+        <img src="assets/thumbs/salem-auto.jpg?v=3" alt="Salem Auto Electric" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Automotive</span><span class="t pt">Salem Auto Electric</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="plumb" data-img="assets/work/hargrove.png" data-tag="React" data-desc="Flagship multi-page build with ZIP check and six area pages." data-stack="React · API" href="assets/work/hargrove.png">
+        <img src="assets/thumbs/hargrove.jpg?v=3" alt="Hargrove & Sons Plumbing" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Plumbing</span><span class="t pt">Hargrove &amp; Sons Plumbing</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="shop" data-img="assets/work/nova.png" data-tag="React" data-desc="Storefront layout with product grid." data-stack="React" href="assets/work/nova.png">
+        <img src="assets/thumbs/nova.jpg?v=3" alt="NOVA Premium Electronics" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Retail</span><span class="t pt">NOVA Premium Electronics</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="3d" data-img="assets/work/ripple-effect.png" data-tag="Canvas" data-desc="A pointer-reactive ripple field built as a drop-in background component." data-stack="Canvas · Shaders" href="assets/work/ripple-effect.png">
+        <img src="assets/thumbs/ripple-effect.jpg?v=3" alt="Background Ripple Effect" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">3D · Motion</span><span class="t pt">Background Ripple Effect</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="3d" data-img="assets/work/neon-drive.png" data-tag="Canvas" data-desc="Neon motion study." data-stack="Canvas" href="assets/work/neon-drive.png">
+        <img src="assets/thumbs/neon-drive.jpg?v=3" alt="Neon Drive" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">3D · Motion</span><span class="t pt">Neon Drive</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="3d" data-img="assets/work/nightscape.png" data-tag="Canvas" data-desc="Animated night-scene backdrop." data-stack="Canvas" href="assets/work/nightscape.png">
+        <img src="assets/thumbs/nightscape.jpg?v=3" alt="Nightscape" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">3D · Motion</span><span class="t pt">Nightscape</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="3d" data-img="assets/work/garage-door.png" data-tag="CSS" data-desc="Scroll-driven reveal interaction." data-stack="CSS · JS" href="assets/work/garage-door.png">
+        <img src="assets/thumbs/garage-door.jpg?v=3" alt="Garage Door Reveal" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">3D · Motion</span><span class="t pt">Garage Door Reveal</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="video" data-img="assets/work/reel-context.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on managing model context." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-context.jpg">
+        <img src="assets/thumbs/reel-context.jpg?v=3" alt="Context Windows" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">AI Video</span><span class="t pt">Context Windows</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="video" data-img="assets/work/reel-entry.jpg" data-tag="FFmpeg" data-desc="Short-form explainer, faceless format." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-entry.jpg">
+        <img src="assets/thumbs/reel-entry.jpg?v=3" alt="Entry Point" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">AI Video</span><span class="t pt">Entry Point</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="video" data-img="assets/work/reel-git-duo.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on a two-command git flow." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-git-duo.jpg">
+        <img src="assets/thumbs/reel-git-duo.jpg?v=3" alt="Git Workflow Duo" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">AI Video</span><span class="t pt">Git Workflow Duo</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="video" data-img="assets/work/reel-slash.jpg" data-tag="FFmpeg" data-desc="Short-form explainer, screen-capture driven." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-slash.jpg">
+        <img src="assets/thumbs/reel-slash.jpg?v=3" alt="Slash Commands" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">AI Video</span><span class="t pt">Slash Commands</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="video" data-img="assets/work/reel-report.jpg" data-tag="FFmpeg" data-desc="Short-form explainer with animated data panels." data-stack="FFmpeg · TTS · Motion" href="assets/work/reel-report.jpg">
+        <img src="assets/thumbs/reel-report.jpg?v=3" alt="Session Reports" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">AI Video</span><span class="t pt">Session Reports</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="video" data-img="assets/work/reel-so-arm100.jpg" data-tag="FFmpeg" data-desc="Short-form build breakdown with real hardware footage." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-so-arm100.jpg">
+        <img src="assets/thumbs/reel-so-arm100.jpg?v=3" alt="SO-ARM100 Robot Arm" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">AI Video</span><span class="t pt">SO-ARM100 Robot Arm</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="plumb" data-img="assets/work/tidewell.png" data-tag="React" data-desc="Re-skinned from the shared component base." data-stack="React · Tailwind" href="assets/work/tidewell.png">
+        <img src="assets/thumbs/tidewell.jpg?v=3" alt="TIDEWELL Plumbing Co." loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Plumbing</span><span class="t pt">TIDEWELL Plumbing Co.</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="plumb" data-img="assets/work/blueline.png" data-tag="React" data-desc="Trade site variant on the same system." data-stack="React" href="assets/work/blueline.png">
+        <img src="assets/thumbs/blueline.jpg?v=3" alt="BlueLine Plumbing Co." loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Plumbing</span><span class="t pt">BlueLine Plumbing Co.</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="spa" data-img="assets/work/figura.png" data-tag="Next.js" data-desc="Treatment menu and booking flow." data-stack="Next.js" href="assets/work/figura.png">
+        <img src="assets/thumbs/figura.jpg?v=3" alt="Figura Medspa" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Med Spa</span><span class="t pt">Figura Medspa</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="spa" data-img="assets/work/glo.png" data-tag="Next.js" data-desc="Soft-luxe layout with service grid." data-stack="Next.js" href="assets/work/glo.png">
+        <img src="assets/thumbs/glo.jpg?v=3" alt="Glo Med Spa" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Med Spa</span><span class="t pt">Glo Med Spa</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="spa" data-img="assets/work/skin-couture.png" data-tag="React" data-desc="Editorial spa layout." data-stack="React" href="assets/work/skin-couture.png">
+        <img src="assets/thumbs/skin-couture.jpg?v=3" alt="Skin Couture Med Spa" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Med Spa</span><span class="t pt">Skin Couture Med Spa</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="niche" data-img="assets/work/pressure-washing.png" data-tag="React" data-desc="Pressure-washing business site." data-stack="React" href="assets/work/pressure-washing.png">
+        <img src="assets/thumbs/pressure-washing.jpg?v=3" alt="Crisp Exterior Washing" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Niche</span><span class="t pt">Crisp Exterior Washing</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="niche" data-img="assets/work/hvac.png" data-tag="React" data-desc="From the 18-niche template library." data-stack="React" href="assets/work/hvac.png">
+        <img src="assets/thumbs/hvac.jpg?v=3" alt="HVAC Build" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Niche</span><span class="t pt">HVAC Build</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="niche" data-img="assets/work/concrete.png" data-tag="React" data-desc="From the 18-niche template library." data-stack="React" href="assets/work/concrete.png">
+        <img src="assets/thumbs/concrete.jpg?v=3" alt="Concrete & Masonry" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Niche</span><span class="t pt">Concrete &amp; Masonry</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="niche" data-img="assets/work/deck.png" data-tag="React" data-desc="From the 18-niche template library." data-stack="React" href="assets/work/deck.png">
+        <img src="assets/thumbs/deck.jpg?v=3" alt="Deck & Patio" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Niche</span><span class="t pt">Deck &amp; Patio</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="niche" data-img="assets/work/electrical.png" data-tag="React" data-desc="From the 18-niche template library." data-stack="React" href="assets/work/electrical.png">
+        <img src="assets/thumbs/electrical.jpg?v=3" alt="Electrical" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Niche</span><span class="t pt">Electrical</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="niche" data-img="assets/work/landscaping.png" data-tag="React" data-desc="From the 18-niche template library." data-stack="React" href="assets/work/landscaping.png">
+        <img src="assets/thumbs/landscaping.jpg?v=3" alt="Landscaping" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Niche</span><span class="t pt">Landscaping</span></span>
+      </a>
+
+      <a class="wc rv extra" data-cat="niche" data-img="assets/work/pool.png" data-tag="React" data-desc="From the 18-niche template library." data-stack="React" href="assets/work/pool.png">
+        <img src="assets/thumbs/pool.jpg?v=3" alt="Pool & Spa" loading="lazy" width="1000" height="1000" />
+        <span class="wc-veil"></span>
+        <span class="wc-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        <span class="wc-cap"><span class="k">Niche</span><span class="t pt">Pool &amp; Spa</span></span>
+      </a>
     </div>
-    <div class="work-more rv" style="text-align:center; margin-top:50px;">
-      <a class="btn" href="work.html"><span>View all 20 projects</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+
+    <div class="smwrap rv">
+      <button class="showmore" id="showmore" aria-expanded="false">
+        <i></i>
+        <span id="smtext">Show 25 more</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
     </div>
-  </div>
 </section>
 
 <!-- ===== STACK ===== -->
@@ -612,34 +1198,79 @@
 <section class="section exp" id="experience">
   <div class="wrap">
     <div class="sh rv"><span class="no">05 / Experience &amp; Research</span><h2>The <em>track record</em>.</h2></div>
-    <div class="tl">
-      <div class="e rv">
-        <div class="when">Mar 2026 - Present<small>Independent</small></div>
-        <div>
-          <div class="et">Web Developer</div>
-          <div class="eo">Freelance / Self-directed studio work</div>
-          <div class="eb">Designed and built <b>64 complete websites</b> and interactive front-end components end to end. Built a reusable template system, shipped Three.js and WebGL work, and focused throughout on Core Web Vitals, accessibility and conversion.</div>
-          <div class="etags"><span>React</span><span>Next.js</span><span>TypeScript</span><span>Three.js</span><span>Node</span></div>
+    <p class="lead rv" style="max-width:62ch;margin-top:18px;color:var(--paper-dim);font-size:15px;line-height:1.6;">
+      Each panel is sized by the time I have actually spent there — the longest stint gets the largest box.
+    </p>
+
+    <div class="xpgrid">
+
+      <article class="xp lg rv" style="--w:100%">
+        <div class="xp-top">
+          <div class="xp-dur"><b>6</b><span>months</span></div>
+          <div class="xp-when">Mar 2026 — Present<br>Independent · Remote</div>
         </div>
-      </div>
-      <div class="e rv">
-        <div class="when">Dec 2025 - Mar 2026<small>3 months</small></div>
-        <div>
-          <div class="et">IT Network Intern</div>
-          <div class="eo">Trust Bank PLC, IT Division</div>
-          <div class="eb">A three-month enterprise networking internship on a live banking network. Worked with <b>WAN architecture, VLAN segmentation, static &amp; dynamic routing, tunnel interfaces and SSH-based administration</b>, and produced structured documentation to team standards.</div>
-          <div class="etags"><span>TCP/IP</span><span>Routing &amp; Switching</span><span>VLANs</span><span>SSH</span></div>
+        <h3>Web Developer</h3>
+        <div class="org">Self-directed studio work</div>
+        <div class="xp-meter"><i></i></div>
+        <p class="lead">Designing and building complete marketing websites and interactive front-end components end to end, from first layout through responsive build, animation, performance tuning and deploy.</p>
+        <div class="most"><b>What I learned most</b>To ship whole products rather than screens. Owning a site from brief to deploy taught me that the last 10 percent — performance, accessibility, the quote form actually working — is where the value sits.</div>
+        <ul>
+          <li>Built <b>64 complete websites</b> for real service businesses across plumbing, roofing, HVAC and automotive.</li>
+          <li>Built a reusable <b>template system</b> with shared tokens and a rapid re-skin workflow spanning <b>18 industry niches</b>.</li>
+          <li>Developed <b>Three.js and WebGL components</b> — 3D hero scenes, scroll-driven motion, animated backdrops.</li>
+          <li>Held every build to <b>Core Web Vitals</b>, semantic HTML, accessibility and on-page SEO, shipped through Git.</li>
+        </ul>
+        <div class="chips"><span>React</span><span>Next.js</span><span>TypeScript</span><span>Three.js</span><span>Tailwind</span><span>Node</span><span>Vite</span></div>
+      </article>
+
+      <article class="xp md rv" style="--w:50%">
+        <div class="xp-top">
+          <div class="xp-dur"><b>3</b><span>months</span></div>
+          <div class="xp-when">Jun 2026 — Present</div>
         </div>
-      </div>
-      <div class="e rv">
-        <div class="when">2026<small>Undergraduate thesis</small></div>
-        <div>
-          <div class="et">Diabetes Prediction for the Bangladesh Population</div>
-          <div class="eo">Bio-Inspired Optimization of ML Classifiers · DiaBD Dataset</div>
-          <div class="eb">Benchmarked <b>15 classifiers</b> and built an imbalance-aware pipeline (SMOTE / ADASYN / SMOTE-ENN), then tuned Gradient Boosting, LightGBM and a soft-voting ensemble with <b>Particle Swarm, Ant Colony and Harris Hawks</b> optimisers for screening-grade accuracy.</div>
-          <div class="etags"><span>Python</span><span>scikit-learn</span><span>XGBoost</span><span>LightGBM</span></div>
+        <h3>Lead Generation &amp; Outreach</h3>
+        <div class="org">Own prospecting pipeline</div>
+        <div class="xp-meter"><i></i></div>
+        <div class="most"><b>What I learned most</b>That a ranking is only worth having if it is auditable — so the rationale lives beside the record, never in a black box.</div>
+        <ul>
+          <li>Sourced and scraped prospects with <b>Python, Playwright and Apify</b>.</li>
+          <li>Built the CRM layer on the <b>Airtable REST + Metadata APIs</b>, with batched writes and a verify pass.</li>
+        </ul>
+        <div class="chips"><span>Python</span><span>Playwright</span><span>Apify</span><span>Airtable API</span></div>
+      </article>
+
+      <article class="xp md rv" style="--w:50%">
+        <div class="xp-top">
+          <div class="xp-dur"><b>3</b><span>months</span></div>
+          <div class="xp-when">Dec 2025 — Mar 2026</div>
         </div>
-      </div>
+        <h3>IT Network Intern</h3>
+        <div class="org">Trust Bank PLC · IT Division</div>
+        <div class="xp-meter"><i></i></div>
+        <div class="most"><b>What I learned most</b>How much discipline a regulated production network demands. Change control and documentation are not overhead — on a live banking network they are the job.</div>
+        <ul>
+          <li>Enterprise <b>WAN architecture</b> and <b>VLAN segmentation</b> across a live multi-branch network.</li>
+          <li><b>Static and dynamic routing</b>, tunnel interfaces, and SSH-based device administration.</li>
+        </ul>
+        <div class="chips"><span>TCP/IP</span><span>Routing &amp; Switching</span><span>VLANs</span><span>SSH</span></div>
+      </article>
+
+      <article class="xp res rv" style="--w:70%">
+        <div class="xp-top">
+          <div class="xp-dur"><b>15</b><span>classifiers benchmarked</span></div>
+          <div class="xp-when">2026 · Undergraduate Thesis · AIUB</div>
+        </div>
+        <h3>Diabetes Prediction for the Bangladesh Population</h3>
+        <div class="org">Bio-inspired optimisation of ML classifiers · DiaBD dataset</div>
+        <div class="xp-meter"><i></i></div>
+        <div class="most"><b>What I learned most</b>That evaluation is the hard part. A model that scores well on a dataset which does not represent the population it serves is not a result — it is a mirage.</div>
+        <ul>
+          <li>Built an <b>imbalance-aware pipeline</b> (SMOTE / ADASYN / SMOTE-ENN) before any training.</li>
+          <li>Tuned Gradient Boosting, LightGBM and a <b>soft-voting ensemble</b> with Particle Swarm, Ant Colony and Harris Hawks optimisers.</li>
+        </ul>
+        <div class="chips"><span>Python</span><span>scikit-learn</span><span>XGBoost</span><span>LightGBM</span></div>
+      </article>
+
     </div>
   </div>
 </section>
@@ -690,7 +1321,7 @@
   <div class="box">
     <button class="x" data-close aria-label="Close preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     <img id="lbImg" src="" alt="" />
-    <div class="cap"><span class="t" id="lbTitle"></span><span class="m" id="lbTag"></span></div>
+    <div class="cap"><span class="t" id="lbTitle"></span><span class="m" id="lbTag"></span><span class="d" id="lbDesc"></span></div>
     <div class="hint">Real screenshot · press Esc or click outside to close</div>
   </div>
 </div>
@@ -744,13 +1375,14 @@
     var lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'),
         lbTitle=document.getElementById('lbTitle'), lbTag=document.getElementById('lbTag');
     if(!lb) return;
-    function openLb(img,title,tag){ lbImg.src=img; lbImg.alt=title; lbTitle.innerHTML=title; lbTag.textContent=tag||''; lb.classList.add('on'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+    function openLb(img,title,tag,desc,stack){ lbImg.src=img; lbImg.alt=title; lbTitle.innerHTML=title; lbTag.textContent=stack||tag||''; var dEl=document.getElementById('lbDesc'); if(dEl) dEl.textContent=desc||''; lb.classList.add('on'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
     function closeLb(){ lb.classList.remove('on'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-    document.querySelectorAll('.prj[data-img]').forEach(function(row){
+    document.querySelectorAll('[data-img]').forEach(function(row){
       row.addEventListener('click', function(e){
         e.preventDefault();
         var t=row.querySelector('.pt');
-        openLb(row.getAttribute('data-img'), t?t.innerHTML:'', row.getAttribute('data-tag'));
+        openLb(row.getAttribute('data-img'), t?t.innerHTML:'', row.getAttribute('data-tag'),
+               row.getAttribute('data-desc'), row.getAttribute('data-stack'));
         preview.classList.remove('on');
       });
     });
@@ -853,7 +1485,82 @@
   })();
 })();
 </script>
-<script src="assets/cyberbg.js"></script>
-<script src="assets/skillstory.js"></script>
+<script src="assets/cyberbg.js?v=7"></script>
+<script src="assets/skillstory.js?v=2"></script>
+<script>
+(function(){
+  var r = document.documentElement, btn = document.getElementById('themeBtn');
+  function apply(t){
+    if (t === 'dark') r.setAttribute('data-theme','dark'); else r.removeAttribute('data-theme');
+    btn.setAttribute('aria-label', 'Switch to ' + (t === 'dark' ? 'bright' : 'dark') + ' theme');
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', getComputedStyle(r).getPropertyValue('--ink').trim());
+    if (window.__cyberbgRefresh) window.__cyberbgRefresh();   // repaint the field
+  }
+  btn.addEventListener('click', function(){
+    var next = r.getAttribute('data-theme') === 'dark' ? 'bright' : 'dark';
+    apply(next);
+    try { localStorage.setItem('pf-theme', next); } catch(e){}
+  });
+  apply(r.getAttribute('data-theme') === 'dark' ? 'dark' : 'bright');
+  requestAnimationFrame(function(){ r.classList.add('theme-ready'); });
+})();
+</script>
+<script>
+(function(){
+  var f=document.getElementById('wfilter'), g=document.getElementById('wgrid'),
+      btn=document.getElementById('showmore'), txt=document.getElementById('smtext'),
+      wrap=btn?btn.parentNode:null;
+  if(!f||!g||!btn) return;
+  var cards=[].slice.call(g.querySelectorAll('.wc'));
+  var extras=cards.filter(function(c){ return c.classList.contains('extra'); });
+  var open=false, filter='all';
+
+  function stagger(list){
+    list.forEach(function(c,i){ c.style.animationDelay=(i*45)+'ms'; c.classList.add('shown'); });
+  }
+  function collapse(){
+    extras.forEach(function(c){ c.classList.remove('shown'); c.style.animationDelay=''; });
+  }
+
+  btn.addEventListener('click', function(){
+    open=!open;
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open?'true':'false');
+    if(open){ stagger(extras.filter(function(c){ return !c.classList.contains('hide'); }));
+              txt.textContent='Show less'; }
+    else    { collapse(); txt.textContent='Show '+extras.length+' more';
+              g.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+
+  f.addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    f.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    filter=b.getAttribute('data-f');
+    cards.forEach(function(c){ c.classList.toggle('hide', filter!=='all' && c.getAttribute('data-cat')!==filter); });
+    if(filter==='all'){
+      wrap.style.display='';
+      if(!open) collapse();
+      else stagger(extras.filter(function(c){ return !c.classList.contains('hide'); }));
+    } else {
+      /* a filtered view shows everything that matches — no point hiding any */
+      wrap.style.display='none';
+      stagger(extras.filter(function(c){ return !c.classList.contains('hide'); }));
+    }
+  });
+})();
+</script>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.xp'));
+  if(!els.length) return;
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){ e.classList.add('seen'); }); return; }
+  var io=new IntersectionObserver(function(en){
+    en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('seen'); io.unobserve(x.target); } });
+  },{threshold:.25});
+  els.forEach(function(e){ io.observe(e); });
+})();
+</script>
 </body>
 </html>
