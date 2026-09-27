@@ -22,59 +22,89 @@
 })();
 </script>
 <!-- three.js is only fetched when a 3D piece scrolls near the screen -->
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+<!-- every module URL carries ?v=: browsers cache GitHub Pages files for 10 minutes, and a stale module mixed
+     with fresh ones breaks the page. Change a JS file: bump every ?v= in this file (list new modules here) -->
+<script type="importmap">{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+  "./js/config.js":"./js/config.js?v=8",
+  "./js/lib/dom.js":"./js/lib/dom.js?v=8",
+  "./js/lib/three-kit.js":"./js/lib/three-kit.js?v=8",
+  "./js/modules/badge/badge.js":"./js/modules/badge/badge.js?v=8",
+  "./js/modules/badge/index.js":"./js/modules/badge/index.js?v=8",
+  "./js/modules/badge/pointer.js":"./js/modules/badge/pointer.js?v=8",
+  "./js/modules/badge/rig.js":"./js/modules/badge/rig.js?v=8",
+  "./js/modules/badge/spring.js":"./js/modules/badge/spring.js?v=8",
+  "./js/modules/confetti.js":"./js/modules/confetti.js?v=8",
+  "./js/modules/copy-email.js":"./js/modules/copy-email.js?v=8",
+  "./js/modules/footer-light.js":"./js/modules/footer-light.js?v=8",
+  "./js/modules/globe.js":"./js/modules/globe.js?v=8",
+  "./js/modules/lightbox.js":"./js/modules/lightbox.js?v=8",
+  "./js/modules/live-tags.js":"./js/modules/live-tags.js?v=8",
+  "./js/modules/magnetic.js":"./js/modules/magnetic.js?v=8",
+  "./js/modules/menu.js":"./js/modules/menu.js?v=8",
+  "./js/modules/nav-state.js":"./js/modules/nav-state.js?v=8",
+  "./js/modules/reveal.js":"./js/modules/reveal.js?v=8",
+  "./js/modules/service-links.js":"./js/modules/service-links.js?v=8",
+  "./js/modules/slideshow.js":"./js/modules/slideshow.js?v=8",
+  "./js/modules/stat-3d.js":"./js/modules/stat-3d.js?v=8",
+  "./js/modules/theme.js":"./js/modules/theme.js?v=8",
+  "./js/modules/toast.js":"./js/modules/toast.js?v=8",
+  "./js/modules/underline.js":"./js/modules/underline.js?v=8",
+  "./js/modules/work.js":"./js/modules/work.js?v=8"
+}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,300..600&amp;family=Hanken+Grotesk:wght@400..700&amp;display=swap" rel="stylesheet" />
 
 <!-- styles: tokens, base, layout, one file per section, motion last (order matters) -->
-<link rel="stylesheet" href="css/tokens.css?v=7" />
-<link rel="stylesheet" href="css/base.css?v=7" />
-<link rel="stylesheet" href="css/layout.css?v=7" />
-<link rel="stylesheet" href="css/components/a11y.css?v=7" />
-<link rel="stylesheet" href="css/components/controls.css?v=7" />
-<link rel="stylesheet" href="css/components/header.css?v=7" />
-<link rel="stylesheet" href="css/components/hero.css?v=7" />
-<link rel="stylesheet" href="css/components/badge.css?v=7" />
-<link rel="stylesheet" href="css/components/strip.css?v=7" />
-<link rel="stylesheet" href="css/components/about.css?v=7" />
-<link rel="stylesheet" href="css/components/services.css?v=7" />
-<link rel="stylesheet" href="css/components/work.css?v=7" />
-<link rel="stylesheet" href="css/components/skills.css?v=7" />
-<link rel="stylesheet" href="css/components/experience.css?v=7" />
-<link rel="stylesheet" href="css/components/contact.css?v=7" />
-<link rel="stylesheet" href="css/components/footer.css?v=7" />
-<link rel="stylesheet" href="css/components/lightbox.css?v=7" />
-<link rel="stylesheet" href="css/components/toast.css?v=7" />
-<link rel="stylesheet" href="css/components/slideshow.css?v=7" />
-<link rel="stylesheet" href="css/motion.css?v=7" />
+<link rel="stylesheet" href="css/tokens.css?v=8" />
+<link rel="stylesheet" href="css/base.css?v=8" />
+<link rel="stylesheet" href="css/layout.css?v=8" />
+<link rel="stylesheet" href="css/components/a11y.css?v=8" />
+<link rel="stylesheet" href="css/components/controls.css?v=8" />
+<link rel="stylesheet" href="css/components/header.css?v=8" />
+<link rel="stylesheet" href="css/components/hero.css?v=8" />
+<link rel="stylesheet" href="css/components/badge.css?v=8" />
+<link rel="stylesheet" href="css/components/strip.css?v=8" />
+<link rel="stylesheet" href="css/components/about.css?v=8" />
+<link rel="stylesheet" href="css/components/services.css?v=8" />
+<link rel="stylesheet" href="css/components/work.css?v=8" />
+<link rel="stylesheet" href="css/components/skills.css?v=8" />
+<link rel="stylesheet" href="css/components/experience.css?v=8" />
+<link rel="stylesheet" href="css/components/contact.css?v=8" />
+<link rel="stylesheet" href="css/components/footer.css?v=8" />
+<link rel="stylesheet" href="css/components/lightbox.css?v=8" />
+<link rel="stylesheet" href="css/components/toast.css?v=8" />
+<link rel="stylesheet" href="css/components/slideshow.css?v=8" />
+<link rel="stylesheet" href="css/motion.css?v=8" />
 <!-- scripts: fetched in parallel, run by js/main.js -->
-<link rel="modulepreload" href="js/main.js?v=7" />
-<link rel="modulepreload" href="js/config.js" />
-<link rel="modulepreload" href="js/lib/dom.js" />
-<link rel="modulepreload" href="js/lib/three-kit.js" />
-<link rel="modulepreload" href="js/modules/badge/index.js" />
-<link rel="modulepreload" href="js/modules/badge/badge.js" />
-<link rel="modulepreload" href="js/modules/badge/pointer.js" />
-<link rel="modulepreload" href="js/modules/badge/rig.js" />
-<link rel="modulepreload" href="js/modules/badge/spring.js" />
-<link rel="modulepreload" href="js/modules/confetti.js" />
-<link rel="modulepreload" href="js/modules/copy-email.js" />
-<link rel="modulepreload" href="js/modules/footer-light.js" />
-<link rel="modulepreload" href="js/modules/globe.js" />
-<link rel="modulepreload" href="js/modules/lightbox.js" />
-<link rel="modulepreload" href="js/modules/live-tags.js" />
-<link rel="modulepreload" href="js/modules/magnetic.js" />
-<link rel="modulepreload" href="js/modules/menu.js" />
-<link rel="modulepreload" href="js/modules/nav-state.js" />
-<link rel="modulepreload" href="js/modules/reveal.js" />
-<link rel="modulepreload" href="js/modules/service-links.js" />
-<link rel="modulepreload" href="js/modules/slideshow.js" />
-<link rel="modulepreload" href="js/modules/stat-3d.js" />
-<link rel="modulepreload" href="js/modules/theme.js" />
-<link rel="modulepreload" href="js/modules/toast.js" />
-<link rel="modulepreload" href="js/modules/underline.js" />
-<link rel="modulepreload" href="js/modules/work.js" />
+<link rel="modulepreload" href="js/main.js?v=8" />
+<link rel="modulepreload" href="js/config.js?v=8" />
+<link rel="modulepreload" href="js/lib/dom.js?v=8" />
+<link rel="modulepreload" href="js/lib/three-kit.js?v=8" />
+<link rel="modulepreload" href="js/modules/badge/index.js?v=8" />
+<link rel="modulepreload" href="js/modules/badge/badge.js?v=8" />
+<link rel="modulepreload" href="js/modules/badge/pointer.js?v=8" />
+<link rel="modulepreload" href="js/modules/badge/rig.js?v=8" />
+<link rel="modulepreload" href="js/modules/badge/spring.js?v=8" />
+<link rel="modulepreload" href="js/modules/confetti.js?v=8" />
+<link rel="modulepreload" href="js/modules/copy-email.js?v=8" />
+<link rel="modulepreload" href="js/modules/footer-light.js?v=8" />
+<link rel="modulepreload" href="js/modules/globe.js?v=8" />
+<link rel="modulepreload" href="js/modules/lightbox.js?v=8" />
+<link rel="modulepreload" href="js/modules/live-tags.js?v=8" />
+<link rel="modulepreload" href="js/modules/magnetic.js?v=8" />
+<link rel="modulepreload" href="js/modules/menu.js?v=8" />
+<link rel="modulepreload" href="js/modules/nav-state.js?v=8" />
+<link rel="modulepreload" href="js/modules/reveal.js?v=8" />
+<link rel="modulepreload" href="js/modules/service-links.js?v=8" />
+<link rel="modulepreload" href="js/modules/slideshow.js?v=8" />
+<link rel="modulepreload" href="js/modules/stat-3d.js?v=8" />
+<link rel="modulepreload" href="js/modules/theme.js?v=8" />
+<link rel="modulepreload" href="js/modules/toast.js?v=8" />
+<link rel="modulepreload" href="js/modules/underline.js?v=8" />
+<link rel="modulepreload" href="js/modules/work.js?v=8" />
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
@@ -662,6 +692,6 @@
 <canvas id="confetti" aria-hidden="true" hidden></canvas>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script type="module" src="js/main.js?v=7"></script>
+<script type="module" src="js/main.js?v=8"></script>
 </body>
 </html>
