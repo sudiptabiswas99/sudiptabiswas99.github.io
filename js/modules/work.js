@@ -26,7 +26,11 @@ export function initWork(){
       f.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); });
       b.classList.add('on'); b.setAttribute('aria-pressed', 'true');
       filter = b.getAttribute('data-f');
-      cards.forEach(function(c){ c.classList.toggle('hide', filter !== 'all' && c.getAttribute('data-cat') !== filter); });
+      /* "live" is not a category: it shows every tile that links to a live site */
+      cards.forEach(function(c){
+        var hit = filter === 'all' || (filter === 'live' ? c.hasAttribute('data-live') : c.getAttribute('data-cat') === filter);
+        c.classList.toggle('hide', !hit);
+      });
       if (filter === 'all'){
         smWrap.style.display = '';
         if (!open) collapse(); else show(extras);

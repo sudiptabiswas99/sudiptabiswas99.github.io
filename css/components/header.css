@@ -12,8 +12,8 @@
 .mark .who{ display:none; font-size:14px; line-height:1.2; color:var(--text-3); }
 .mark:active{ transform:translateY(1px); }
 @media (min-width:375px){ .mark .sig{ font-size:22px; } }
-@media (min-width:640px){ .mark .who{ display:inline; } }
-@media (min-width:1024px) and (max-width:1279px){ .mark .who{ display:none; } }
+@media (min-width:700px){ .mark .who{ display:inline; } }  /* the subtitle needs 700px beside the Menu button (measured) */
+@media (min-width:1100px) and (max-width:1359px){ .mark .who{ display:none; } }  /* 8 nav links: the subtitle only fits beside them from 1360px */
 @media (hover:hover){ .mark:hover .sig{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px; } }
 
 .nav-end{ display:flex; align-items:center; gap:var(--s-2); }
@@ -45,8 +45,8 @@
 
 .nl span{ position:relative; }
 
-/* phone and tablet: menu button + sheet */
-@media (max-width:1023px){
+/* phone and tablet: menu button + sheet (below 1100px: the 8 inline links need 1100px, measured 2026-09-27) */
+@media (max-width:1099px){
   .js .menu-btn{
     display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2);
     min-height:44px; min-width:44px; padding:0 12px;
@@ -77,11 +77,11 @@
   .menu-actions .btn{ width:100%; }
   .site-nav .avail{ margin-top:var(--s-5); }
 }
-@media (max-width:1023px) and (hover:hover){
+@media (max-width:1099px) and (hover:hover){
   .js .menu-btn:hover{ background:var(--surface-2); }
   .nav-list .nl:hover span{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px; }
 }
-@media (min-width:640px) and (max-width:1023px){
+@media (min-width:640px) and (max-width:1099px){
   .menu-actions{ display:flex; flex-wrap:wrap; gap:var(--s-2); }
   .menu-actions .btn{ width:auto; }
 }
@@ -92,12 +92,12 @@
 }
 
 /* desktop: inline nav */
-@media (min-width:1024px){
+@media (min-width:1100px){
   .nav-end{ gap:var(--s-5); }
   .site-nav{ display:flex; align-items:center; gap:var(--s-5); }
   .nav-list{ display:flex; align-items:center; gap:14px; }
   .nl{
-    display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 5px;
+    display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 5px; white-space:nowrap;
     font-weight:500; font-size:15px; line-height:1.2; color:var(--text-2);
     transition:color var(--d-fast) var(--ease-out);
   }
@@ -110,7 +110,7 @@
   .nl:active{ color:var(--text); }
   .menu-actions{ display:none; }
 }
-@media (min-width:1024px) and (hover:hover){
+@media (min-width:1100px) and (hover:hover){
   .nl:hover{ color:var(--text); }
   .nl:hover span::after{ transform:scaleX(1); }
 }

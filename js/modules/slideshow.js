@@ -75,6 +75,9 @@ export function initSlideshows(){
   slideshow(doc.getElementById('wgrid'), 'Projects', 'project');
   slideshow(doc.querySelector('.sk-grid'), 'Skill groups', 'skill group');
   slideshow(doc.querySelector('.xp-list'), 'Experience', 'role');
+  slideshow(doc.querySelector('.ct-reels'), 'Instagram reels', 'reel');
+  slideshow(doc.querySelector('.ct-slides'), 'LinkedIn carousel slides', 'slide');
+  slideshow(doc.querySelector('.at-grid'), 'AI tools', 'tool');
   var wf = doc.getElementById('wfilter'), wg = doc.getElementById('wgrid');
   if (wf && wg) wf.addEventListener('click', function(){ wg.dispatchEvent(new Event('car-reset')); });
 }

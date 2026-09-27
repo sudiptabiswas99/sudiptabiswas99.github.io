@@ -1,9 +1,9 @@
-/* Phone menu sheet (below 1024px): open, close, focus trap, page lock. */
+/* Phone menu sheet (below 1100px): open, close, focus trap, page lock. */
 import { MQ_DESK } from '../config.js';
 import { doc, root, main, footer, reduce } from '../lib/dom.js';
 
 export function initMenu(){
-  /* ---- phone menu sheet (below 1024px) ---- */
+  /* ---- phone menu sheet (below 1100px) ---- */
   var menuBtn = doc.getElementById('menuBtn'), siteNav = doc.getElementById('siteNav'), themeBtn = doc.getElementById('themeBtn');
   var mqDesk = window.matchMedia(MQ_DESK);
   var menuOpen = false, closeTimer = null;

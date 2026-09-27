@@ -1,4 +1,4 @@
-/* Project viewer: thumbnail first, full screenshot when it lands, and the live-demo iframe. */
+/* Project viewer: thumbnail first, full screenshot when it lands, the live-demo iframe, and the live-site or code link. */
 import { doc, root, header, main, footer, reduce } from '../lib/dom.js';
 
 export function initLightbox(){
@@ -13,6 +13,8 @@ export function initLightbox(){
     var lbDemo = doc.getElementById('lbDemo'), runRow = doc.getElementById('lbRunRow'),
         runBtn = doc.getElementById('lbRun'), lbFull = doc.getElementById('lbFull'), hint = lb.querySelector('.hint');
     var HINT_IMG = hint ? hint.textContent : '';
+    /* live site (data-live) or public code (data-code): one link under the caption, opens in a new tab */
+    var linkRow = doc.getElementById('lbLinkRow'), lbLink = doc.getElementById('lbLink'), lbLinkTxt = doc.getElementById('lbLinkTxt');
     var stopDemo = function(){
       lb.classList.remove('demo'); if (lbDemo) lbDemo.textContent = '';
       if (hint) hint.textContent = HINT_IMG;
@@ -40,6 +42,16 @@ export function initLightbox(){
       lbTag.textContent = card.getAttribute('data-stack') || card.getAttribute('data-tag') || '';
       lbDesc.textContent = card.getAttribute('data-desc') || '';
       var demo = card.getAttribute('data-demo');
+      var live = card.getAttribute('data-live'), code = card.getAttribute('data-code'), url = live || code;
+      if (linkRow){
+        linkRow.hidden = !url;
+        lb.classList.toggle('has-link', !!url);
+        if (url){
+          lbLink.href = url;
+          lbLinkTxt.textContent = live ? 'Visit live site' : 'View the code on GitHub';
+          lbLink.setAttribute('aria-label', (live ? 'Visit the live ' + title + ' site' : 'View the ' + title + ' code on GitHub') + ' (opens in a new tab)');
+        }
+      }
       stopDemo();
       if (runRow){
         runRow.hidden = !demo; runBtn.hidden = false;
@@ -89,7 +101,7 @@ export function initLightbox(){
       if (e.key === 'Escape'){ e.preventDefault(); closeLb(); }
       else if (e.key === 'Tab'){
         e.preventDefault();
-        var items = [xBtn, runBtn, lbFull, lbDemo && lbDemo.querySelector('iframe')].filter(function(el){ return el && !el.hidden && el.offsetParent !== null; });
+        var items = [xBtn, runBtn, lbFull, lbDemo && lbDemo.querySelector('iframe'), lbLink].filter(function(el){ return el && !el.hidden && el.offsetParent !== null; });
         var i = items.indexOf(doc.activeElement);
         items[e.shiftKey ? (i <= 0 ? items.length - 1 : i - 1) : (i + 1) % items.length].focus();
       }

@@ -19,6 +19,9 @@
 .xp .org{ margin-top:4px; font-size:15px; line-height:1.45; color:var(--text-3); }
 .xp .lead{ margin-top:var(--s-4); color:var(--text-2); }
 .xp .chips{ order:3; }
+/* the link out to the full section (Content, AI tools, Projects) sits under the bullets at every width */
+.xp .xp-go{ order:2; align-self:flex-start; }
+.xp .nw{ white-space:nowrap; }
 .most{ order:1; max-width:33rem; margin-top:var(--s-4); padding:var(--s-4); background:var(--surface-2); border-radius:var(--r-sm); }
 .most b{ display:block; font-weight:600; font-size:14px; line-height:1.4; color:var(--text); }
 .most p{ margin-top:4px; font-size:16px; line-height:1.6; color:var(--text-2); }
@@ -32,7 +35,7 @@
   .xp{ padding:var(--s-6); }
   .xp-when{ flex-direction:row; flex-wrap:wrap; column-gap:12px; align-items:baseline; }
 }
-/* 640-799: the duration gets a fixed track, so the dates start at the same x in all 4 panels */
+/* 640-799: the number gets a fixed track, so the dates start at the same x in all 7 panels */
 @media (min-width:640px) and (max-width:799px){
   .xp-meta{ grid-template-columns:12rem minmax(0,1fr); column-gap:var(--s-5); align-items:baseline; }
   .xp-dur{ grid-column:1; grid-row:1; }
@@ -40,7 +43,7 @@
   .xp-meter{ grid-column:1; grid-row:2; }
 }
 /* 800+: two columns. Dates, meter and the note on the left; the text with its chips under it on the right.
-   Panel 1 (.lg, a lead and 5 bullets) puts its chips under the note instead. 800-1023 splits 3:4 in favour
+   The websites panel (.lg, 6 bullets) puts its chips under the note instead. 800-1023 splits 3:4 in favour
    of the text; 1024+ splits 1:1. Measured: no column of any panel has more than 150px of empty space. */
 @media (min-width:800px){
   .xp{ display:grid; grid-template-columns:minmax(0, 3fr) minmax(0, 4fr); grid-template-rows:auto auto 1fr; column-gap:var(--s-6); row-gap:0; align-items:start; }

@@ -23,7 +23,7 @@
 .hero h1 .l1, .hero h1 .l2{ display:block; }
 .hero h1 .l2{ padding-left:.06em; }
 .hero-lead{ margin-top:var(--s-4); font-size:clamp(17px, calc(.45vw + 15.5px), 21px); line-height:1.55; color:var(--text-2); }
-.hero-lead b{ color:var(--text); }
+.hero-lead b{ color:var(--text); white-space:nowrap; }  /* keeps "short-form video" from breaking at its hyphen */
 .hero-actions{ margin-top:20px; }
 .row-a{ display:flex; flex-wrap:wrap; gap:var(--s-2); }
 .row-b{ margin-top:var(--s-2); display:flex; flex-wrap:wrap; align-items:center; column-gap:var(--s-4); }

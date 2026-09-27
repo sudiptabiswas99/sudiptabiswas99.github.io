@@ -36,6 +36,7 @@
   .lb .box{ width:fit-content; }  /* box = image width, so the X sits over the image's top-right corner */
   .lb .x{ position:absolute; top:-56px; right:0; }
   .lb-media img{ max-height:72dvh; }
+  .lb.has-link .lb-media img{ max-height:64dvh; }  /* leaves room for the Visit live site button in the first view */
 }
 .lb.on .sc{ animation:fadein var(--d-base) var(--ease-out); }
 .lb.on .lb-inner{ animation:lbin var(--d-base) var(--ease-out); }

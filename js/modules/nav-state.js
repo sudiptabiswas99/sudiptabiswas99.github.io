@@ -20,7 +20,7 @@ export function initNavState(){
         var a = byId[e.target.id]; if (a) a.setAttribute('aria-current', 'true');
       });
     }, {rootMargin: '-45% 0px -50% 0px'});
-    ['top','about','services','work','skillstory','experience','contact'].forEach(function(id){
+    ['top','about','services','projects','content','automation','skillstory','experience','contact'].forEach(function(id){
       var s = doc.getElementById(id); if (s) secIo.observe(s);
     });
   }
