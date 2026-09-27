@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Background Ripple Effect — Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ------------------------------------------------------------------
+     Background Ripple Effect — vanilla port of the Aceternity
+     "BackgroundCells" React/framer-motion component.
+     No build step, no dependencies. Behaviour matched 1:1:
+       - faint neutral grid across the top band, fading out downward
+       - blue grid lines revealed in a 75px radius around the cursor
+       - each cell glows sky-cyan on hover ([0 -> 1 -> 0.5] opacity)
+       - clicking a cell fires a ripple whose reach + duration scale
+         with distance from the clicked cell (peak = 1 - dist*0.1,
+         duration = dist * 200ms) — identical to the original.
+     ------------------------------------------------------------------ */
+  :root{ --cell:48px; --reveal:75px; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:'Inter',system-ui,sans-serif;background:#020617;color:#fff;overflow-x:hidden}
+
+  /* container == BackgroundCells (h-screen flex justify-center overflow-hidden bg-slate-950) */
+  .bc{position:relative;min-height:100vh;display:flex;justify-content:center;overflow:hidden;background:#020617}
+  .bc-core{position:absolute;inset:0}
+
+  /* the clipped 20rem band at the top (h-[20rem] overflow-hidden) */
+  .bc-band{position:absolute;top:0;left:0;right:0;height:20rem;overflow:hidden}
+
+  /* neutral interactive grid (base Pattern, opacity .5, z-30) */
+  .bc-grid{position:absolute;inset:0;z-index:30;opacity:.5;
+    display:grid;grid-auto-rows:var(--cell)}
+  .bc-cell{border-left:1px solid #525252;border-bottom:1px solid #525252;position:relative}
+  .bc-cell > .g{position:absolute;inset:0;background:rgba(14,165,233,.3);
+    opacity:0;transition:opacity .4s ease-out;pointer-events:none}
+  .bc-cell:hover > .g{animation:gHover .5s cubic-bezier(.34,1.56,.64,1) forwards}
+  @keyframes gHover{0%{opacity:0}55%{opacity:.9}100%{opacity:.5}}
+
+  /* blue grid lines revealed around the cursor (masked overlay, z-20) */
+  .bc-blue{position:absolute;inset:0;z-index:20;pointer-events:none;
+    background-image:
+      repeating-linear-gradient(to right,  #3b82f6 0 1px, transparent 1px var(--cell)),
+      repeating-linear-gradient(to bottom, #3b82f6 0 1px, transparent 1px var(--cell));
+    -webkit-mask-image:radial-gradient(var(--reveal) circle at var(--mx,-999px) var(--my,-999px), #000, transparent);
+            mask-image:radial-gradient(var(--reveal) circle at var(--mx,-999px) var(--my,-999px), #000, transparent)}
+
+  /* bottom fade (slate-950 masked transparent->black, z-40) */
+  .bc-fade{position:absolute;inset:0;z-index:40;pointer-events:none;background:#020617;
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000);
+            mask-image:linear-gradient(to bottom,transparent,#000)}
+
+  /* headline (content z-50, mt-40, pointer-events-none) */
+  .bc-content{position:relative;z-index:50;margin-top:10rem;padding:0 24px;
+    pointer-events:none;user-select:none;text-align:center}
+  .bc-content h1{font-weight:500;line-height:1.05;font-size:clamp(1.9rem,7vw,4.5rem);
+    background:linear-gradient(to bottom,#f5f5f5,#a3a3a3);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* tiny caption so the showcase explains itself */
+  .bc-note{position:fixed;left:0;right:0;bottom:22px;z-index:60;text-align:center;
+    font-size:.82rem;color:#64748b;pointer-events:none}
+  .bc-note b{color:#93c5fd;font-weight:600}
+</style>
+</head>
+<body>
+  <div class="bc" data-ripple>
+    <div class="bc-core">
+      <div class="bc-band">
+        <div class="bc-blue"></div>
+        <div class="bc-grid"></div>
+        <div class="bc-fade"></div>
+      </div>
+    </div>
+    <div class="bc-content">
+      <h1>Background cell animation<br>with framer motion</h1>
+    </div>
+  </div>
+  <div class="bc-note">move the cursor for the <b>blue reveal</b> · hover a cell to <b>glow</b> · click for a <b>ripple</b></div>
+
+<script>
+(function () {
+  var CELL = 48;
+  document.querySelectorAll('[data-ripple]').forEach(function (root) {
+    var band = root.querySelector('.bc-band');
+    var grid = root.querySelector('.bc-grid');
+    var blue = root.querySelector('.bc-blue');
+    var cells = [];   // {el, g, r, c}
+    var cols = 0, rows = 0;
+
+    function build() {
+      var bandH = band.clientHeight || 320;
+      cols = Math.ceil(window.innerWidth / CELL) + 1;
+      rows = Math.ceil(bandH / CELL) + 2;
+      grid.style.gridTemplateColumns = 'repeat(' + cols + ',' + CELL + 'px)';
+      grid.textContent = '';
+      cells = [];
+      var frag = document.createDocumentFragment();
+      for (var r = 0; r < rows; r++) {
+        for (var c = 0; c < cols; c++) {
+          var cell = document.createElement('div');
+          cell.className = 'bc-cell';
+          var g = document.createElement('div');
+          g.className = 'g';
+          cell.appendChild(g);
+          frag.appendChild(cell);
+          cells.push({ g: g, r: r, c: c });
+        }
+      }
+      grid.appendChild(frag);
+    }
+
+    // click ripple: peak opacity = 1 - dist*0.1, duration = dist*200ms
+    grid.addEventListener('click', function (e) {
+      var cell = e.target.closest('.bc-cell');
+      if (!cell) return;
+      var idx = Array.prototype.indexOf.call(grid.children, cell);
+      var cr = Math.floor(idx / cols), cc = idx % cols;
+      cells.forEach(function (o) {
+        var dist = Math.hypot(o.r - cr, o.c - cc);
+        var peak = Math.max(0, 1 - dist * 0.1);
+        if (peak <= 0) return;
+        o.g.animate(
+          [{ opacity: 0 }, { opacity: peak }, { opacity: 0 }],
+          { duration: Math.max(140, dist * 200), easing: 'ease-out' }
+        );
+      });
+    });
+
+    // mouse-follow blue reveal (mask centre tracks cursor, band-relative)
+    root.addEventListener('mousemove', function (e) {
+      var rect = band.getBoundingClientRect();
+      blue.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+      blue.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+    });
+    root.addEventListener('mouseleave', function () {
+      blue.style.setProperty('--mx', '-999px');
+      blue.style.setProperty('--my', '-999px');
+    });
+
+    var t;
+    window.addEventListener('resize', function () {
+      clearTimeout(t); t = setTimeout(build, 150);
+    });
+    build();
+  });
+})();
+</script>
+</body>
+</html>

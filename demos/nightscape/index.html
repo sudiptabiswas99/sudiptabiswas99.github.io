@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NIGHTSCAPE — Yards That Glow After Dark</title>
+<meta name="description" content="NIGHTSCAPE — modern landscape design and architectural outdoor lighting. We turn ordinary yards into glowing nightscapes: lit paths, uplit trees, patios, and water that shimmers after dark." />
+<meta name="theme-color" content="#1A1A2E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23070710'/%3E%3Cpath d='M16 6c5 4 7 8 4 12s-9 4-9-1c0-4 3-8 5-11z' fill='%2339FF8B'/%3E%3C/svg%3E" />
+
+<!-- Retro-Futurism fonts: Orbitron (geometric sci-fi display) · Chakra Petch (techno body) · VT323 (CRT terminal) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Chakra+Petch:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  /* ── catalog color seeds + a neon-green for the planting tie-in ── */
+  --blue:#0080FF;
+  --pink:#FF006E;
+  --cyan:#00FFFF;
+  --base:#1A1A2E;
+  --purple:#5D34D0;
+  --silver:#C0C0C0;
+  --green:#39FF8B;
+
+  --ink:#070710;
+  --ink-2:#0e0e1f;
+  --panel:rgba(26,26,46,.62);
+  --line:rgba(0,255,255,.28);
+  --text:#d7d8ee;
+  --dim:#8e8fb5;
+
+  --fdisp:'Orbitron',sans-serif;
+  --fbody:'Chakra Petch',system-ui,sans-serif;
+  --fcrt:'VT323',monospace;
+
+  --glow-cyan:0 0 6px rgba(0,255,255,.65),0 0 22px rgba(0,255,255,.35);
+  --glow-pink:0 0 6px rgba(255,0,110,.7),0 0 26px rgba(255,0,110,.4);
+  --glow-green:0 0 6px rgba(57,255,139,.7),0 0 24px rgba(57,255,139,.4);
+  --maxw:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--fbody);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+
+/* ════ ambient backdrop: synthwave wash + starfield ════ */
+.bg{position:fixed;inset:0;z-index:-3;background:
+  radial-gradient(120% 80% at 50% 8%, rgba(93,52,208,.42), transparent 55%),
+  radial-gradient(90% 70% at 50% 120%, rgba(255,0,110,.30), transparent 60%),
+  linear-gradient(180deg,#05050d 0%,#0b0a1c 45%,#0c1420 100%);}
+.stars{position:fixed;inset:0;z-index:-2;background-image:
+  radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.9),transparent),
+  radial-gradient(1px 1px at 70% 18%,rgba(0,255,255,.8),transparent),
+  radial-gradient(1px 1px at 40% 12%,rgba(255,255,255,.7),transparent),
+  radial-gradient(1.5px 1.5px at 85% 40%,rgba(57,255,139,.8),transparent),
+  radial-gradient(1px 1px at 12% 55%,rgba(255,255,255,.6),transparent),
+  radial-gradient(1px 1px at 60% 50%,rgba(0,128,255,.8),transparent);
+  background-repeat:no-repeat;opacity:.7;animation:twinkle 5s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.45}50%{opacity:.85}}
+
+/* ════ CRT scanline + vignette overlay ════ */
+.crt{position:fixed;inset:0;z-index:60;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.16) 3px 3px);mix-blend-mode:multiply}
+.crt::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 50% 50%,transparent 62%,rgba(0,0,0,.55) 100%)}
+.sweep{position:fixed;left:0;right:0;height:140px;z-index:61;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(0,255,255,.05) 50%,transparent);animation:sweep 7s linear infinite}
+@keyframes sweep{0%{top:-160px}100%{top:100%}}
+
+/* ════ nav ════ */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(9px);
+  background:linear-gradient(180deg,rgba(7,7,16,.92),rgba(7,7,16,.55));border-bottom:1px solid rgba(0,255,255,.16)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px;gap:20px}
+.logo{font-family:var(--fdisp);font-weight:900;font-size:1.2rem;letter-spacing:.18em;color:#fff;text-shadow:var(--glow-cyan);display:flex;align-items:center;gap:11px}
+.logo .chev{color:var(--green);text-shadow:var(--glow-green)}
+.logo b{background:linear-gradient(180deg,#fff,var(--green));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.navlinks{display:flex;gap:30px;font-family:var(--fbody);font-weight:600;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase}
+.navlinks a{color:var(--dim);transition:color .2s,text-shadow .2s}
+.navlinks a:hover{color:var(--cyan);text-shadow:var(--glow-cyan)}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--fdisp);font-weight:700;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;padding:13px 22px;cursor:pointer;
+  border:1.5px solid var(--cyan);color:var(--cyan);background:rgba(0,255,255,.05);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  box-shadow:inset 0 0 12px rgba(0,255,255,.12),0 0 14px rgba(0,255,255,.25);transition:transform .15s,box-shadow .2s,background .2s,color .2s}
+.btn:hover{background:rgba(0,255,255,.14);box-shadow:inset 0 0 18px rgba(0,255,255,.25),0 0 26px rgba(0,255,255,.5);transform:translateY(-2px)}
+.btn--pink{border-color:var(--pink);color:#fff;background:rgba(255,0,110,.14);box-shadow:inset 0 0 12px rgba(255,0,110,.2),0 0 18px rgba(255,0,110,.45)}
+.btn--pink:hover{background:rgba(255,0,110,.26);box-shadow:inset 0 0 20px rgba(255,0,110,.35),0 0 32px rgba(255,0,110,.7)}
+.btn--lg{font-size:.95rem;padding:18px 34px}
+.burger{display:none;background:none;border:1px solid var(--line);color:var(--cyan);width:44px;height:40px;cursor:pointer;font-size:1.2rem}
+
+/* ════ hero ════ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding:80px 0 0}
+.hero__photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.20;filter:saturate(1.2) contrast(1.05);
+  -webkit-mask-image:radial-gradient(125% 95% at 50% 38%,transparent 20%,#000 82%);mask-image:radial-gradient(125% 95% at 50% 38%,transparent 20%,#000 82%)}
+.sun{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);width:min(560px,84vw);aspect-ratio:1;border-radius:50%;z-index:-1;
+  background:linear-gradient(180deg,#ffe9a8 0%,#ff8a3c 30%,var(--pink) 62%,var(--purple) 100%);filter:drop-shadow(0 0 60px rgba(255,0,110,.55))}
+.sun::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(180deg,transparent 0 14px,var(--ink) 14px 18px);
+  -webkit-mask:linear-gradient(180deg,transparent 48%,#000 52%);mask:linear-gradient(180deg,transparent 48%,#000 52%)}
+.grid-floor{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:240vw;height:48vh;z-index:-1;
+  background-image:linear-gradient(rgba(57,255,139,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,255,.5) 1px,transparent 1px);
+  background-size:64px 64px;transform:translateX(-50%) perspective(340px) rotateX(74deg);transform-origin:bottom center;
+  mask-image:linear-gradient(180deg,transparent,#000 22%,#000);-webkit-mask-image:linear-gradient(180deg,transparent,#000 22%,#000);animation:grid 1.4s linear infinite}
+@keyframes grid{from{background-position:0 0}to{background-position:0 64px}}
+.hero__inner{position:relative;z-index:2;text-align:center;width:100%}
+.tag{display:inline-flex;align-items:center;gap:10px;font-family:var(--fcrt);font-size:1.25rem;letter-spacing:.32em;text-transform:uppercase;color:var(--cyan);text-shadow:var(--glow-cyan);margin-bottom:22px}
+.tag .dot{width:8px;height:8px;background:var(--green);box-shadow:var(--glow-green);border-radius:50%;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:var(--fdisp);font-weight:900;font-size:clamp(3rem,12vw,8.4rem);line-height:.9;letter-spacing:.02em;
+  background:linear-gradient(180deg,#fff 8%,#cdd2ff 38%,var(--silver) 52%,#8affc4 60%,var(--green) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 0 rgba(255,0,110,.6)) drop-shadow(0 0 30px rgba(57,255,139,.45))}
+.hero .sub{max-width:56ch;margin:26px auto 0;font-size:1.16rem;color:#c4c6ec}
+.hero .sub b{color:var(--green)}
+.hero__cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+.hero__meta{margin-top:34px;font-family:var(--fcrt);font-size:1.15rem;letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
+.hero__meta span{color:var(--cyan)}
+
+/* ════ marquee ════ */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(93,52,208,.12);overflow:hidden;padding:14px 0;white-space:nowrap;position:relative;z-index:2}
+.marquee__row{display:inline-flex;gap:42px;animation:scroll 24s linear infinite;font-family:var(--fdisp);font-weight:700;font-size:.95rem;letter-spacing:.22em;text-transform:uppercase}
+.marquee__row span{color:#fff}.marquee__row .x{color:var(--green);text-shadow:var(--glow-green)}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ════ sections ════ */
+section{position:relative;z-index:2}
+.sec{padding:clamp(70px,10vw,120px) 0}
+.shead{text-align:center;max-width:700px;margin:0 auto clamp(40px,6vw,64px)}
+.eyebrow{font-family:var(--fcrt);font-size:1.2rem;letter-spacing:.3em;text-transform:uppercase;color:var(--pink);text-shadow:var(--glow-pink)}
+.h2{font-family:var(--fdisp);font-weight:700;font-size:clamp(1.9rem,4.6vw,3.1rem);color:#fff;margin-top:10px;letter-spacing:.02em;text-shadow:0 0 18px rgba(57,255,139,.4)}
+.h2 em{font-style:normal;color:var(--green);text-shadow:var(--glow-green)}
+.shead p{margin-top:16px;color:var(--dim);font-size:1.05rem}
+
+.panel{background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(6px);position:relative;
+  clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);transition:transform .2s,box-shadow .25s,border-color .25s}
+
+/* ════ features ════ */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat{padding:30px 26px}
+.feat:hover{transform:translateY(-5px);border-color:var(--green);box-shadow:0 0 26px rgba(57,255,139,.3),inset 0 0 24px rgba(57,255,139,.06)}
+.feat__ic{width:54px;height:54px;display:grid;place-items:center;border:1.5px solid var(--green);color:var(--green);box-shadow:var(--glow-green);margin-bottom:18px}
+.feat__ic svg{width:28px;height:28px}
+.feat h3{font-family:var(--fdisp);font-weight:700;font-size:1.12rem;color:#fff;letter-spacing:.04em;margin-bottom:9px}
+.feat p{color:var(--dim);font-size:.97rem}
+.feat .n{position:absolute;top:14px;right:18px;font-family:var(--fcrt);font-size:1.3rem;color:rgba(57,255,139,.45)}
+
+/* ════ portfolio ════ */
+.tracks{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.track{overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;color:#fff;position:relative;
+  border:1px solid var(--c);box-shadow:inset 0 0 16px -8px var(--cg);transition:transform .2s,box-shadow .25s,border-color .25s}
+.track img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.track:hover img{transform:scale(1.06)}
+/* dark scrim for legibility + a faint per-card neon color grade */
+.track::before{content:"";position:absolute;inset:0;z-index:1;background:
+  linear-gradient(180deg,rgba(7,7,16,.04),rgba(7,7,16,.42) 52%,rgba(5,5,12,.92)),
+  linear-gradient(150deg,var(--cg),transparent 58%)}
+.track::after{content:"";position:absolute;inset:0;z-index:2;background-image:linear-gradient(rgba(255,255,255,.10) 1px,transparent 1px);background-size:100% 3px;mix-blend-mode:overlay;opacity:.5}
+.track>*{position:relative;z-index:3}
+.track .tnum{font-family:var(--fcrt);font-size:1.3rem;letter-spacing:.2em;color:var(--c);text-shadow:0 0 9px rgba(0,0,0,.7)}
+.track h4{font-family:var(--fdisp);font-weight:700;font-size:1.12rem;letter-spacing:.03em;margin-top:auto;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.track p{font-size:.82rem;color:rgba(255,255,255,.92);font-family:var(--fcrt);letter-spacing:.12em;text-transform:uppercase;text-shadow:0 1px 7px rgba(0,0,0,.85)}
+.track:hover{transform:translateY(-6px);box-shadow:inset 0 0 0 1px var(--c),0 0 30px var(--cg)}
+.t1{--c:#FF006E;--cg:rgba(255,0,110,.5)}
+.t2{--c:#0080FF;--cg:rgba(0,128,255,.5)}
+.t3{--c:#39FF8B;--cg:rgba(57,255,139,.5)}
+.t4{--c:#00FFFF;--cg:rgba(0,255,255,.5)}
+
+/* ════ stats ════ */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.stat{background:var(--ink-2);padding:38px 18px;text-align:center}
+.stat .num{font-family:var(--fdisp);font-weight:900;font-size:clamp(2rem,5vw,3.2rem);background:linear-gradient(180deg,#fff,var(--green));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 14px rgba(57,255,139,.5))}
+.stat .lbl{font-family:var(--fcrt);font-size:1.05rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:8px}
+
+/* ════ packages ════ */
+.eds{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+.ed{padding:34px 28px;display:flex;flex-direction:column}
+.ed .knm{font-family:var(--fcrt);font-size:1.2rem;letter-spacing:.24em;text-transform:uppercase;color:var(--cyan)}
+.ed .price{font-family:var(--fdisp);font-weight:900;font-size:2.4rem;color:#fff;margin:12px 0 2px}
+.ed .price small{font-size:.9rem;color:var(--dim);font-family:var(--fbody);font-weight:500}
+.ed ul{list-style:none;margin:22px 0;display:flex;flex-direction:column;gap:11px}
+.ed li{display:flex;gap:10px;font-size:.95rem;color:var(--text)}
+.ed li::before{content:"▸";color:var(--green)}
+.ed .btn{margin-top:auto;justify-content:center}
+.ed--feat{border-color:var(--green);box-shadow:0 0 30px rgba(57,255,139,.3)}
+.ed--feat .badge{position:absolute;top:14px;right:16px;font-family:var(--fcrt);font-size:1rem;letter-spacing:.16em;color:var(--green);text-shadow:var(--glow-green)}
+
+/* ════ final CTA ════ */
+.jack{text-align:center;padding:clamp(80px,12vw,150px) 0;position:relative}
+.jack h2{font-family:var(--fdisp);font-weight:900;font-size:clamp(2.4rem,8vw,5.6rem);line-height:.95;background:linear-gradient(180deg,#fff,var(--green) 70%,#0b3a2a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 30px rgba(57,255,139,.5))}
+.jack p{color:var(--dim);font-family:var(--fcrt);font-size:1.3rem;letter-spacing:.2em;text-transform:uppercase;margin:18px 0 34px}
+
+/* ════ footer ════ */
+footer{border-top:1px solid var(--line);padding:44px 0 60px;background:rgba(7,7,16,.6);position:relative;z-index:2}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.foot .logo{font-size:1.05rem}
+.foot__links{display:flex;gap:24px;font-family:var(--fcrt);font-size:1.1rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.foot__links a:hover{color:var(--green);text-shadow:var(--glow-green)}
+.foot__copy{font-family:var(--fcrt);font-size:1rem;letter-spacing:.1em;color:var(--dim);margin-top:18px;text-align:center}
+
+.rv{opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:920px){
+  .navlinks,.nav .btn{display:none}.burger{display:block}
+  .features,.tracks,.stats,.eds{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .features,.eds{grid-template-columns:1fr}.tracks{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(prefers-reduced-motion:reduce){
+  .grid-floor,.marquee__row,.sweep,.stars,.tag .dot{animation:none!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+<noscript><style>.rv{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+<body>
+<div class="bg"></div>
+<div class="stars"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap">
+    <a href="#top" class="logo"><span class="chev">✦</span> NIGHT<b>SCAPE</b></a>
+    <div class="navlinks">
+      <a href="#services">Services</a>
+      <a href="#work">Nightscapes</a>
+      <a href="#stats">Studio</a>
+      <a href="#packages">Packages</a>
+    </div>
+    <a href="#packages" class="btn btn--pink">Get a Design</a>
+    <button class="burger" aria-label="menu">≡</button>
+  </div>
+</nav>
+
+<span id="top"></span>
+
+<!-- HERO -->
+<header class="hero">
+  <img class="hero__photo" src="assets/path.jpg" alt="" aria-hidden="true" />
+  <div class="sun" aria-hidden="true"></div>
+  <div class="grid-floor" aria-hidden="true"></div>
+  <div class="wrap hero__inner">
+    <p class="tag"><span class="dot"></span> Landscape &amp; Light · Portland OR</p>
+    <h1>YOUR YARD<br/>AFTER&nbsp;DARK</h1>
+    <p class="sub">Modern landscape design and architectural outdoor lighting.
+      We turn ordinary yards into glowing <b>nightscapes</b> — lit paths, uplit trees, warm patios, and water that shimmers long after sunset.</p>
+    <div class="hero__cta">
+      <a href="#packages" class="btn btn--pink btn--lg">✦ Get a Design</a>
+      <a href="#work" class="btn btn--lg">See Nightscapes</a>
+    </div>
+    <p class="hero__meta">Design · <span>Lighting</span> · <span>Hardscape</span> · <span>Water</span></p>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__row">
+    <span>LANDSCAPE DESIGN</span><span class="x">✦</span><span>OUTDOOR LIGHTING</span><span class="x">✦</span><span>PATIOS &amp; HARDSCAPE</span><span class="x">✦</span><span>WATER FEATURES</span><span class="x">✦</span>
+    <span>LANDSCAPE DESIGN</span><span class="x">✦</span><span>OUTDOOR LIGHTING</span><span class="x">✦</span><span>PATIOS &amp; HARDSCAPE</span><span class="x">✦</span><span>WATER FEATURES</span><span class="x">✦</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="shead rv">
+      <p class="eyebrow">// Services</p>
+      <h2 class="h2">Built to <em>glow after dark</em>.</h2>
+      <p>One studio for the whole yard — designed, planted, paved and lit so it looks as good at midnight as it does at noon.</p>
+    </div>
+    <div class="features">
+      <article class="panel feat rv"><span class="n">01</span>
+        <span class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/><path d="M9 9v.01M9 13v.01M9 17v.01"/></svg></span>
+        <h3>Landscape Design</h3><p>Full 3D design plans — layout, grading, planting and flow, drawn before a single shovel hits the ground.</p></article>
+      <article class="panel feat rv"><span class="n">02</span>
+        <span class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span>
+        <h3>Architectural Lighting</h3><p>Low-voltage LED uplighting, path lights and moonlighting that make trees, stone and water come alive at night.</p></article>
+      <article class="panel feat rv"><span class="n">03</span>
+        <span class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+        <h3>Patios &amp; Hardscape</h3><p>Paver patios, retaining walls, fire features and walkways engineered to last decades, not seasons.</p></article>
+      <article class="panel feat rv"><span class="n">04</span>
+        <span class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg></span>
+        <h3>Water Features</h3><p>Pondless waterfalls, basalt fountains and lit reflecting pools — sound and shimmer on demand.</p></article>
+      <article class="panel feat rv"><span class="n">05</span>
+        <span class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+        <h3>Planting &amp; Lawns</h3><p>Drought-smart planting plans, mature trees and turf that stays green — color through every season.</p></article>
+      <article class="panel feat rv"><span class="n">06</span>
+        <span class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></span>
+        <h3>Smart Irrigation</h3><p>App-controlled drip and sprinkler zones with weather sensing — your yard waters itself, perfectly.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- WORK / NIGHTSCAPES -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="shead rv">
+      <p class="eyebrow">// Nightscapes</p>
+      <h2 class="h2">Built by day. <em>Alive by night.</em></h2>
+      <p>A few yards we designed, planted and lit across the Pacific Northwest. Swipe through after the sun goes down.</p>
+    </div>
+    <div class="tracks">
+      <article class="track t1 rv"><img src="assets/courtyard.jpg" alt="Patio at night lit with warm string lights over greenery" loading="lazy"><span class="tnum">01</span><h4>Modern Courtyard</h4><p>Patio · String Lights</p></article>
+      <article class="track t2 rv"><img src="assets/pool.jpg" alt="Backyard pool glowing electric cyan at night" loading="lazy"><span class="tnum">02</span><h4>Poolside Glow</h4><p>Water · Lit Deck</p></article>
+      <article class="track t3 rv"><img src="assets/path.jpg" alt="Garden walkway at night under a lit lamp post" loading="lazy"><span class="tnum">03</span><h4>Garden Path</h4><p>Planting · Path Lights</p></article>
+      <article class="track t4 rv"><img src="assets/terrace.jpg" alt="Fire feature burning on a terrace at night" loading="lazy"><span class="tnum">04</span><h4>Rooftop Terrace</h4><p>Hardscape · Fire Feature</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="sec" id="stats">
+  <div class="wrap">
+    <div class="stats rv">
+      <div class="stat"><div class="num" data-to="320">320</div><div class="lbl">Yards Lit</div></div>
+      <div class="stat"><div class="num" data-to="14">14</div><div class="lbl">Years Designing</div></div>
+      <div class="stat"><div class="num">4.9<span style="font-size:.5em">★</span></div><div class="lbl">Avg Rating</div></div>
+      <div class="stat"><div class="num">5<span style="font-size:.5em">YR</span></div><div class="lbl">Workmanship Warranty</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="sec" id="packages">
+  <div class="wrap">
+    <div class="shead rv">
+      <p class="eyebrow">// Packages</p>
+      <h2 class="h2">Start your <em>nightscape</em>.</h2>
+      <p>Three ways in — from a lighting refresh to a ground-up backyard transformation.</p>
+    </div>
+    <div class="eds">
+      <article class="panel ed rv">
+        <span class="knm">Glow Up</span>
+        <div class="price">$2,400<small>/ from</small></div>
+        <ul><li>Lighting design consult</li><li>Up to 12 LED fixtures</li><li>Path &amp; uplighting install</li><li>App-based control</li></ul>
+        <a href="#contact" class="btn">Book consult</a>
+      </article>
+      <article class="panel ed ed--feat rv">
+        <span class="badge">// POPULAR</span>
+        <span class="knm">Full Nightscape</span>
+        <div class="price">$14,500<small>/ from</small></div>
+        <ul><li>Full 3D landscape design</li><li>Patio or hardscape build</li><li>Planting &amp; lawn renewal</li><li>Architectural lighting</li><li>Smart irrigation zones</li></ul>
+        <a href="#contact" class="btn btn--pink">✦ Get a Design</a>
+      </article>
+      <article class="panel ed rv">
+        <span class="knm">Estate</span>
+        <div class="price">Custom<small>/ quote</small></div>
+        <ul><li>Everything in Full Nightscape</li><li>Water features &amp; fire</li><li>Mature tree installs</li><li>Year-round maintenance</li><li>Dedicated design lead</li></ul>
+        <a href="#contact" class="btn">Request quote</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="jack" id="contact">
+  <div class="wrap rv">
+    <h2>READY<br/>TO GLOW?</h2>
+    <p>Book a design consult — we'll walk your yard at dusk.</p>
+    <a href="tel:+15035550148" class="btn btn--pink btn--lg">✦ Call (503) 555-0148</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a href="#top" class="logo"><span class="chev">✦</span> NIGHT<b>SCAPE</b></a>
+      <div class="foot__links">
+        <a href="#services">Services</a><a href="#work">Nightscapes</a><a href="#packages">Packages</a><a href="#contact">Contact</a>
+      </div>
+    </div>
+    <p class="foot__copy">© NIGHTSCAPE LANDSCAPE &amp; LIGHT STUDIO · PORTLAND, OR · DESIGN · BUILD · ILLUMINATE</p>
+  </div>
+</footer>
+
+<div class="crt" aria-hidden="true"></div>
+<div class="sweep" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.rv'));
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches||!('IntersectionObserver'in window)){els.forEach(function(e){e.classList.add('in')});return;}
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}})},{threshold:.12,rootMargin:'0px 0px -60px 0px'});
+  els.forEach(function(e){io.observe(e)});
+  setTimeout(function(){els.forEach(function(e){if(getComputedStyle(e).opacity==='0')e.classList.add('in');});},1500);
+})();
+(function(){
+  var nums=[].slice.call(document.querySelectorAll('.num[data-to]'));
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){
+    if(!x.isIntersecting)return;io.unobserve(x.target);
+    var el=x.target,to=+el.getAttribute('data-to'),t0=null;
+    function step(t){if(!t0)t0=t;var p=Math.min((t-t0)/900,1);el.textContent=Math.round(p*to);if(p<1)requestAnimationFrame(step);}
+    if(!matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(step);
+  })},{threshold:.5});
+  nums.forEach(function(n){io.observe(n)});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Garage Door Reveal</title>
+<style>
+  :root{
+    --open-dur: 2.0s;
+    --ease: cubic-bezier(.42,.03,.2,1);   /* motor pull: eases in, settles out */
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; height:100%; background:#06070a; overflow:hidden; }
+
+  /* the stage IS the dark garage interior revealed behind the door */
+  .stage{
+    position:fixed; inset:0;
+    overflow:hidden;
+    cursor:pointer;
+    touch-action:manipulation;
+    background:
+      radial-gradient(130% 85% at 50% 118%, rgba(70,78,94,.30), transparent 62%),
+      linear-gradient(180deg,#06070a 0%,#090b10 48%,#11141a 80%,#20242c 100%);
+  }
+  /* concrete threshold line at the floor */
+  .stage::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:linear-gradient(90deg,transparent,rgba(150,160,175,.32),transparent);
+    pointer-events:none;
+  }
+
+  /* the door itself — fills the screen, slides straight up */
+  .door{
+    position:absolute; inset:0;
+    background-image:url("./door.jpg");
+    background-size:cover;
+    background-position:center;
+    transform:translateY(0);
+    transition:transform var(--open-dur) var(--ease);
+    box-shadow:0 18px 55px rgba(0,0,0,.78);
+    will-change:transform;
+  }
+  .stage.open .door{ transform:translateY(-100%); }
+
+  /* top panel slips into the shadow of the recess */
+  .door::before{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,.30) 0%, rgba(0,0,0,0) 12%);
+    pointer-events:none;
+  }
+
+  .stage:focus-visible{ outline:2px solid #6fb3ff; outline-offset:-4px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .door{ transition:transform .3s ease; }
+  }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage" tabindex="0" role="button" aria-label="Garage door. Activate to open or close.">
+    <div class="door"></div>
+  </div>
+
+  <script>
+    (function(){
+      var stage = document.getElementById('stage');
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function toggle(){ stage.classList.toggle('open'); }
+      stage.addEventListener('click', toggle);
+      stage.addEventListener('keydown', function(e){
+        if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); toggle(); }
+      });
+      // slide up on its own once the page settles; click/tap (or Space/Enter) replays
+      if(!reduce){
+        setTimeout(function(){ stage.classList.add('open'); }, 900);
+      }
+    })();
+  </script>
+</body>
+</html>

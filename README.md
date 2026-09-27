@@ -2,10 +2,10 @@
 
 **Live:** https://sudiptabiswas99.github.io/
 
-A dark-cyberpunk personal portfolio, built as a single static site (HTML, CSS, vanilla JS, no build step).
+A black-and-white personal portfolio with a light and a dark theme, built as a single static site (HTML, CSS, vanilla JS, no build step).
 
-- Front-end & creative developer — React, Next.js, TypeScript, Three.js, WebGL
-- Fixed dotted-surface canvas background, auto-rotating skills story, interactive project gallery
+- Web developer and AI automation builder: React, Next.js, TypeScript, Three.js, WebGL, Python, Airtable, LLM agents
+- Portrait hero, filterable project grid with a lightbox, all skill groups on one screen, phone menu
 - 64 complete websites built
 
 Contact: sudiptabiswas119@gmail.com · [LinkedIn](https://www.linkedin.com/in/sudipta-biswas-09a739211/)
