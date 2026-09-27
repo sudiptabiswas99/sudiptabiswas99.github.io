@@ -32,8 +32,16 @@ js/
   modules/              one feature per file, each exporting one init function:
     theme  nav-state  menu  copy-email  toast  confetti  work  live-tags  lightbox  reveal
     service-links  slideshow  underline  magnetic  footer-light  stat-3d  globe
+    badge/              feature folder: the hanging lanyard badge is 4 files, not 1
+      index.js          initBadge(): layout (sizes the stage from CSS custom properties, hangs the
+                        badge under the header), the frame loop, and the sleep-at-rest gate
+      badge.js          one Badge: pointer input, the flip to the back face, the springs that settle it
+      rig.js            the Verlet chain the strap swings on
+      spring.js         the small spring-toward-value helper the rig and badge.js share
 assets/
-  images/               portraits, project shots; thumbs/ for tiles, work/ for the full-size viewer
+  images/               portraits, project shots, qr-portfolio.svg; thumbs/ for tiles, work/ for the
+                        full-size viewer. qr-portfolio.svg is a real QR for
+                        https://sudiptabiswas99.github.io/, shown on the badge's back face
   fonts/                literata-3d.typeface.json (the "3" and "D" glyphs for the 3D stat)
   Sudipta_Biswas_CV.pdf kept at this path on purpose: the URL may already be in applications
 demos/                  six standalone project builds, copied unchanged from ~/Documents/All_Site/.
@@ -56,6 +64,10 @@ fetched when a 3D piece scrolls near the screen.
 | the email address, a breakpoint, an asset path | js/config.js |
 | an image | assets/images/ |
 | a project's live demo | demos/<slug>/ plus the tile's data-demo in index.html |
+| the hanging badge's physics (swing, drag, settle) | js/modules/badge/rig.js (the chain) and spring.js |
+| the hanging badge's pointer/flip behaviour or its sleep-at-rest loop | js/modules/badge/badge.js, index.js |
+| the hanging badge's look (card, strap, clip, geometry) | css/components/badge.css |
+| the hanging badge's text (name, role, chip, QR caption) | index.html, in .portrait-rig |
 
 ## Add a feature (example: a testimonials strip)
 

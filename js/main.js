@@ -14,8 +14,10 @@ import { initMagnetic } from './modules/magnetic.js';
 import { initFooterLight } from './modules/footer-light.js';
 import { initStat3d } from './modules/stat-3d.js';
 import { initGlobe } from './modules/globe.js';
+import { initBadge } from './modules/badge/index.js';
 
 initTheme();
+initBadge();
 initNavState();
 initMenu();
 initCopyEmail();

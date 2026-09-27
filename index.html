@@ -28,30 +28,35 @@
 <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,300..600&amp;family=Hanken+Grotesk:wght@400..700&amp;display=swap" rel="stylesheet" />
 
 <!-- styles: tokens, base, layout, one file per section, motion last (order matters) -->
-<link rel="stylesheet" href="css/tokens.css" />
-<link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/layout.css" />
-<link rel="stylesheet" href="css/components/a11y.css" />
-<link rel="stylesheet" href="css/components/controls.css" />
-<link rel="stylesheet" href="css/components/header.css" />
-<link rel="stylesheet" href="css/components/hero.css" />
-<link rel="stylesheet" href="css/components/strip.css" />
-<link rel="stylesheet" href="css/components/about.css" />
-<link rel="stylesheet" href="css/components/services.css" />
-<link rel="stylesheet" href="css/components/work.css" />
-<link rel="stylesheet" href="css/components/skills.css" />
-<link rel="stylesheet" href="css/components/experience.css" />
-<link rel="stylesheet" href="css/components/contact.css" />
-<link rel="stylesheet" href="css/components/footer.css" />
-<link rel="stylesheet" href="css/components/lightbox.css" />
-<link rel="stylesheet" href="css/components/toast.css" />
-<link rel="stylesheet" href="css/components/slideshow.css" />
-<link rel="stylesheet" href="css/motion.css" />
+<link rel="stylesheet" href="css/tokens.css?v=6" />
+<link rel="stylesheet" href="css/base.css?v=6" />
+<link rel="stylesheet" href="css/layout.css?v=6" />
+<link rel="stylesheet" href="css/components/a11y.css?v=6" />
+<link rel="stylesheet" href="css/components/controls.css?v=6" />
+<link rel="stylesheet" href="css/components/header.css?v=6" />
+<link rel="stylesheet" href="css/components/hero.css?v=6" />
+<link rel="stylesheet" href="css/components/badge.css?v=6" />
+<link rel="stylesheet" href="css/components/strip.css?v=6" />
+<link rel="stylesheet" href="css/components/about.css?v=6" />
+<link rel="stylesheet" href="css/components/services.css?v=6" />
+<link rel="stylesheet" href="css/components/work.css?v=6" />
+<link rel="stylesheet" href="css/components/skills.css?v=6" />
+<link rel="stylesheet" href="css/components/experience.css?v=6" />
+<link rel="stylesheet" href="css/components/contact.css?v=6" />
+<link rel="stylesheet" href="css/components/footer.css?v=6" />
+<link rel="stylesheet" href="css/components/lightbox.css?v=6" />
+<link rel="stylesheet" href="css/components/toast.css?v=6" />
+<link rel="stylesheet" href="css/components/slideshow.css?v=6" />
+<link rel="stylesheet" href="css/motion.css?v=6" />
 <!-- scripts: fetched in parallel, run by js/main.js -->
-<link rel="modulepreload" href="js/main.js" />
+<link rel="modulepreload" href="js/main.js?v=6" />
 <link rel="modulepreload" href="js/config.js" />
 <link rel="modulepreload" href="js/lib/dom.js" />
 <link rel="modulepreload" href="js/lib/three-kit.js" />
+<link rel="modulepreload" href="js/modules/badge/index.js" />
+<link rel="modulepreload" href="js/modules/badge/badge.js" />
+<link rel="modulepreload" href="js/modules/badge/rig.js" />
+<link rel="modulepreload" href="js/modules/badge/spring.js" />
 <link rel="modulepreload" href="js/modules/confetti.js" />
 <link rel="modulepreload" href="js/modules/copy-email.js" />
 <link rel="modulepreload" href="js/modules/footer-light.js" />
@@ -141,23 +146,61 @@
       </div>
 
       <div class="portrait-rig">
-        <svg class="orbit" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
-          <defs>
-            <linearGradient id="orbitStroke" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="currentColor" stop-opacity=".85"/>
-              <stop offset=".48" stop-color="currentColor" stop-opacity=".45"/>
-              <stop offset="1" stop-color="currentColor" stop-opacity=".12"/>
-            </linearGradient>
-          </defs>
-          <g transform="rotate(-18 200 205)">
-            <ellipse cx="200" cy="205" rx="188" ry="122" fill="none" stroke="url(#orbitStroke)" stroke-width="1.6"/>
-            <ellipse cx="200" cy="205" rx="152" ry="99" fill="none" stroke="currentColor" stroke-opacity=".32" stroke-width="1" stroke-dasharray="3 10"/>
-          </g>
-        </svg>
-        <figure class="pfp">
-          <img src="assets/images/profile.jpg" alt="Sudipta Biswas in a white shirt, outdoors in a garden" width="900" height="900" loading="eager" fetchpriority="high" decoding="async" />
-        </figure>
-        <span class="chip orbit-chip"><span class="dot" aria-hidden="true"></span>Dhaka · Open to work</span>
+        <div class="badge-stage" id="badgeStage">
+          <div class="badge">
+            <div class="badge__shadow" aria-hidden="true"></div>
+            <div class="badge__strap" aria-hidden="true"><span class="badge__strap-text">sudipta biswas · web developer · ai automation · sudipta biswas</span></div>
+            <div class="badge__mount" aria-hidden="true"></div>
+            <div class="badge__clip" aria-hidden="true">
+              <svg viewBox="0 0 20 44" focusable="false">
+                <rect x="2.5" y="0" width="15" height="9" rx="2" fill="currentColor"/>
+                <rect class="hi" x="4" y="1.3" width="12" height="1.8" rx=".9" fill="currentColor"/>
+                <rect class="lo" x="8.6" y="9" width="2.8" height="3.4" fill="currentColor"/>
+                <circle cx="10" cy="15.6" r="3.1" fill="none" stroke="currentColor" stroke-width="1.9"/>
+                <path d="M10 19.4c4.6 1.6 5.6 8.6 3.4 13.6L10 38.2l-3.4-5.2C4.4 28 5.4 21 10 19.4Z" fill="currentColor"/>
+                <path class="hi" d="M8.2 23.6c.5-1.5 1.1-2.2 1.8-2.4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                <path class="lo" d="M12.6 25.5v6.2" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                <circle cx="10" cy="42" r="3.7" fill="none" stroke="currentColor" stroke-width="1.9"/>
+              </svg>
+            </div>
+            <div class="badge__card" tabindex="0" role="button" aria-label="Sudipta Biswas, web developer and AI automation. Drag to toss, press Enter to flip for contact details.">
+              <div class="badge__inner">
+                <section class="face face--front">
+                  <span class="face__hole"></span>
+                  <div class="face__head">
+                    <strong class="face__mark">sb.</strong>
+                    <span class="face__meta">Dhaka</span>
+                  </div>
+                  <figure class="face__photo">
+                    <img src="assets/images/profile.jpg" alt="Sudipta Biswas in a white shirt, outdoors in a garden" width="900" height="900" loading="eager" fetchpriority="high" decoding="async" />
+                  </figure>
+                  <p class="face__name">Sudipta Biswas</p>
+                  <p class="face__role">Web developer<span>AI automation</span></p>
+                  <p class="face__desc">I build websites and AI automations.</p>
+                  <span class="chip face__chip"><span class="dot" aria-hidden="true"></span>Dhaka · Open to work</span>
+                  <div class="face__foot"><span>CSE, AIUB</span><b>’26</b></div>
+                </section>
+                <section class="face face--back">
+                  <span class="face__hole"></span>
+                  <div class="face__head">
+                    <strong class="face__mark">sb.</strong>
+                    <span class="face__meta">Contact</span>
+                  </div>
+                  <figure class="qr">
+                    <img src="assets/images/qr-portfolio.svg" alt="QR code that opens sudiptabiswas99.github.io" width="118" height="118">
+                    <figcaption>Scan to open this portfolio</figcaption>
+                  </figure>
+                  <dl class="specs">
+                    <div><dt>Email</dt><dd>sudiptabiswas119@gmail.com</dd></div>
+                    <div><dt>GitHub</dt><dd>sudiptabiswas99</dd></div>
+                    <div><dt>LinkedIn</dt><dd>sudipta-biswas-09a739211</dd></div>
+                  </dl>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="badge-hint">Drag the card, or tap it to flip</p>
       </div>
     </div>
 
@@ -253,157 +296,157 @@
 
     <div class="wgrid" id="wgrid">
       <a class="wc" data-cat="plumb" data-img="assets/images/work/ironhand.png" data-tag="React" data-desc="Trade site with a sticky call bar, an animated hero, a before/after slider and a live service-area map." data-stack="React · TypeScript · Tailwind · Leaflet" href="assets/images/work/ironhand.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/ironhand.jpg?v=4" alt="Screenshot of the IRONHAND Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="816" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/ironhand.jpg?v=5" alt="Screenshot of the IRONHAND Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="816" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">IRONHAND Plumbing Co.</span><span class="k">Plumbing</span></span>
       </a>
 
       <a class="wc" data-cat="3d" data-demo="demos/house-3d/index.html" data-img="assets/images/work/house-3d.png" data-tag="Three.js" data-desc="A cutaway residential DWV + supply model you can orbit, zoom and toggle system by system, with live labels and water flow." data-stack="Three.js · WebGL · Orbit Controls" href="assets/images/work/house-3d.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/house-3d.jpg?v=4" alt="Screenshot of the interactive 3D house model" loading="lazy" decoding="async" width="1000" height="848" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/house-3d.jpg?v=5" alt="Screenshot of the interactive 3D house model" loading="lazy" decoding="async" width="1000" height="848" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Interactive 3D House</span><span class="k">3D · Three.js</span></span>
       </a>
 
       <a class="wc" data-cat="video" data-img="assets/images/work/reel-productivity-trap.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on the METR study, with an animated bar chart and a synthesised score." data-stack="FFmpeg · TTS · Motion" href="assets/images/work/reel-productivity-trap.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/reel-productivity-trap.jpg?v=4" alt="Frame from the short video The Productivity Trap" loading="lazy" decoding="async" width="704" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/reel-productivity-trap.jpg?v=5" alt="Frame from the short video The Productivity Trap" loading="lazy" decoding="async" width="704" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">The Productivity Trap</span><span class="k">AI Video</span></span>
       </a>
 
       <a class="wc" data-cat="system" data-img="assets/images/kit-demo.png" data-tag="React" data-desc="The template engine behind the rest: shared tokens, layout primitives and a rapid re-skin workflow across 18 niches." data-stack="React · Vite · Design System" href="assets/images/kit-demo.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/kit-demo.jpg?v=4" alt="Screenshot of the beautiful-websites-kit demo page" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/kit-demo.jpg?v=5" alt="Screenshot of the beautiful-websites-kit demo page" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">beautiful-websites-kit</span><span class="k">Template system</span></span>
       </a>
 
       <a class="wc" data-cat="roof" data-img="assets/images/work/roofing.png" data-tag="Next.js" data-desc="Roofing build with a review strip, a financing block and a process timeline, held to Core Web Vitals." data-stack="Next.js · TypeScript · Core Web Vitals" href="assets/images/work/roofing.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/roofing.jpg?v=4" alt="Screenshot of the Ridgeline Roofing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/roofing.jpg?v=5" alt="Screenshot of the Ridgeline Roofing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Ridgeline Roofing</span><span class="k">Roofing</span></span>
       </a>
 
       <a class="wc" data-cat="3d" data-demo="demos/aether/index.html" data-img="assets/images/work/aether-hero.png" data-tag="WebGL" data-desc="A shader hero: noise fields rendered live in the browser and dropped in as a background component." data-stack="WebGL · GLSL · Canvas" href="assets/images/work/aether-hero.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/aether-hero.jpg?v=4" alt="Screenshot of the Aether shader hero" loading="lazy" decoding="async" width="1000" height="906" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/aether-hero.jpg?v=5" alt="Screenshot of the Aether shader hero" loading="lazy" decoding="async" width="1000" height="906" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Aether Shader Hero</span><span class="k">3D · Shader</span></span>
       </a>
 
       <a class="wc extra" data-cat="auto" data-img="assets/images/work/salem-auto.png" data-tag="Next.js" data-desc="A kinetic headline over structured business data, reviews and service areas." data-stack="Next.js · Animation · Local SEO" href="assets/images/work/salem-auto.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/salem-auto.jpg?v=4" alt="Screenshot of the Salem Auto Electric website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/salem-auto.jpg?v=5" alt="Screenshot of the Salem Auto Electric website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Salem Auto Electric</span><span class="k">Automotive</span></span>
       </a>
 
       <a class="wc extra" data-cat="plumb" data-img="assets/images/work/hargrove.png" data-tag="React" data-desc="Flagship multi-page build with ZIP check and six area pages." data-stack="React · API" href="assets/images/work/hargrove.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/hargrove.jpg?v=4" alt="Screenshot of the Hargrove &amp; Sons Plumbing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/hargrove.jpg?v=5" alt="Screenshot of the Hargrove &amp; Sons Plumbing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Hargrove &amp; Sons Plumbing</span><span class="k">Plumbing</span></span>
       </a>
 
       <a class="wc extra" data-cat="shop" data-img="assets/images/work/nova.png" data-tag="React" data-desc="Storefront layout with product grid." data-stack="React" href="assets/images/work/nova.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/nova.jpg?v=4" alt="Screenshot of the NOVA Premium Electronics store page" loading="lazy" decoding="async" width="1000" height="812" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/nova.jpg?v=5" alt="Screenshot of the NOVA Premium Electronics store page" loading="lazy" decoding="async" width="1000" height="812" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">NOVA Premium Electronics</span><span class="k">Retail</span></span>
       </a>
 
       <a class="wc extra" data-cat="3d" data-demo="demos/ripple/index.html" data-img="assets/images/work/ripple-effect.png" data-tag="Canvas" data-desc="A pointer-reactive ripple field built as a drop-in background component." data-stack="Canvas · Shaders" href="assets/images/work/ripple-effect.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/ripple-effect.jpg?v=4" alt="Screenshot of the background ripple effect demo" loading="lazy" decoding="async" width="991" height="622" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/ripple-effect.jpg?v=5" alt="Screenshot of the background ripple effect demo" loading="lazy" decoding="async" width="991" height="622" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Background Ripple Effect</span><span class="k">3D · Motion</span></span>
       </a>
 
       <a class="wc extra" data-cat="3d" data-demo="demos/neon-drive/index.html" data-img="assets/images/work/neon-drive.png" data-tag="Canvas" data-desc="Neon motion study." data-stack="Canvas" href="assets/images/work/neon-drive.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/neon-drive.jpg?v=4" alt="Screenshot of the Neon Drive page" loading="lazy" decoding="async" width="1000" height="744" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/neon-drive.jpg?v=5" alt="Screenshot of the Neon Drive page" loading="lazy" decoding="async" width="1000" height="744" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Neon Drive</span><span class="k">3D · Motion</span></span>
       </a>
 
       <a class="wc extra" data-cat="3d" data-demo="demos/nightscape/index.html" data-img="assets/images/work/nightscape.png" data-tag="Canvas" data-desc="Animated night-scene backdrop." data-stack="Canvas" href="assets/images/work/nightscape.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/nightscape.jpg?v=4" alt="Screenshot of the Nightscape page" loading="lazy" decoding="async" width="1000" height="745" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/nightscape.jpg?v=5" alt="Screenshot of the Nightscape page" loading="lazy" decoding="async" width="1000" height="745" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Nightscape</span><span class="k">3D · Motion</span></span>
       </a>
 
       <a class="wc extra" data-cat="3d" data-demo="demos/garage-door/index.html" data-img="assets/images/work/garage-door.png" data-tag="CSS" data-desc="Scroll-driven reveal interaction." data-stack="CSS · JS" href="assets/images/work/garage-door.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/garage-door.jpg?v=4" alt="Screenshot of the garage door reveal page" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/garage-door.jpg?v=5" alt="Screenshot of the garage door reveal page" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Garage Door Reveal</span><span class="k">3D · Motion</span></span>
       </a>
 
       <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-context.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on managing model context." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-context.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/reel-context.jpg?v=4" alt="Frame from the short video Context Windows" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/reel-context.jpg?v=5" alt="Frame from the short video Context Windows" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Context Windows</span><span class="k">AI Video</span></span>
       </a>
 
       <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-entry.jpg" data-tag="FFmpeg" data-desc="Short-form explainer, faceless format." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-entry.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/reel-entry.jpg?v=4" alt="Frame from the short video Entry Point" loading="lazy" decoding="async" width="700" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/reel-entry.jpg?v=5" alt="Frame from the short video Entry Point" loading="lazy" decoding="async" width="700" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Entry Point</span><span class="k">AI Video</span></span>
       </a>
 
       <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-git-duo.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on a two-command git flow." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-git-duo.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/reel-git-duo.jpg?v=4" alt="Frame from the short video Git Workflow Duo" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/reel-git-duo.jpg?v=5" alt="Frame from the short video Git Workflow Duo" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Git Workflow Duo</span><span class="k">AI Video</span></span>
       </a>
 
       <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-slash.jpg" data-tag="FFmpeg" data-desc="Short-form explainer, screen-capture driven." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-slash.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/reel-slash.jpg?v=4" alt="Frame from the short video Slash Commands" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/reel-slash.jpg?v=5" alt="Frame from the short video Slash Commands" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Slash Commands</span><span class="k">AI Video</span></span>
       </a>
 
       <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-report.jpg" data-tag="FFmpeg" data-desc="Short-form explainer with animated data panels." data-stack="FFmpeg · TTS · Motion" href="assets/images/work/reel-report.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/reel-report.jpg?v=4" alt="Frame from the short video Session Reports" loading="lazy" decoding="async" width="1000" height="944" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/reel-report.jpg?v=5" alt="Frame from the short video Session Reports" loading="lazy" decoding="async" width="1000" height="944" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Session Reports</span><span class="k">AI Video</span></span>
       </a>
 
       <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-so-arm100.jpg" data-tag="FFmpeg" data-desc="Short-form build breakdown with real hardware footage." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-so-arm100.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/reel-so-arm100.jpg?v=4" alt="Frame from the short video about the SO-ARM100 robot arm" loading="lazy" decoding="async" width="869" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/reel-so-arm100.jpg?v=5" alt="Frame from the short video about the SO-ARM100 robot arm" loading="lazy" decoding="async" width="869" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">SO-ARM100 Robot Arm</span><span class="k">AI Video</span></span>
       </a>
 
       <a class="wc extra" data-cat="plumb" data-img="assets/images/work/tidewell.png" data-tag="React" data-desc="Re-skinned from the shared component base." data-stack="React · Tailwind" href="assets/images/work/tidewell.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/tidewell.jpg?v=4" alt="Screenshot of the TIDEWELL Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="796" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/tidewell.jpg?v=5" alt="Screenshot of the TIDEWELL Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="796" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">TIDEWELL Plumbing Co.</span><span class="k">Plumbing</span></span>
       </a>
 
       <a class="wc extra" data-cat="plumb" data-img="assets/images/work/blueline.png" data-tag="React" data-desc="Trade site variant on the same system." data-stack="React" href="assets/images/work/blueline.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/blueline.jpg?v=4" alt="Screenshot of the BlueLine Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/blueline.jpg?v=5" alt="Screenshot of the BlueLine Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">BlueLine Plumbing Co.</span><span class="k">Plumbing</span></span>
       </a>
 
       <a class="wc extra" data-cat="spa" data-img="assets/images/work/figura.png" data-tag="Next.js" data-desc="Treatment menu and booking flow." data-stack="Next.js" href="assets/images/work/figura.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/figura.jpg?v=4" alt="Screenshot of the Figura Medspa website" loading="lazy" decoding="async" width="1000" height="876" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/figura.jpg?v=5" alt="Screenshot of the Figura Medspa website" loading="lazy" decoding="async" width="1000" height="876" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Figura Medspa</span><span class="k">Med Spa</span></span>
       </a>
 
       <a class="wc extra" data-cat="spa" data-img="assets/images/work/glo.png" data-tag="Next.js" data-desc="Spa layout built around a service grid." data-stack="Next.js" href="assets/images/work/glo.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/glo.jpg?v=4" alt="Screenshot of the Glo Med Spa website" loading="lazy" decoding="async" width="1000" height="772" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/glo.jpg?v=5" alt="Screenshot of the Glo Med Spa website" loading="lazy" decoding="async" width="1000" height="772" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Glo Med Spa</span><span class="k">Med Spa</span></span>
       </a>
 
       <a class="wc extra" data-cat="spa" data-img="assets/images/work/skin-couture.png" data-tag="React" data-desc="Editorial spa layout." data-stack="React" href="assets/images/work/skin-couture.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/skin-couture.jpg?v=4" alt="Screenshot of the Skin Couture Med Spa website" loading="lazy" decoding="async" width="1000" height="798" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/skin-couture.jpg?v=5" alt="Screenshot of the Skin Couture Med Spa website" loading="lazy" decoding="async" width="1000" height="798" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Skin Couture Med Spa</span><span class="k">Med Spa</span></span>
       </a>
 
       <a class="wc extra" data-cat="niche" data-img="assets/images/work/pressure-washing.png" data-tag="React" data-desc="Pressure-washing business site." data-stack="React" href="assets/images/work/pressure-washing.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/pressure-washing.jpg?v=4" alt="Screenshot of the Crisp Exterior Washing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/pressure-washing.jpg?v=5" alt="Screenshot of the Crisp Exterior Washing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Crisp Exterior Washing</span><span class="k">Trade site</span></span>
       </a>
 
       <a class="wc extra" data-cat="niche" data-img="assets/images/work/hvac.png" data-tag="React" data-desc="Same component base, re-skinned for HVAC." data-stack="React" href="assets/images/work/hvac.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/hvac.jpg?v=4" alt="Screenshot of the HVAC website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/hvac.jpg?v=5" alt="Screenshot of the HVAC website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">HVAC Build</span><span class="k">Trade site</span></span>
       </a>
 
       <a class="wc extra" data-cat="niche" data-img="assets/images/work/concrete.png" data-tag="React" data-desc="Concrete and masonry trade site on the shared system." data-stack="React" href="assets/images/work/concrete.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/concrete.jpg?v=4" alt="Screenshot of the concrete and masonry website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/concrete.jpg?v=5" alt="Screenshot of the concrete and masonry website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Concrete &amp; Masonry</span><span class="k">Trade site</span></span>
       </a>
 
       <a class="wc extra" data-cat="niche" data-img="assets/images/work/deck.png" data-tag="React" data-desc="Deck and patio build from the template library." data-stack="React" href="assets/images/work/deck.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/deck.jpg?v=4" alt="Screenshot of the deck and patio website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/deck.jpg?v=5" alt="Screenshot of the deck and patio website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Deck &amp; Patio</span><span class="k">Trade site</span></span>
       </a>
 
       <a class="wc extra" data-cat="niche" data-img="assets/images/work/electrical.png" data-tag="React" data-desc="Electrical trade site, same layout primitives." data-stack="React" href="assets/images/work/electrical.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/electrical.jpg?v=4" alt="Screenshot of the electrical contractor website" loading="lazy" decoding="async" width="1000" height="806" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/electrical.jpg?v=5" alt="Screenshot of the electrical contractor website" loading="lazy" decoding="async" width="1000" height="806" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Electrical</span><span class="k">Trade site</span></span>
       </a>
 
       <a class="wc extra" data-cat="niche" data-img="assets/images/work/landscaping.png" data-tag="React" data-desc="Landscaping re-skin of the shared component base." data-stack="React" href="assets/images/work/landscaping.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/landscaping.jpg?v=4" alt="Screenshot of the landscaping website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/landscaping.jpg?v=5" alt="Screenshot of the landscaping website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Landscaping</span><span class="k">Trade site</span></span>
       </a>
 
       <a class="wc extra" data-cat="niche" data-img="assets/images/work/pool.png" data-tag="React" data-desc="Pool and spa build on the same system." data-stack="React" href="assets/images/work/pool.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/images/thumbs/pool.jpg?v=4" alt="Screenshot of the pool and spa website" loading="lazy" decoding="async" width="1000" height="880" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+        <span class="wc-media"><img src="assets/images/thumbs/pool.jpg?v=5" alt="Screenshot of the pool and spa website" loading="lazy" decoding="async" width="1000" height="880" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Pool &amp; Spa</span><span class="k">Trade site</span></span>
       </a>
     </div>
@@ -599,7 +642,7 @@
   <div class="box">
     <button class="x" type="button" data-close aria-label="Close preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     <div class="lb-inner">
-      <div class="lb-media"><img id="lbImg" src="assets/images/thumbs/ironhand.jpg?v=4" alt="" width="1000" height="816" loading="lazy" decoding="async" /></div>
+      <div class="lb-media"><img id="lbImg" src="assets/images/thumbs/ironhand.jpg?v=5" alt="" width="1000" height="816" loading="lazy" decoding="async" /></div>
       <div class="lb-demo" id="lbDemo"></div>
       <div class="cap"><h3 class="t" id="lbTitle"></h3><span class="m" id="lbTag"></span><p class="d" id="lbDesc"></p></div>
       <div class="lb-run-row" id="lbRunRow" hidden>
@@ -612,12 +655,12 @@
 </div>
 
 <!-- ===== floating preview (kept; not wired) ===== -->
-<div class="preview" id="preview" aria-hidden="true"><img id="previewImg" src="assets/images/thumbs/ironhand.jpg?v=4" alt="" width="1000" height="816" loading="lazy" decoding="async" /><span class="tag" id="previewTag"></span></div>
+<div class="preview" id="preview" aria-hidden="true"><img id="previewImg" src="assets/images/thumbs/ironhand.jpg?v=5" alt="" width="1000" height="816" loading="lazy" decoding="async" /><span class="tag" id="previewTag"></span></div>
 
 <!-- ===== confetti + toast ===== -->
 <canvas id="confetti" aria-hidden="true" hidden></canvas>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script type="module" src="js/main.js"></script>
+<script type="module" src="js/main.js?v=6"></script>
 </body>
 </html>

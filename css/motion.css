@@ -10,12 +10,8 @@
 .m-on .hero .hero-lead{ animation:risein .7s .34s var(--ease-out) both; }
 .m-on .hero .hero-actions{ animation:risein .7s .44s var(--ease-out) both; }
 .m-on .hero .hero-stats{ animation:risein .7s .56s var(--ease-out) both; }
-.m-on .hero .pfp, .m-on .hero .orbit-chip{ animation:fadein .9s .2s var(--ease-out) both; }
-.m-on .orbit ellipse:first-of-type{ stroke-dasharray:1000; stroke-dashoffset:1000; animation:odraw 1.6s .25s var(--ease-out) forwards; }
-.m-on .orbit ellipse:last-of-type{ animation:fadein 1s .9s var(--ease-out) both; }
 @keyframes wrise{ from{ transform:translateY(140%); } }
 @keyframes risein{ from{ opacity:0; transform:translateY(14px); } }
-@keyframes odraw{ to{ stroke-dashoffset:0; } }
 
 /* headings rise from behind their own baseline as they reach the screen */
 .h2w{ display:block; }
