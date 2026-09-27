@@ -21,12 +21,12 @@
   try { if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) r.classList.add("m-on"); } catch(e){}
 })();
 </script>
-<!-- three.js is only fetched when a 3D piece scrolls near the screen -->
+<!-- three.js r180 is self-hosted in assets/vendor/three (jsDelivr reset Chrome connections) and only fetched when a 3D piece scrolls near the screen -->
 <!-- every module URL carries ?v=: browsers cache GitHub Pages files for 10 minutes, and a stale module mixed
      with fresh ones breaks the page. Change a JS file: bump every ?v= in this file (list new modules here) -->
 <script type="importmap">{"imports":{
-  "three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js",
-  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+  "three":"./assets/vendor/three/build/three.module.min.js",
+  "three/addons/":"./assets/vendor/three/examples/jsm/",
   "./js/config.js":"./js/config.js?v=8",
   "./js/lib/dom.js":"./js/lib/dom.js?v=8",
   "./js/lib/three-kit.js":"./js/lib/three-kit.js?v=8",

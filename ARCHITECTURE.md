@@ -41,6 +41,8 @@ js/
       rig.js            the Verlet chain the strap swings on, with the elastic strap reel for the drop
       spring.js         the small spring-toward-value helper the rig and badge.js share
 assets/
+  vendor/three/         three.js r180 (MIT, LICENSE kept): build/ and the two addons stat-3d uses. The
+                        importmap in index.html points "three" and "three/addons/" here; no CDN at runtime
   images/               portraits, project shots, qr-portfolio.svg; thumbs/ for tiles, work/ for the
                         full-size viewer. qr-portfolio.svg is a real QR for
                         https://sudiptabiswas99.github.io/, shown on the badge's back face
