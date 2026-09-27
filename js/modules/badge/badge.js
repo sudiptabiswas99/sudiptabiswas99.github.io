@@ -1,8 +1,9 @@
 /* One hanging badge: wraps the .badge already in index.html. A Verlet rig swings it, springs drive flip,
-   twist, hover tilt and lift. Adapted from ~/Documents/hanging-card/js/modules/badge.js. index.js owns the
-   frame loop: every input here calls wake(), and resting() tells the loop when it may stop. */
+   twist, hover tilt and lift. Adapted from ~/Documents/hanging-card/js/modules/badge.js. Input is in pointer.js;
+   index.js owns the frame loop: every input calls wake(), and resting() tells the loop when it may stop. */
 import { Rig } from './rig.js';
 import { Spring } from './spring.js';
+import { bindPointer } from './pointer.js';
 
 /* tuning, copied from hanging-card js/lib/badge-data.js */
 export const PHYSICS = {
@@ -16,6 +17,10 @@ export const PHYSICS = {
   twist: 0.011,       // deg of turn per px/s of sideways speed
   maxTwist: 20,       // deg
   tilt: 11,           // deg of hover tilt at the card edge
+  drop: { stiffness: 300, damping: 12 },   // the strap catching the card: 1/s², 1/s (dips ~27%, bounces twice)
+  reelIn: 0.12,       // share of the strap left showing while the card waits up at the mount
+  spinKick: 400,      // deg/s of turn the catch gives the card (measured peak ~30 deg)
+  spinSpring: { stiffness: 49, damping: 5.2 },   // the card turning on its strap, about 0.9 s a swing
   flipSpring: { stiffness: 110, damping: 11 },
   tiltSpring: { stiffness: 170, damping: 17 },
   liftSpring: { stiffness: 260, damping: 26 },
@@ -37,18 +42,22 @@ export class Badge {
     this.parts = {
       shadow: q('.badge__shadow'), strap: q('.badge__strap'), mount: q('.badge__mount'),
       clip: q('.badge__clip'), card: q('.badge__card'), inner: q('.badge__inner'),
+      text: q('.badge__strap-text'),
     };
+    this.parts.text.style.transformOrigin = '50% 0';
     this.scale = 1;
     this.rig = new Rig(PHYSICS);
     this.yaw = new Spring(PHYSICS.flipSpring);
     this.tiltX = new Spring(PHYSICS.tiltSpring);
     this.tiltY = new Spring(PHYSICS.tiltSpring);
     this.lift = new Spring(PHYSICS.liftSpring);
-    this.springs = [this.yaw, this.tiltX, this.tiltY, this.lift];
+    this.spin = new Spring(PHYSICS.spinSpring);
+    this.springs = [this.yaw, this.tiltX, this.tiltY, this.lift, this.spin];
+    this.kick = 0;
     this.flipped = false;
     this.drag = null;
     this.hover = null;
-    this.bindPointer();
+    bindPointer(this);
   }
 
   hang(x, y, scale) {
@@ -61,20 +70,42 @@ export class Badge {
         p.x = x + (p.x - px) * k; p.y = y + (p.y - py) * k;
         p.ox = x + (p.ox - px) * k; p.oy = y + (p.oy - py) * k;
       }
+      const r = rig.reel;
+      if (r) {
+        // mid-drop: keep the strap's share, at the new size
+        const k0 = lengths[0] / r.full;
+        r.full = lengths[0]; r.v *= k0; lengths[0] = rig.lengths[0] * k0;
+      }
       rig.lengths = lengths;
       rig.scale = scale;
     } else {
       rig.configure(x, y, lengths, scale);
     }
     this.scale = scale;
+    this.textTop = this.parts.text.offsetTop;
     this.parts.mount.style.transform = `translate3d(${x}px, ${y - 8 * scale}px, 0) scale(${scale})`;
     this.render();
   }
 
-  // Start the badge swung out to one side, so it swings in when the page opens.
-  enter(angle) {
-    this.rig.pose(angle * 0.8, angle);
+  // Pull the card up to the mount and hold it there, straight, until drop(). Done while it is out of sight.
+  arm() {
+    if (this.drag) return;
+    this.rig.reelIn(PHYSICS.reelIn);
+    this.rig.pose(0, 0);
+    this.kick = 0;
+    this.spin.value = this.spin.velocity = 0;
     this.render();
+  }
+  armed() { return !!(this.rig.reel && this.rig.reel.held); }
+
+  // Let it fall from a small side angle: the strap catches it, it bounces, turns on the strap and settles.
+  drop(angle) {
+    if (!this.armed()) return;
+    this.rig.pose(angle * 0.8, angle);
+    this.rig.letGo();
+    this.kick = angle > 0 ? -1 : 1;
+    this.render();
+    this.wake();
   }
 
   flip(state = !this.flipped) {
@@ -89,21 +120,26 @@ export class Badge {
   }
 
   update(dt) {
-    if (this.drag) this.rig.hold(this.drag.t, this.drag.x, this.drag.y);
+    if (this.drag && this.drag.live) this.rig.hold(this.drag.t, this.drag.x, this.drag.y);
     this.rig.update(dt);
+    if (this.kick && !(this.rig.reel && !this.rig.reel.caught)) {
+      // the catch jolts the card round on its strap
+      this.spin.velocity += this.kick * PHYSICS.spinKick;
+      this.kick = 0;
+    }
     const speed = this.rig.velocity(3).x / this.scale;
     const twist = clamp(-speed * PHYSICS.twist, -PHYSICS.maxTwist, PHYSICS.maxTwist);
     this.yaw.target = (this.flipped ? 180 : 0) + twist;
     this.tiltX.target = this.hover ? (1 - this.hover.y * 2) * PHYSICS.tilt * 0.7 : 0;
     this.tiltY.target = this.hover ? this.hover.x * PHYSICS.tilt : 0;
-    this.lift.target = this.drag ? 1 : 0;
+    this.lift.target = this.drag && this.drag.live ? 1 : 0;
     for (const s of this.springs) s.update(dt);
     this.render();
   }
 
   // True when nothing is held, every rig point is slower than REST_SPEED and every spring has arrived.
   resting() {
-    if (this.drag) return false;
+    if (this.drag || this.kick || (this.rig.reel && !this.rig.reel.held)) return false;
     for (let i = 1; i < 4; i++) {
       const v = this.rig.velocity(i);
       if (Math.hypot(v.x, v.y) > REST_SPEED) return false;
@@ -116,10 +152,17 @@ export class Badge {
     const [p0, p1, p2] = rig.pts;
     const cardDeg = -rig.angle(2) * DEG;
     const lift = this.lift.value;
-    const turn = this.yaw.value + this.tiltY.value;
+    const turn = this.yaw.value + this.tiltY.value + this.spin.value;
     const x = p2.x - size.cardW / 2, y = p2.y - size.ring;
 
-    parts.strap.style.transform = `translate3d(${p0.x}px, ${p0.y}px, 0) rotate(${-rig.angle(0) * DEG}deg) scale(${s})`;
+    // the strap shows at its current length: it slides out of the mount, its print moving with it, unsquashed
+    const k = rig.reel ? rig.lengths[0] / rig.reel.full : 1;
+    parts.strap.style.transform = `translate3d(${p0.x}px, ${p0.y}px, 0) rotate(${-rig.angle(0) * DEG}deg) scale(${s}, ${s * k})`;
+    if (k !== this.strapK) {
+      const t0 = this.textTop, full = size.strap;
+      parts.text.style.transform = k === 1 ? '' : `translate(-50%, ${(t0 - full + full * k) / k - t0}px) scaleY(${1 / k})`;
+      this.strapK = k;
+    }
     parts.clip.style.transform = `translate3d(${p1.x}px, ${p1.y}px, 0) rotate(${-rig.angle(1) * DEG}deg) scale(${s})`;
     parts.card.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${cardDeg}deg) scale(${s * (1 + lift * 0.035)})`;
     parts.inner.style.transform = `rotateX(${this.tiltX.value}deg) rotateY(${turn}deg)`;
@@ -134,62 +177,5 @@ export class Badge {
     parts.shadow.style.opacity = 1 - lift * 0.3;
     parts.card.style.setProperty('--rx', this.tiltX.value.toFixed(2));
     parts.card.style.setProperty('--ry', (turn - (this.flipped ? 180 : 0)).toFixed(2));
-  }
-
-  bindPointer() {
-    const card = this.parts.card;
-    const at = (e) => {
-      const r = this.el.getBoundingClientRect();
-      return { x: e.clientX - r.left, y: e.clientY - r.top };
-    };
-
-    card.addEventListener('pointerdown', (e) => {
-      if (e.button !== 0) return;
-      e.preventDefault();
-      try { card.setPointerCapture(e.pointerId); } catch (err) {}
-      const p = at(e);
-      this.drag = { t: this.rig.along(p.x, p.y), ...p, sx: e.clientX, sy: e.clientY, time: performance.now(), moved: false };
-      this.setHover(null);
-      this.el.classList.add('is-dragging');
-      this.wake();
-    });
-
-    card.addEventListener('pointermove', (e) => {
-      const p = at(e);
-      if (this.drag) {
-        Object.assign(this.drag, p);
-        if (Math.hypot(e.clientX - this.drag.sx, e.clientY - this.drag.sy) > 6) this.drag.moved = true;
-      } else if (e.pointerType === 'mouse') {
-        this.setHover(this.rig.local(p.x, p.y, (this.size.cardW / 2) * this.scale));
-      }
-      this.wake();
-    });
-
-    const end = (e) => {
-      if (!this.drag) return;
-      const tap = !this.drag.moved && performance.now() - this.drag.time < 320;
-      this.drag = null;
-      this.rig.release();
-      this.el.classList.remove('is-dragging');
-      this.wake();
-      if (tap && e.type === 'pointerup') this.flip();
-    };
-    card.addEventListener('pointerup', end);
-    card.addEventListener('pointercancel', end);
-    card.addEventListener('pointerleave', () => { if (!this.drag) { this.setHover(null); this.wake(); } });
-
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.flip(); }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); this.sway(e.key === 'ArrowLeft' ? -1 : 1); }
-    });
-  }
-
-  setHover(h) {
-    this.hover = h;
-    const style = this.parts.card.style;
-    style.setProperty('--glare', h ? 1 : 0);
-    if (!h) return;
-    style.setProperty('--mx', `${(clamp(h.x, -1, 1) * 0.5 + 0.5) * 100}%`);
-    style.setProperty('--my', `${clamp(h.y, 0, 1) * 100}%`);
   }
 }

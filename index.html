@@ -28,33 +28,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,300..600&amp;family=Hanken+Grotesk:wght@400..700&amp;display=swap" rel="stylesheet" />
 
 <!-- styles: tokens, base, layout, one file per section, motion last (order matters) -->
-<link rel="stylesheet" href="css/tokens.css?v=6" />
-<link rel="stylesheet" href="css/base.css?v=6" />
-<link rel="stylesheet" href="css/layout.css?v=6" />
-<link rel="stylesheet" href="css/components/a11y.css?v=6" />
-<link rel="stylesheet" href="css/components/controls.css?v=6" />
-<link rel="stylesheet" href="css/components/header.css?v=6" />
-<link rel="stylesheet" href="css/components/hero.css?v=6" />
-<link rel="stylesheet" href="css/components/badge.css?v=6" />
-<link rel="stylesheet" href="css/components/strip.css?v=6" />
-<link rel="stylesheet" href="css/components/about.css?v=6" />
-<link rel="stylesheet" href="css/components/services.css?v=6" />
-<link rel="stylesheet" href="css/components/work.css?v=6" />
-<link rel="stylesheet" href="css/components/skills.css?v=6" />
-<link rel="stylesheet" href="css/components/experience.css?v=6" />
-<link rel="stylesheet" href="css/components/contact.css?v=6" />
-<link rel="stylesheet" href="css/components/footer.css?v=6" />
-<link rel="stylesheet" href="css/components/lightbox.css?v=6" />
-<link rel="stylesheet" href="css/components/toast.css?v=6" />
-<link rel="stylesheet" href="css/components/slideshow.css?v=6" />
-<link rel="stylesheet" href="css/motion.css?v=6" />
+<link rel="stylesheet" href="css/tokens.css?v=7" />
+<link rel="stylesheet" href="css/base.css?v=7" />
+<link rel="stylesheet" href="css/layout.css?v=7" />
+<link rel="stylesheet" href="css/components/a11y.css?v=7" />
+<link rel="stylesheet" href="css/components/controls.css?v=7" />
+<link rel="stylesheet" href="css/components/header.css?v=7" />
+<link rel="stylesheet" href="css/components/hero.css?v=7" />
+<link rel="stylesheet" href="css/components/badge.css?v=7" />
+<link rel="stylesheet" href="css/components/strip.css?v=7" />
+<link rel="stylesheet" href="css/components/about.css?v=7" />
+<link rel="stylesheet" href="css/components/services.css?v=7" />
+<link rel="stylesheet" href="css/components/work.css?v=7" />
+<link rel="stylesheet" href="css/components/skills.css?v=7" />
+<link rel="stylesheet" href="css/components/experience.css?v=7" />
+<link rel="stylesheet" href="css/components/contact.css?v=7" />
+<link rel="stylesheet" href="css/components/footer.css?v=7" />
+<link rel="stylesheet" href="css/components/lightbox.css?v=7" />
+<link rel="stylesheet" href="css/components/toast.css?v=7" />
+<link rel="stylesheet" href="css/components/slideshow.css?v=7" />
+<link rel="stylesheet" href="css/motion.css?v=7" />
 <!-- scripts: fetched in parallel, run by js/main.js -->
-<link rel="modulepreload" href="js/main.js?v=6" />
+<link rel="modulepreload" href="js/main.js?v=7" />
 <link rel="modulepreload" href="js/config.js" />
 <link rel="modulepreload" href="js/lib/dom.js" />
 <link rel="modulepreload" href="js/lib/three-kit.js" />
 <link rel="modulepreload" href="js/modules/badge/index.js" />
 <link rel="modulepreload" href="js/modules/badge/badge.js" />
+<link rel="modulepreload" href="js/modules/badge/pointer.js" />
 <link rel="modulepreload" href="js/modules/badge/rig.js" />
 <link rel="modulepreload" href="js/modules/badge/spring.js" />
 <link rel="modulepreload" href="js/modules/confetti.js" />
@@ -149,7 +150,7 @@
         <div class="badge-stage" id="badgeStage">
           <div class="badge">
             <div class="badge__shadow" aria-hidden="true"></div>
-            <div class="badge__strap" aria-hidden="true"><span class="badge__strap-text">sudipta biswas · web developer · ai automation · sudipta biswas</span></div>
+            <div class="badge__strap" aria-hidden="true"><span class="badge__strap-text">sudipta biswas</span></div>
             <div class="badge__mount" aria-hidden="true"></div>
             <div class="badge__clip" aria-hidden="true">
               <svg viewBox="0 0 20 44" focusable="false">
@@ -200,7 +201,7 @@
             </div>
           </div>
         </div>
-        <p class="badge-hint">Drag the card, or tap it to flip</p>
+        <p class="badge-hint"><span class="hint-fine">Drag the card, or tap it to flip</span><span class="hint-touch">Drag the card sideways, or tap it to flip</span></p>
       </div>
     </div>
 
@@ -661,6 +662,6 @@
 <canvas id="confetti" aria-hidden="true" hidden></canvas>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script type="module" src="js/main.js?v=6"></script>
+<script type="module" src="js/main.js?v=7"></script>
 </body>
 </html>

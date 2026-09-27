@@ -39,6 +39,36 @@
 .hst .l{ margin-top:var(--s-2); font-size:14px; line-height:1.4; color:var(--text-3); }
 .scrollcue{ display:none; }
 
+/* phones: the badge takes the empty side of the hero and hangs from the header, as on desktop (badge.css
+   sizes the stage). It carries his photo, so the round portrait steps aside; without scripts it stays.
+   Under 480 the copy's children join the grid: facts and name beside the badge, lead and buttons full width. */
+@media (max-width:639px){
+  .js .id-pfp{ display:none; }
+  .js .portrait-rig{ display:block; position:relative; }
+}
+@media (max-width:479px){
+  .js .hero-grid{
+    grid-template-columns:minmax(0,1fr) clamp(120px, 40vw, 190px); column-gap:var(--s-4);
+    grid-template-areas:"id rig" "name rig" "lead lead" "act act";
+  }
+  .js .hero-copy{ display:contents; }
+  .js .id-row{ grid-area:id; }
+  .js .hero h1{ grid-area:name; }
+  .js .hero-lead{ grid-area:lead; }
+  .js .hero-actions{ grid-area:act; }
+  .js .portrait-rig{ grid-area:rig; }
+}
+/* 320-359: the chip is wider than the text column, so it moves under the name, full width */
+@media (max-width:359px){
+  .js .id-row, .js .id-meta{ display:contents; }
+  .js .hero-grid{ grid-template-areas:"id rig" "name rig" "chip chip" "lead lead" "act act"; }
+  .js .facts{ grid-area:id; }
+  .js .id-chip{ grid-area:chip; justify-self:start; margin-top:var(--s-4); }
+}
+@media (min-width:480px) and (max-width:639px){
+  .js .hero-grid{ grid-template-columns:minmax(0,1fr) clamp(170px, 36vw, 240px); column-gap:var(--s-5); }
+  .js .portrait-rig{ align-self:stretch; }
+}
 @media (max-width:374px){
   .id-pfp{ width:88px; height:88px; }
   .facts{ font-size:14px; }
@@ -76,3 +106,15 @@
 .hst-3d canvas{ position:absolute; left:calc(-1 * min(24px, var(--gutter))); top:50%; translate:0 -50%; width:calc(100% + 2 * min(24px, var(--gutter))); height:112px; cursor:grab; touch-action:pan-y; }
 .hst-3d canvas:active{ cursor:grabbing; }
 .hst-3d.live .n-txt{ opacity:0; }
+
+/* landscape phones: a short screen still shows Email me and Download CV without scrolling */
+@media (max-height:500px) and (orientation:landscape){
+  .hero{ padding-top:calc(var(--header-h) + 8px); }
+  .hero-copy{ align-self:start; }  /* not centred against the taller badge column */
+  .id-row{ margin-bottom:var(--s-3); }
+  .facts{ flex-direction:row; flex-wrap:wrap; column-gap:8px; font-size:14px; }
+  .facts .sep{ display:inline; margin-left:8px; font-weight:400; color:var(--text-3); }
+  .hero h1{ font-size:clamp(40px, calc(11vh + 4px), 72px); }
+  .hero-lead{ margin-top:var(--s-3); max-width:none; font-size:16px; line-height:1.45; }
+  .hero-actions{ margin-top:var(--s-3); }
+}

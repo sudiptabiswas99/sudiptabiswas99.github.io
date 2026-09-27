@@ -1,6 +1,7 @@
 /* Verlet lanyard for the hero badge: pivot → strap end → card ring → card foot. Pure math, no DOM.
-   Copied unchanged from ~/Documents/hanging-card/js/lib/rig.js. Lengths in px, time in seconds, angles in
-   radians (0 = straight down, positive = the lower point sits to the right of the upper one). */
+   From ~/Documents/hanging-card/js/lib/rig.js, plus the reel: the strap can be pulled up into the mount and
+   let go, so the card drops in. Lengths in px, time in seconds, angles in radians (0 = straight down,
+   positive = the lower point sits to the right of the upper one). */
 
 export const STEP = 1 / 120
 const ITERATIONS = 8
@@ -17,6 +18,7 @@ export class Rig {
     this.grab = null
     this.pts = null
     this.lengths = [0, 0, 0]
+    this.reel = null
   }
 
   // Hang the chain from (x, y). Keeps the current angles if the rig already exists.
@@ -64,6 +66,14 @@ export class Rig {
     return { x: (dx * uy - dy * ux) / halfWidth, y: (dx * ux + dy * uy) / len }
   }
 
+  // Pull the strap into the mount until `share` of it shows, and hold it there until letGo().
+  reelIn(share) {
+    const full = this.reel ? this.reel.full : this.lengths[0]
+    this.reel = { full, v: 0, held: true, caught: false }
+    this.lengths[0] = full * share
+  }
+  letGo() { if (this.reel) this.reel.held = false }
+
   hold(t, x, y) { this.grab = { t, x, y } }
   release() { this.grab = null }
 
@@ -83,6 +93,7 @@ export class Rig {
 
   tick(h) {
     const { gravity, damping, maxSpeed } = this.tuning
+    if (this.reel && !this.reel.held) this.runOut(h, gravity * this.scale)
     const keep = Math.pow(damping, h)
     const limit = maxSpeed * this.scale * h
     const fall = gravity * this.scale * h * h
@@ -101,6 +112,21 @@ export class Rig {
       this.solveBend(0)
       this.solveBend(1)
       this.solveLinks()
+    }
+  }
+
+  // The let-go strap: slack, it falls freely; taut, it stretches like elastic, catches the card and bounces
+  // it until it hangs at full length. Its natural length is set so the rest point is exactly `full`.
+  runOut(h, g) {
+    const r = this.reel, { stiffness, damping } = this.tuning.drop
+    const len = this.lengths[0], slack = r.full - g / stiffness
+    const a = len < slack ? g : g - stiffness * (len - slack) - damping * r.v
+    r.v += a * h
+    this.lengths[0] = len + r.v * h
+    if (this.lengths[0] >= r.full) r.caught = true
+    if (Math.abs(this.lengths[0] - r.full) < 0.1 * this.scale && Math.abs(r.v) < 3 * this.scale) {
+      this.lengths[0] = r.full
+      this.reel = null
     }
   }
 

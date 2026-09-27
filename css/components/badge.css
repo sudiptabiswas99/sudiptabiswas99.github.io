@@ -163,3 +163,20 @@
   font-size:14px; line-height:1.4; color:var(--text-3); text-align:center;
 }
 .badge-stage:not(.live) + .badge-hint{ visibility:hidden; }
+.hint-touch{ display:none; }
+
+/* ===== touch: vertical swipes scroll the page, sideways drags swing the card ===== */
+@media (pointer:coarse){
+  .badge__card{ touch-action:pan-y; }
+  .hint-fine{ display:none; }
+  .hint-touch{ display:inline; }
+}
+
+/* ===== pin and scale for js/modules/badge/index.js: the pivot sits on the header's bottom edge ===== */
+.badge-stage{ --badge-pin:header; --badge-scale-max:1; }
+/* the narrow phone column: a shorter strap so the card is larger, and no room for the hint */
+@media (max-width:479px){
+  .badge-stage{ --strap-len:96px; }
+  .badge__strap-text{ top:8px; }
+  .badge-hint{ display:none; }
+}

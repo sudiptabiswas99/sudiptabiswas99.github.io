@@ -32,11 +32,13 @@ js/
   modules/              one feature per file, each exporting one init function:
     theme  nav-state  menu  copy-email  toast  confetti  work  live-tags  lightbox  reveal
     service-links  slideshow  underline  magnetic  footer-light  stat-3d  globe
-    badge/              feature folder: the hanging lanyard badge is 4 files, not 1
-      index.js          initBadge(): layout (sizes the stage from CSS custom properties, hangs the
-                        badge under the header), the frame loop, and the sleep-at-rest gate
-      badge.js          one Badge: pointer input, the flip to the back face, the springs that settle it
-      rig.js            the Verlet chain the strap swings on
+    badge/              feature folder: the hanging lanyard badge is 5 files, not 1
+      index.js          initBadge(): layout (sizes the stage from CSS custom properties --badge-pin and
+                        --badge-scale-max, hangs the badge under the header), the frame loop, the
+                        sleep-at-rest gate, and the drop-in replays (load, scroll back, tab back, bfcache)
+      badge.js          one Badge: the drop, the flip to the back face, the springs that settle it
+      pointer.js        mouse, touch (sideways drag only, vertical swipes scroll) and keyboard input
+      rig.js            the Verlet chain the strap swings on, with the elastic strap reel for the drop
       spring.js         the small spring-toward-value helper the rig and badge.js share
 assets/
   images/               portraits, project shots, qr-portfolio.svg; thumbs/ for tiles, work/ for the
@@ -65,7 +67,8 @@ fetched when a 3D piece scrolls near the screen.
 | an image | assets/images/ |
 | a project's live demo | demos/<slug>/ plus the tile's data-demo in index.html |
 | the hanging badge's physics (swing, drag, settle) | js/modules/badge/rig.js (the chain) and spring.js |
-| the hanging badge's pointer/flip behaviour or its sleep-at-rest loop | js/modules/badge/badge.js, index.js |
+| the hanging badge's drop, flip or its sleep-at-rest loop | js/modules/badge/badge.js, index.js |
+| the hanging badge's mouse, touch or keyboard input | js/modules/badge/pointer.js |
 | the hanging badge's look (card, strap, clip, geometry) | css/components/badge.css |
 | the hanging badge's text (name, role, chip, QR caption) | index.html, in .portrait-rig |
 
