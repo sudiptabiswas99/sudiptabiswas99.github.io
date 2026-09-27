@@ -152,7 +152,7 @@
   PROJECTS.forEach(function(p, i){
     var no = String(i+1).padStart(2,'0');
     var tags = p.t.map(function(x){ return '<span>'+x+'</span>'; }).join('');
-    var img = 'assets/work/'+p.s+'.png';
+    var img = 'assets/images/work/'+p.s+'.png';
     var card = document.createElement('a');
     card.className = 'card rv';
     card.href = img;

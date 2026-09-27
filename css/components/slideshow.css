@@ -1,0 +1,32 @@
+/* Phone slideshows (below 640px) for services, work, skills and experience. */
+/* ===== phone slideshows (below 640px): services, work, skills, experience ===== */
+.car-bar{ display:none; }
+@media (max-width:639px){
+  .js .car{
+    display:flex; gap:12px; align-items:flex-start;
+    overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none;
+    margin-inline:calc(-1 * var(--gutter)); padding:4px var(--gutter) 6px; scroll-padding-inline:var(--gutter);
+    position:relative; transition:height .35s var(--ease-out);
+  }
+  .js .car::-webkit-scrollbar{ display:none; }
+  .js .car > *{ flex:0 0 86%; min-width:0; scroll-snap-align:start; }
+  .js .wgrid.car > *{ flex-basis:76%; }
+  .js .car:focus-visible{ outline-offset:-2px; }
+  .car-bar{ display:flex; align-items:center; gap:var(--s-3); margin-top:var(--s-4); }
+  .car-count{ min-width:4.5em; font-size:14px; line-height:1.4; font-weight:500; color:var(--text-2); font-variant-numeric:tabular-nums; }
+  .car-line{ position:relative; flex:1; height:1px; background:var(--line); overflow:hidden; }
+  .car-line i{ position:absolute; left:0; top:0; bottom:0; width:var(--w, 25%); background:var(--text); transition:translate .3s var(--ease-out); translate:var(--x, 0) 0; }
+  .car-btn{
+    width:44px; height:44px; flex:none; display:grid; place-items:center;
+    border:1px solid var(--line-strong); border-radius:var(--r-full); color:var(--text);
+    transition:background-color var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out);
+  }
+  .car-btn svg{ width:18px; height:18px; }
+  .car-btn:active{ transform:scale(.96); }
+  .car-btn:disabled{ opacity:.35; cursor:default; }
+  #skillstory .car-count{ color:var(--band-text-2); }
+  #skillstory .car-line{ background:var(--band-panel-line); }
+  #skillstory .car-line i{ background:var(--band-text); }
+  #skillstory .car-btn{ border-color:var(--band-chip-line); color:var(--band-text); }
+  .xp{ padding:var(--s-5) 20px; }
+}

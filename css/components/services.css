@@ -1,0 +1,39 @@
+/* Services cards, their hover ink line, and the drag-to-spin globe. */
+/* ===== services ===== */
+#services{ padding-block:var(--section-md); }
+.svc-grid{ display:grid; gap:var(--s-4); }
+.svc{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:var(--s-5); }
+.svc h3, .xp h3, .sk-group h3{ font-family:var(--serif); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 26px); line-height:1.2; letter-spacing:-0.01em; }
+.svc h3, .xp h3{ color:var(--text); }
+.svc p{ margin-top:var(--s-3); max-width:56ch; color:var(--text-2); }
+.tags, .chips{ display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-5); }
+.tags span, .chips span{ font-size:14px; line-height:1.4; color:var(--text-2); padding:4px 10px; border:1px solid var(--line); border-radius:var(--r-sm); }
+@media (min-width:640px){ .svc{ padding:var(--s-6); } }
+@media (min-width:768px){ .svc-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-5); } }
+
+.svc-3d{ position:relative; }
+.svc-3d:not(.live) .globe{ display:none; }
+/* the globe floats, so the heading and text wrap round it and then run full width */
+.globe{ float:right; width:96px; margin:0 0 var(--s-2) var(--s-4); }
+.globe canvas{ display:block; width:96px; height:96px; border-radius:50%; cursor:grab; touch-action:pan-y; }
+.globe canvas:active{ cursor:grabbing; }
+.globe-hint{ display:block; margin-top:2px; text-align:center; font-size:14px; line-height:1.4; color:var(--text-3); white-space:nowrap; }
+.svc-3d .tags{ clear:both; }
+@media (min-width:640px){ .globe{ width:112px; margin-left:var(--s-5); } .globe canvas{ width:112px; height:112px; } }
+
+/* ===== cards (2026-09-27): one ink line, one lift, nothing else ===== */
+/* services: a 2px ink rule draws across the top, the card lifts 3px, tags darken */
+.svc{ position:relative; transition:transform var(--d-base) var(--ease-out), border-color var(--d-base) var(--ease-out); }
+.svc::before{
+  content:""; position:absolute; left:-1px; right:-1px; top:-1px; height:2px; background:var(--text);
+  border-radius:var(--r-md) var(--r-md) 0 0; transform:scaleX(0); transform-origin:left; transition:transform .45s var(--ease-out);
+}
+.svc .tags span{ transition:border-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out); }
+.svc-go{ margin-top:var(--s-4); }
+.svc-go svg{ transition:transform var(--d-base) var(--ease-out); }
+@media (hover:hover) and (pointer:fine){
+  .svc:hover{ transform:translateY(-3px); border-color:var(--line-strong); }
+  .svc:hover::before{ transform:scaleX(1); }
+  .svc:hover .tags span{ border-color:var(--line-strong); color:var(--text); }
+  .svc-go:hover svg{ transform:translateX(3px); }
+}

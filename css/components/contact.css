@@ -1,0 +1,35 @@
+/* Contact card. */
+/* ===== contact ===== */
+.contact{ padding:var(--section-lg) 0 var(--section-md); }
+.contact-card{
+  max-width:880px; margin-inline:auto; text-align:center;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
+  padding:var(--s-6) var(--s-4);
+}
+.beamline{ display:flex; align-items:center; justify-content:center; margin-bottom:var(--s-5); }
+.beamline .node{
+  width:44px; height:44px; display:grid; place-items:center; flex:none;
+  border:1px solid var(--line-strong); border-radius:var(--r-full);
+  font-weight:500; font-size:14px; line-height:1; color:var(--text);
+}
+.beamline .node.me{ background:var(--inv-bg); border-color:var(--inv-bg); color:var(--inv-text); }
+.beamline .wire{ width:min(200px, 30vw); height:1px; background:var(--line); }
+.contact h2{ max-width:18ch; margin-inline:auto; font-size:clamp(32px, calc(3vw + 22px), 60px); line-height:1.08; letter-spacing:-0.02em; color:var(--text); }
+.contact .sub{ max-width:52ch; margin:var(--s-4) auto 0; font-size:17px; color:var(--text-2); }
+.contact-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:var(--s-2); margin-top:var(--s-6); }
+.contact-row.links{ margin-top:var(--s-3); }
+.contact-row .btn{ white-space:nowrap; }
+.contact-row .btn-mail{ white-space:normal; overflow-wrap:anywhere; }
+@media (max-width:639px){
+  .contact-row .btn{ flex:1 1 100%; }
+  .contact-row.links .btn{ flex:1 1 calc(50% - 4px); }
+  .contact-row.links .btn.cv{ flex-basis:100%; }
+}
+@media (max-width:374px){
+  .contact-row .btn{ padding:0 12px; }
+  .contact-row .btn-mail svg{ display:none; }
+}
+@media (min-width:640px){
+  .contact-card{ padding:var(--s-8) var(--s-8) var(--s-7); }
+  .contact .sub{ font-size:19px; }
+}

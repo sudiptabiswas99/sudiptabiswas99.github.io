@@ -1,0 +1,11 @@
+/* Screen-reader-only text and the skip link. */
+.sr-only{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* skip link: invisible until focused */
+.skip{
+  position:absolute; left:var(--s-3); top:var(--s-3); z-index:var(--z-skip);
+  display:inline-flex; align-items:center; min-height:44px; padding:0 var(--s-4);
+  background:var(--inv-bg); color:var(--inv-text); font-weight:500; font-size:16px;
+  border-radius:var(--r-sm); opacity:0; pointer-events:none;
+}
+.skip:focus{ opacity:1; pointer-events:auto; }

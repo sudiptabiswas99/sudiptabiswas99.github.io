@@ -27,844 +27,48 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,300..600&amp;family=Hanken+Grotesk:wght@400..700&amp;display=swap" rel="stylesheet" />
 
-<style>
-  /* ===== tokens: bright (default). Every colour is R=G=B. ===== */
-  :root{
-    --bg:#f4f4f4;
-    --surface:#ffffff;
-    --surface-2:#ebebeb;
-    --text:#0b0b0b;
-    --text-2:#3a3a3a;
-    --text-3:#5e5e5e;
-    --line:#d6d6d6;
-    --line-strong:#8a8a8a;
-    --inv-bg:#0b0b0b;
-    --inv-text:#f4f4f4;
-    --ring:#e3e3e3;
-    --focus:#0b0b0b;
-    --band-bg:#111111;
-    --band-edge:transparent;
-    --band-text:#f2f2f2;
-    --band-text-2:#b0b0b0;
-    --band-chip-line:#5c5c5c;
-    --band-panel:#171717;
-    --band-panel-line:#2b2b2b;
-    --scrim:rgb(244,244,244);
-    --shadow-float:0 12px 32px rgba(0,0,0,.18);
-
-    --serif:"Literata", Georgia, "Times New Roman", serif;
-    --sans:"Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
-
-    --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
-    --s-7:48px; --s-8:64px; --s-9:96px; --s-10:128px;
-    --section-lg:clamp(72px, 9vw, 128px);
-    --section-md:clamp(56px, 7vw, 96px);
-    --gutter:20px;
-    --maxw:1280px;
-    --header-h:64px;
-
-    --r-sm:2px; --r-md:12px; --r-full:999px;
-
-    --d-fast:150ms; --d-base:200ms; --d-slow:350ms;
-    --ease-out:cubic-bezier(.2,.7,.2,1); --ease-in:cubic-bezier(.4,0,1,1);
-
-    --z-header:50; --z-toast:80; --z-lightbox:90; --z-confetti:95; --z-skip:100;
-  }
-  @media (max-width:374px){ :root{ --gutter:16px; } }
-  @media (min-width:640px){  :root{ --gutter:32px; } }
-  @media (min-width:1024px){ :root{ --gutter:40px; --header-h:72px; } }
-
-  :root[data-theme="dark"]{
-    --bg:#0b0b0b; --surface:#151515; --surface-2:#1f1f1f;
-    --text:#f2f2f2; --text-2:#bdbdbd; --text-3:#9e9e9e;
-    --line:#2e2e2e; --line-strong:#7a7a7a;
-    --inv-bg:#f2f2f2; --inv-text:#0b0b0b;
-    --ring:#1f1f1f; --focus:#f2f2f2;
-    --band-bg:#181818; --band-edge:#2e2e2e; --band-panel:#1f1f1f; --band-panel-line:#333333;
-    --scrim:rgb(11,11,11);
-    --shadow-float:0 12px 32px rgba(0,0,0,.6);
-  }
-
-  /* ===== base ===== */
-  *,*::before,*::after{ box-sizing:border-box; }
-  html{ background:var(--bg); -webkit-text-size-adjust:100%; text-size-adjust:100%; scroll-padding-top:var(--header-h); }
-  @media (prefers-reduced-motion:no-preference){ html{ scroll-behavior:smooth; } }
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:var(--sans); font-size:16px; line-height:1.6; font-weight:400;
-    -webkit-font-smoothing:antialiased;
-  }
-  @media (min-width:640px){ body{ font-size:17px; } }
-  .theme-ready body{ transition:background-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out); }
-  ::selection{ background:var(--inv-bg); color:var(--inv-text); }
-  a{ color:inherit; text-decoration:none; }
-  img,svg{ display:block; max-width:100%; }
-  button{ font-family:inherit; font-size:inherit; line-height:inherit; color:inherit; background:none; border:0; padding:0; margin:0; cursor:pointer; touch-action:manipulation; }
-  a, button{ touch-action:manipulation; }
-  h1,h2,h3{ margin:0; font-family:var(--serif); font-weight:400; }
-  h2,h3{ text-wrap:balance; }
-  p{ margin:0; max-width:56ch; text-wrap:pretty; }
-  ul{ margin:0; padding:0; list-style:none; }
-  dl,dd,figure{ margin:0; }
-  b,strong{ font-weight:600; }
-  :focus-visible{ outline:2px solid var(--focus); outline-offset:3px; }
-  .sr-only{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-  .wrap{ width:100%; max-width:calc(var(--maxw) + 2 * var(--gutter)); margin-inline:auto; padding-inline:var(--gutter); }
-
-  /* skip link: invisible until focused */
-  .skip{
-    position:absolute; left:var(--s-3); top:var(--s-3); z-index:var(--z-skip);
-    display:inline-flex; align-items:center; min-height:44px; padding:0 var(--s-4);
-    background:var(--inv-bg); color:var(--inv-text); font-weight:500; font-size:16px;
-    border-radius:var(--r-sm); opacity:0; pointer-events:none;
-  }
-  .skip:focus{ opacity:1; pointer-events:auto; }
-
-  /* ===== buttons and text links ===== */
-  .btn{
-    position:relative; isolation:isolate; overflow:hidden;
-    display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2);
-    min-height:48px; padding:0 20px;
-    font-family:var(--sans); font-weight:500; font-size:16px; line-height:1.2; text-align:center;
-    border:1px solid var(--inv-bg); border-radius:var(--r-sm);
-    background:var(--inv-bg); color:var(--inv-text);
-    transition:color 220ms var(--ease-out), border-color 220ms var(--ease-out);
-  }
-  .btn svg{ width:18px; height:18px; flex:none; }
-  .btn::after{
-    content:""; position:absolute; inset:-1px; z-index:-1;
-    background:var(--text-2); transform:translateY(101%);
-    transition:transform 220ms var(--ease-out);
-  }
-  .btn-secondary{ background:transparent; color:var(--text); border-color:var(--line-strong); }
-  .btn-secondary::after{ background:var(--inv-bg); }
-  .btn:active{ transform:translateY(1px); }
-  @media (hover:hover){
-    .btn:hover::after{ transform:translateY(0); }
-    .btn-secondary:hover{ color:var(--inv-text); border-color:var(--inv-bg); }
-  }
-
-  .textlink{
-    display:inline-flex; align-items:center; gap:6px; min-height:44px;
-    font-weight:500; font-size:16px; line-height:1.2; color:var(--text);
-    text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:4px;
-  }
-  .textlink svg{ width:16px; height:16px; flex:none; }
-  .textlink:active{ color:var(--text-2); }
-  @media (hover:hover){ .textlink:hover{ text-decoration-thickness:2px; } }
-
-  .chip{
-    display:inline-flex; align-items:center; gap:var(--s-2);
-    font-size:14px; line-height:1.4; color:var(--text-2); white-space:nowrap;
-    background:var(--surface); border:1px solid var(--line-strong); border-radius:var(--r-full);
-    padding:4px 12px;
-  }
-  .chip .dot{ width:6px; height:6px; border-radius:50%; background:var(--text); flex:none; }
-
-  /* ===== header ===== */
-  .nav{
-    position:fixed; top:0; left:0; right:0; z-index:var(--z-header);
-    height:var(--header-h); background:var(--bg);
-    border-bottom:1px solid transparent; transition:border-color var(--d-fast) var(--ease-out);
-  }
-  .nav.solid{ border-bottom-color:var(--line); }
-  .nav-in{ height:100%; display:flex; align-items:center; justify-content:space-between; gap:var(--s-4); }
-  .mark{ display:inline-flex; align-items:baseline; gap:var(--s-3); padding:11px 0; white-space:nowrap; color:var(--text); }
-  .mark .sig{ font-family:var(--serif); font-weight:500; font-size:20px; line-height:22px; }
-  .mark .who{ display:none; font-size:14px; line-height:1.2; color:var(--text-3); }
-  .mark:active{ transform:translateY(1px); }
-  @media (min-width:375px){ .mark .sig{ font-size:22px; } }
-  @media (min-width:640px){ .mark .who{ display:inline; } }
-  @media (min-width:1024px) and (max-width:1279px){ .mark .who{ display:none; } }
-  @media (hover:hover){ .mark:hover .sig{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px; } }
-
-  .nav-end{ display:flex; align-items:center; gap:var(--s-2); }
-  .avail{ display:inline-flex; align-items:center; gap:var(--s-2); font-weight:500; font-size:14px; line-height:1.4; color:var(--text-2); white-space:nowrap; }
-  .avail .dot{ width:8px; height:8px; border-radius:50%; background:var(--text); flex:none; }
-
-  .theme-btn{
-    width:44px; height:44px; flex:none; display:grid; place-items:center;
-    border:1px solid var(--line-strong); border-radius:var(--r-full); color:var(--text);
-    transition:background-color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out);
-  }
-  .theme-btn svg{ width:18px; height:18px; }
-  .theme-btn .i-sun{ display:none; }
-  :root[data-theme="dark"] .theme-btn .i-sun{ display:block; }
-  :root[data-theme="dark"] .theme-btn .i-moon{ display:none; }
-  .theme-btn:active{ transform:scale(.96); }
-  @media (hover:hover){ .theme-btn:hover{ background:var(--surface-2); border-color:var(--text); } }
-
-  .menu-btn{ display:none; }
-  .bars{ position:relative; width:16px; height:9px; flex:none; }
-  .bars i{
-    position:absolute; left:0; width:16px; height:1.5px; border-radius:1px; background:currentColor;
-    transition:transform var(--d-base) var(--ease-out);
-  }
-  .bars i:first-child{ top:0; }
-  .bars i:last-child{ top:7px; }
-  .menu-btn[aria-expanded="true"] .bars i:first-child{ transform:translateY(3.5px) rotate(45deg); }
-  .menu-btn[aria-expanded="true"] .bars i:last-child{ transform:translateY(-3.5px) rotate(-45deg); }
-
-  .nl span{ position:relative; }
-
-  /* phone and tablet: menu button + sheet */
-  @media (max-width:1023px){
-    .js .menu-btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2);
-      min-height:44px; min-width:44px; padding:0 12px;
-      border:1px solid var(--line-strong); border-radius:var(--r-sm);
-      font-weight:500; font-size:16px; line-height:1.2; color:var(--text);
-      transition:background-color var(--d-fast) var(--ease-out);
-    }
-    .js .menu-btn:active{ transform:translateY(1px); }
-    .site-nav{ display:none; }
-    .js .site-nav{
-      position:fixed; top:var(--header-h); left:0; right:0; height:calc(100dvh - var(--header-h));
-      overflow-y:auto; overscroll-behavior:contain;
-      display:flex; flex-direction:column;
-      background:var(--bg); border-top:1px solid var(--line);
-      padding:var(--s-5) var(--gutter) max(var(--s-6), env(safe-area-inset-bottom));
-    }
-    .js .site-nav[hidden]{ display:none; }
-    .js .site-nav.open{ animation:sheetin var(--d-base) var(--ease-out); }
-    .js .site-nav.closing{ animation:sheetout 140ms var(--ease-in) forwards; }
-    .nav-list{ display:flex; flex-direction:column; }
-    .nav-list .nl{
-      display:flex; align-items:center; width:100%; min-height:52px;
-      font-family:var(--serif); font-weight:400; font-size:28px; line-height:1.2; color:var(--text);
-    }
-    .nav-list .nl:focus-visible{ outline-offset:2px; }
-    .nav-list .nl:active{ color:var(--text-2); }
-    .menu-actions{ display:grid; gap:var(--s-2); margin-top:var(--s-6); padding-top:var(--s-5); border-top:1px solid var(--line); }
-    .menu-actions .btn{ width:100%; }
-    .site-nav .avail{ margin-top:var(--s-5); }
-  }
-  @media (max-width:1023px) and (hover:hover){
-    .js .menu-btn:hover{ background:var(--surface-2); }
-    .nav-list .nl:hover span{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px; }
-  }
-  @media (min-width:640px) and (max-width:1023px){
-    .menu-actions{ display:flex; flex-wrap:wrap; gap:var(--s-2); }
-    .menu-actions .btn{ width:auto; }
-  }
-  @media (max-width:374px){ .nav-list .nl{ font-size:24px; } }
-  @media (max-width:359px){
-    .js .menu-btn{ padding:0; width:44px; }
-    .menu-txt{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-  }
-
-  /* desktop: inline nav */
-  @media (min-width:1024px){
-    .nav-end{ gap:var(--s-5); }
-    .site-nav{ display:flex; align-items:center; gap:var(--s-5); }
-    .nav-list{ display:flex; align-items:center; gap:14px; }
-    .nl{
-      display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 5px;
-      font-weight:500; font-size:15px; line-height:1.2; color:var(--text-2);
-      transition:color var(--d-fast) var(--ease-out);
-    }
-    .nl span::after{
-      content:""; position:absolute; left:0; right:0; bottom:-6px; height:1px; background:currentColor;
-      transform:scaleX(0); transform-origin:left; transition:transform var(--d-base) var(--ease-out);
-    }
-    .nl[aria-current="true"]{ color:var(--text); }
-    .nl[aria-current="true"] span::after{ transform:scaleX(1); }
-    .nl:active{ color:var(--text); }
-    .menu-actions{ display:none; }
-  }
-  @media (min-width:1024px) and (hover:hover){
-    .nl:hover{ color:var(--text); }
-    .nl:hover span::after{ transform:scaleX(1); }
-  }
-  @keyframes sheetin{ from{ opacity:0; transform:translateY(-8px); } }
-  @keyframes sheetout{ to{ opacity:0; transform:translateY(-8px); } }
-
-  /* ===== hero ===== */
-  .hero{ position:relative; padding:calc(var(--header-h) + 20px) 0 var(--s-6); }
-  .hero-sentinel{ position:absolute; top:20px; left:0; width:1px; height:1px; pointer-events:none; }
-  .hero .wrap{ position:relative; }
-  .hero-grid{ display:grid; grid-template-columns:minmax(0,1fr); }
-  .hero-copy{ min-width:0; }
-
-  .id-row{ display:flex; align-items:center; gap:var(--s-4); }
-  .id-pfp{ flex:none; width:104px; height:104px; border-radius:50%; overflow:hidden; box-shadow:0 0 0 6px var(--ring); }
-  .id-pfp img, .pfp img{ width:100%; height:100%; object-fit:cover; filter:grayscale(1) contrast(1.04); }
-  .id-meta{ min-width:0; }
-  .facts{ display:flex; flex-direction:column; font-weight:500; font-size:15px; line-height:1.45; color:var(--text-2); }
-  .facts .sep{ display:none; }
-  .id-chip{ margin-top:var(--s-2); }
-
-  .hero h1{
-    margin-top:var(--s-4);
-    font-size:clamp(48px, calc(9vw + 14px), 150px); font-weight:340; line-height:.9; letter-spacing:-0.05em;
-    color:var(--text);
-  }
-  .hero h1 .l1, .hero h1 .l2{ display:block; }
-  .hero h1 .l2{ padding-left:.06em; }
-  .hero-lead{ margin-top:var(--s-4); font-size:clamp(17px, calc(.45vw + 15.5px), 21px); line-height:1.55; color:var(--text-2); }
-  .hero-lead b{ color:var(--text); }
-  .hero-actions{ margin-top:20px; }
-  .row-a{ display:flex; flex-wrap:wrap; gap:var(--s-2); }
-  .row-b{ margin-top:var(--s-2); display:flex; flex-wrap:wrap; align-items:center; column-gap:var(--s-4); }
-  .row-b .addr{ flex:0 0 100%; font-size:15px; line-height:1.45; color:var(--text-2); overflow-wrap:anywhere; }
-
-  .portrait-rig{ display:none; }
-  .orbit{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; color:var(--text-2); pointer-events:none; }
-  .pfp{
-    position:absolute; left:50%; top:-7%; z-index:1; width:63%; aspect-ratio:1;
-    border-radius:50%; overflow:hidden; box-shadow:0 0 0 12px var(--ring);
-    transform:translateX(-46%);
-  }
-  .orbit-chip{ position:absolute; z-index:2; left:50%; bottom:-6%; transform:translateX(-50%); }
-
-  .hero-stats{
-    display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px 16px;
-    margin-top:var(--s-6); padding-top:20px; border-top:1px solid var(--line);
-  }
-  .hst .n{ font-family:var(--serif); font-weight:400; font-size:clamp(32px, calc(2vw + 22px), 48px); line-height:1; letter-spacing:-0.02em; color:var(--text); }
-  .hst .l{ margin-top:var(--s-2); font-size:14px; line-height:1.4; color:var(--text-3); }
-  .scrollcue{ display:none; }
-
-  @media (max-width:374px){
-    .id-pfp{ width:88px; height:88px; }
-    .facts{ font-size:14px; }
-    .hero .btn{ padding:0 14px; }
-    .hero .btn svg{ display:none; }
-  }
-  @media (min-width:640px){
-    .hero{ padding-bottom:var(--s-7); }
-    .hero-grid{ grid-template-columns:minmax(0,1fr) clamp(192px, 30vw, 300px); column-gap:clamp(24px, 4vw, 32px); align-items:center; }
-    .id-row{ display:block; margin-bottom:var(--s-5); }
-    .id-pfp, .id-chip{ display:none; }
-    .facts{ font-size:16px; }
-    .hero h1{ margin-top:0; }
-    .hero-lead{ margin-top:var(--s-5); max-width:40ch; }
-    .portrait-rig{ display:block; position:relative; width:100%; aspect-ratio:1; }
-    .hero-stats{ grid-template-columns:repeat(4, minmax(0,1fr)); column-gap:clamp(24px, 4vw, 56px); padding-top:var(--s-5); }
-  }
-  @media (min-width:1024px){
-    .hero{ padding-top:calc(var(--header-h) + clamp(32px, 6vh, 72px)); }
-    .hero-grid{ grid-template-columns:minmax(0,1fr) clamp(300px, 29vw, 420px); gap:clamp(32px, 4vw, 72px); }
-    .facts{ flex-direction:row; flex-wrap:wrap; column-gap:12px; }
-    .facts .sep{ display:inline; margin-left:12px; font-weight:400; color:var(--text-3); }
-    .hero-lead{ margin-top:var(--s-6); max-width:44ch; }
-    .hero-actions{ margin-top:var(--s-6); }
-    .row-b .addr{ flex:0 0 auto; font-size:16px; }
-    .orbit-chip{ left:6%; top:46%; bottom:auto; transform:none; }
-    .hero-stats{ margin-top:var(--s-7); }
-  }
-  @media (min-width:1280px){
-    .scrollcue{ display:block; position:absolute; right:var(--gutter); bottom:0; font-size:14px; line-height:1.4; color:var(--text-3); }
-  }
-
-  /* ===== tech strip ===== */
-  .strip{ background:var(--surface); border-block:1px solid var(--line); padding:16px 0; }
-  .strip-rows{ display:grid; row-gap:var(--s-4); }
-  .strip-row{ display:grid; gap:4px; }
-  .strip-row dt{ font-weight:500; font-size:14px; line-height:1.4; color:var(--text-3); }
-  .terms{ display:flex; flex-wrap:wrap; column-gap:28px; row-gap:4px; font-family:var(--serif); font-size:17px; line-height:1.4; color:var(--text-2); }
-  @media (min-width:640px){ .strip{ padding:20px 0; } .terms{ font-size:19px; } }
-  @media (min-width:1024px){
-    .strip-rows{ row-gap:var(--s-2); }
-    .strip-row{ grid-template-columns:140px minmax(0,1fr); align-items:baseline; gap:0; }
-  }
-
-  /* ===== section headers ===== */
-  .sh{ margin-bottom:var(--s-6); }
-  .sh h2{ font-size:clamp(30px, calc(2.4vw + 22px), 52px); line-height:1.08; letter-spacing:-0.02em; color:var(--text); }
-  .sh-intro{ margin-top:var(--s-3); max-width:56ch; font-size:16px; line-height:1.5; color:var(--text-3); }
-  @media (min-width:640px){ .sh{ margin-bottom:var(--s-7); } .sh-intro{ font-size:17px; } }
-
-  /* ===== about ===== */
-  #about{ padding-top:var(--section-lg); }
-  .about-grid{ display:grid; gap:var(--s-7); }
-  .about-lead{ max-width:38ch; font-family:var(--serif); font-weight:350; font-size:clamp(22px, calc(1.2vw + 16px), 32px); line-height:1.3; letter-spacing:-0.01em; color:var(--text); }
-  .about-body{ margin-top:var(--s-5); }
-  .about-body p{ max-width:56ch; margin:0 0 var(--s-4); color:var(--text-2); }
-  .about-body p:last-child{ margin-bottom:0; }
-  .about-body b{ color:var(--text); }
-  .facts-list{ border-top:1px solid var(--line); }
-  .facts-list .row{ display:grid; grid-template-columns:7.5rem minmax(0,1fr); gap:var(--s-4); padding:var(--s-4) 0; border-bottom:1px solid var(--line); }
-  .facts-list dt{ font-weight:500; font-size:14px; line-height:1.45; color:var(--text-3); padding-top:1px; }
-  .facts-list dd{ font-size:16px; line-height:1.45; color:var(--text); }
-  .facts-list small{ display:block; margin-top:2px; font-size:14px; line-height:1.45; color:var(--text-3); }
-  @media (max-width:374px){ .facts-list .row{ grid-template-columns:6.5rem minmax(0,1fr); } }
-  @media (min-width:1024px){
-    .about-grid{ grid-template-columns:7fr 5fr; gap:var(--s-8); align-items:start; }
-    .facts-list{ margin-top:var(--s-2); }
-  }
-
-  /* ===== services ===== */
-  #services{ padding-block:var(--section-md); }
-  .svc-grid{ display:grid; gap:var(--s-4); }
-  .svc{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:var(--s-5); }
-  .svc h3, .xp h3, .sk-group h3{ font-family:var(--serif); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 26px); line-height:1.2; letter-spacing:-0.01em; }
-  .svc h3, .xp h3{ color:var(--text); }
-  .svc p{ margin-top:var(--s-3); max-width:56ch; color:var(--text-2); }
-  .tags, .chips{ display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-5); }
-  .tags span, .chips span{ font-size:14px; line-height:1.4; color:var(--text-2); padding:4px 10px; border:1px solid var(--line); border-radius:var(--r-sm); }
-  @media (min-width:640px){ .svc{ padding:var(--s-6); } }
-  @media (min-width:768px){ .svc-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-5); } }
-
-  /* ===== work ===== */
-  .work{ padding-block:var(--section-md); background:var(--surface); border-block:1px solid var(--line); }
-  .work .sh{ margin-bottom:0; }
-  .wfilter{
-    display:flex; flex-wrap:nowrap; gap:var(--s-2);
-    overflow-x:auto; scroll-snap-type:x proximity; scrollbar-width:none; overscroll-behavior-x:contain;
-    margin:calc(var(--s-6) - 6px) calc(-1 * var(--gutter)) calc(var(--s-5) - 6px);
-    padding:6px var(--gutter); scroll-padding-inline:var(--gutter);
-  }
-  .wfilter::-webkit-scrollbar{ display:none; }
-  .wfilter button{
-    flex:none; scroll-snap-align:start; min-height:44px; padding:0 16px;
-    border:1px solid var(--line-strong); border-radius:var(--r-full);
-    font-weight:500; font-size:15px; line-height:1.2; color:var(--text-2); white-space:nowrap;
-    transition:background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out);
-  }
-  .wfilter button:active{ transform:translateY(1px); }
-  .wfilter button.on{ background:var(--inv-bg); color:var(--inv-text); border-color:var(--inv-bg); }
-  @media (hover:hover){ .wfilter button:not(.on):hover{ border-color:var(--text); color:var(--text); } }
-  @media (min-width:640px){
-    .wfilter{ flex-wrap:wrap; overflow:visible; margin-inline:0; padding-inline:0; }
-  }
-
-  .wgrid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px 12px; }
-  @media (min-width:640px){ .wgrid{ grid-template-columns:repeat(3, minmax(0,1fr)); gap:24px 16px; } }
-  @media (min-width:1280px){ .wgrid{ grid-template-columns:repeat(6, minmax(0,1fr)); } }
-
-  .wc{ display:block; min-width:0; color:var(--text); cursor:pointer; }
-  .js .wc.extra{ display:none; }
-  .js .wc.extra.shown{ display:block; animation:tilefade var(--d-base) var(--ease-out); }
-  .wc.hide, .js .wc.hide{ display:none; }
-  @keyframes tilefade{ from{ opacity:0; } }
-  .wc-media{
-    position:relative; display:block; aspect-ratio:1; overflow:hidden;
-    border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2);
-    transition:transform var(--d-fast) var(--ease-out);
-  }
-  .wc-media img{
-    width:100%; height:100%; object-fit:cover; object-position:top center; filter:grayscale(1);
-    transition:filter var(--d-slow) var(--ease-out), transform 400ms var(--ease-out);
-  }
-  .wc-go{
-    position:absolute; top:8px; right:8px; width:32px; height:32px; display:grid; place-items:center;
-    border-radius:50%; background:var(--bg); border:1px solid var(--line-strong); color:var(--text);
-    opacity:0; transition:opacity var(--d-fast) var(--ease-out);
-  }
-  .wc-go svg{ width:14px; height:14px; }
-  .wc-cap{ display:grid; gap:2px; margin-top:var(--s-3); }
-  .wc-cap .t{
-    font-weight:600; font-size:15px; line-height:1.35; color:var(--text);
-    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
-  }
-  .wc-cap .k{ font-size:14px; line-height:1.4; color:var(--text-3); }
-  .wc:focus-visible{ outline:none; }
-  .wc:focus-visible .wc-media{ outline:2px solid var(--focus); outline-offset:3px; }
-  .wc:focus-visible .wc-media img{ filter:grayscale(0); }
-  .wc:active .wc-media{ transform:scale(.98); }
-  @media (hover:hover) and (pointer:fine){
-    .wc:hover .wc-media img{ filter:grayscale(0); transform:scale(1.03); }
-    .wc:hover .t{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; }
-    .wc:hover .wc-go, .wc:focus-visible .wc-go{ opacity:1; }
-  }
-
-  .smwrap{ display:none; justify-content:center; margin-top:var(--s-7); }
-  .js .smwrap{ display:flex; }
-  .showmore{
-    position:relative; isolation:isolate; overflow:hidden;
-    display:inline-flex; align-items:center; gap:var(--s-2); min-height:48px; padding:0 var(--s-5);
-    border:1px solid var(--line-strong); border-radius:var(--r-sm);
-    font-weight:500; font-size:16px; line-height:1.2; color:var(--text);
-    transition:color 220ms var(--ease-out), border-color 220ms var(--ease-out);
-  }
-  .showmore i{ position:absolute; inset:-1px; z-index:-1; background:var(--inv-bg); transform:translateY(101%); transition:transform 220ms var(--ease-out); }
-  .showmore svg{ width:16px; height:16px; flex:none; transition:transform var(--d-base) var(--ease-out); }
-  .showmore.open svg{ transform:rotate(180deg); }
-  .showmore:active{ transform:translateY(1px); }
-  @media (hover:hover){
-    .showmore:hover i{ transform:translateY(0); }
-    .showmore:hover{ color:var(--inv-text); border-color:var(--inv-bg); }
-  }
-  .preview{ display:none; }
-
-  /* ===== skills band ===== */
-  #skillstory{ padding-block:var(--section-md); background:var(--band-bg); color:var(--band-text); border-block:1px solid var(--band-edge); }
-  #skillstory .sh h2{ color:var(--band-text); }
-  #skillstory .band-intro{ color:var(--band-text-2); }
-  #skillstory :focus-visible{ outline-color:var(--band-text); }
-  .sk-grid{ display:grid; gap:var(--s-6); align-items:start; }
-  .sk-group h3{ color:var(--band-text); }
-  .sk-chips{ display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
-  .sk-chips li{ font-size:15px; line-height:1.4; color:var(--band-text); padding:6px 12px; border:1px solid var(--band-chip-line); border-radius:var(--r-sm); }
-  @media (min-width:640px){ .sk-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
-  @media (min-width:1280px){ .sk-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); gap:var(--s-7) var(--s-6); } }
-
-  /* ===== experience ===== */
-  #experience{ padding-top:var(--section-lg); }
-  .xp-list{ display:grid; gap:var(--s-5); }
-  /* The note (.most) and the chips follow .xp-body in the DOM. Below 800 .xp-body is display:contents
-     and `order` shows lead, note, bullets, chips; from 800 the panel is two columns (see below). */
-  .xp{ display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:20px; }
-  .xp-meta{ display:grid; grid-template-columns:minmax(0,1fr); justify-items:start; row-gap:var(--s-3); }
-  .xp-dur{ display:flex; align-items:baseline; gap:var(--s-2); }
-  .xp-dur b{ font-family:var(--serif); font-weight:400; font-size:clamp(32px, calc(2vw + 22px), 48px); line-height:1; letter-spacing:-0.02em; color:var(--text); }
-  .xp-dur span{ font-size:14px; line-height:1.4; color:var(--text-3); }
-  .xp-meter{ width:120px; height:3px; }
-  .xp-meter i{ display:block; height:100%; width:var(--w); background:var(--text); }
-  .xp-when{ display:flex; flex-direction:column; row-gap:2px; line-height:1.45; }
-  .xp-when .d{ font-size:15px; color:var(--text-2); }
-  .xp-when .s{ font-size:14px; color:var(--text-3); }
-  .xp-body{ display:contents; }
-  .xp h3{ margin-top:var(--s-4); }
-  .xp .org{ margin-top:4px; font-size:15px; line-height:1.45; color:var(--text-3); }
-  .xp .lead{ margin-top:var(--s-4); color:var(--text-2); }
-  .xp .chips{ order:3; }
-  .most{ order:1; max-width:33rem; margin-top:var(--s-4); padding:var(--s-4); background:var(--surface-2); border-radius:var(--r-sm); }
-  .most b{ display:block; font-weight:600; font-size:14px; line-height:1.4; color:var(--text); }
-  .most p{ margin-top:4px; font-size:16px; line-height:1.6; color:var(--text-2); }
-  .xp ul{ order:2; display:grid; gap:var(--s-2); margin-top:var(--s-4); }
-  .xp li{ position:relative; padding-left:18px; font-size:16px; line-height:1.6; color:var(--text-2); }
-  .xp li::before{ content:""; position:absolute; left:0; top:.8em; width:6px; height:1px; background:var(--text-3); }
-  .xp li b{ color:var(--text); }
-  /* line length: 30em (lead 510px, bullets 480px) and the 33rem note box hold every line to 75 characters or fewer in Hanken */
-  .xp .lead, .xp li{ max-width:30em; }
-  @media (min-width:640px){
-    .xp{ padding:var(--s-6); }
-    .xp-when{ flex-direction:row; flex-wrap:wrap; column-gap:12px; align-items:baseline; }
-  }
-  /* 640-799: the duration gets a fixed track, so the dates start at the same x in all 4 panels */
-  @media (min-width:640px) and (max-width:799px){
-    .xp-meta{ grid-template-columns:12rem minmax(0,1fr); column-gap:var(--s-5); align-items:baseline; }
-    .xp-dur{ grid-column:1; grid-row:1; }
-    .xp-when{ grid-column:2; grid-row:1; }
-    .xp-meter{ grid-column:1; grid-row:2; }
-  }
-  /* 800+: two columns. Dates, meter and the note on the left; the text with its chips under it on the right.
-     Panel 1 (.lg, a lead and 5 bullets) puts its chips under the note instead. 800-1023 splits 3:4 in favour
-     of the text; 1024+ splits 1:1. Measured: no column of any panel has more than 150px of empty space. */
-  @media (min-width:800px){
-    .xp{ display:grid; grid-template-columns:minmax(0, 3fr) minmax(0, 4fr); grid-template-rows:auto auto 1fr; column-gap:var(--s-6); row-gap:0; align-items:start; }
-    .xp-meta{ grid-column:1; grid-row:1; }
-    .xp-body{ display:block; grid-column:2; grid-row:1 / span 2; min-width:0; }
-    .xp h3{ margin-top:0; }
-    .xp-when{ flex-direction:column; }
-    .xp > .most{ grid-column:1; grid-row:2 / span 2; margin-top:var(--s-5); }
-    .xp > .chips{ grid-column:2; grid-row:3; }
-    .xp.lg .xp-body{ grid-row:1 / span 3; }
-    .xp.lg > .most{ grid-row:2; }
-    .xp.lg > .chips{ grid-column:1; grid-row:3; }
-  }
-  @media (min-width:1024px){
-    .xp{ grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); column-gap:var(--s-7); }
-  }
-
-  /* ===== contact ===== */
-  .contact{ padding:var(--section-lg) 0 var(--section-md); }
-  .contact-card{
-    max-width:880px; margin-inline:auto; text-align:center;
-    background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
-    padding:var(--s-6) var(--s-4);
-  }
-  .beamline{ display:flex; align-items:center; justify-content:center; margin-bottom:var(--s-5); }
-  .beamline .node{
-    width:44px; height:44px; display:grid; place-items:center; flex:none;
-    border:1px solid var(--line-strong); border-radius:var(--r-full);
-    font-weight:500; font-size:14px; line-height:1; color:var(--text);
-  }
-  .beamline .node.me{ background:var(--inv-bg); border-color:var(--inv-bg); color:var(--inv-text); }
-  .beamline .wire{ width:min(200px, 30vw); height:1px; background:var(--line); }
-  .contact h2{ max-width:18ch; margin-inline:auto; font-size:clamp(32px, calc(3vw + 22px), 60px); line-height:1.08; letter-spacing:-0.02em; color:var(--text); }
-  .contact .sub{ max-width:52ch; margin:var(--s-4) auto 0; font-size:17px; color:var(--text-2); }
-  .contact-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:var(--s-2); margin-top:var(--s-6); }
-  .contact-row.links{ margin-top:var(--s-3); }
-  .contact-row .btn{ white-space:nowrap; }
-  .contact-row .btn-mail{ white-space:normal; overflow-wrap:anywhere; }
-  @media (max-width:639px){
-    .contact-row .btn{ flex:1 1 100%; }
-    .contact-row.links .btn{ flex:1 1 calc(50% - 4px); }
-    .contact-row.links .btn.cv{ flex-basis:100%; }
-  }
-  @media (max-width:374px){
-    .contact-row .btn{ padding:0 12px; }
-    .contact-row .btn-mail svg{ display:none; }
-  }
-  @media (min-width:640px){
-    .contact-card{ padding:var(--s-8) var(--s-8) var(--s-7); }
-    .contact .sub{ font-size:19px; }
-  }
-
-  /* ===== footer ===== */
-  .footer{ border-top:1px solid var(--line); padding:var(--s-7) 0 var(--s-6); }
-  .ft-word{ display:block; width:100%; height:auto; overflow:visible; }
-  .ft-word text{ font-family:var(--serif); font-weight:340; fill:var(--text); }
-  .ft-bot{ margin-top:var(--s-5); display:flex; flex-direction:column; align-items:flex-start; gap:var(--s-2); font-size:14px; line-height:1.4; color:var(--text-3); }
-  .ft-links{ display:contents; }
-  .ft-link{
-    display:inline-flex; align-items:center; gap:6px; min-height:44px;
-    color:var(--text-2); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:4px;
-  }
-  .ft-link svg{ width:16px; height:16px; flex:none; }
-  .ft-link:active{ color:var(--text); }
-  @media (hover:hover){ .ft-link:hover{ text-decoration-thickness:2px; } }
-  .ft-mail{ order:1; } .ft-loc{ order:2; } .ft-copy{ order:3; } .totop{ order:4; }
-  .ft-copy, .ft-loc{ text-wrap:balance; }
-  @media (min-width:1024px){
-    .ft-bot{ flex-direction:row; align-items:center; justify-content:space-between; gap:var(--s-5); }
-    .ft-copy{ order:1; } .ft-loc{ order:2; }
-    .ft-links{ order:3; display:flex; align-items:center; gap:var(--s-5); }
-  }
-
-  /* ===== lightbox ===== */
-  .lb{
-    position:fixed; inset:0; z-index:var(--z-lightbox);
-    display:none; overflow-y:auto; overscroll-behavior:contain;
-    padding:var(--s-8) var(--s-4) var(--s-5);
-  }
-  .lb.on{ display:flex; }
-  .lb .sc{ position:fixed; inset:0; background:var(--scrim); cursor:zoom-out; }
-  .lb .box{ position:relative; z-index:1; width:100%; max-width:min(1080px, 100%); margin:auto; }
-  .lb-inner{ width:fit-content; max-width:100%; margin-inline:auto; }
-  .lb-media{ display:grid; place-items:center; }
-  .lb .cap, .lb .hint{ width:0; min-width:100%; }
-  .lb-media img{
-    grid-area:1 / 1; display:block; width:auto; height:auto; max-width:100%; max-height:60dvh;
-    object-fit:contain; margin-inline:auto; border-radius:var(--r-md); box-shadow:var(--shadow-float);
-  }
-  .lb.loading #lbImg{ display:none; }
-  .lb:not(.loading) .lb-ph{ display:none; }
-  .lb .cap{ margin-top:var(--s-4); }
-  .lb .cap .t{ font-family:var(--serif); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 26px); line-height:1.2; letter-spacing:-0.01em; color:var(--text); }
-  .lb .cap .m{ display:block; margin-top:4px; font-size:14px; line-height:1.4; color:var(--text-3); }
-  .lb .cap .d{ margin-top:var(--s-2); max-width:65ch; font-size:16px; line-height:1.6; color:var(--text-2); }
-  .lb .hint{ margin-top:var(--s-3); font-size:14px; line-height:1.4; color:var(--text-3); }
-  .lb .x{
-    position:fixed; top:max(12px, env(safe-area-inset-top)); right:12px; z-index:2;
-    width:44px; height:44px; display:grid; place-items:center;
-    border-radius:50%; background:var(--surface); border:1px solid var(--line-strong); color:var(--text);
-    transition:background-color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out);
-  }
-  .lb .x svg{ width:18px; height:18px; }
-  .lb .x:active{ transform:scale(.96); }
-  @media (hover:hover){ .lb .x:hover{ background:var(--surface-2); border-color:var(--text); } }
-  @media (min-width:640px){
-    .lb{ padding:var(--s-8) var(--gutter); }
-    .lb .box{ width:fit-content; }  /* box = image width, so the X sits over the image's top-right corner */
-    .lb .x{ position:absolute; top:-56px; right:0; }
-    .lb-media img{ max-height:72dvh; }
-  }
-  .lb.on .sc{ animation:fadein var(--d-base) var(--ease-out); }
-  .lb.on .lb-inner{ animation:lbin var(--d-base) var(--ease-out); }
-  .lb.closing .sc{ animation:fadeout 140ms var(--ease-in) forwards; }
-  .lb.closing .lb-inner, .lb.closing .x{ animation:lbout 140ms var(--ease-in) forwards; }
-  @keyframes fadein{ from{ opacity:0; } }
-  @keyframes fadeout{ to{ opacity:0; } }
-  @keyframes lbin{ from{ opacity:0; transform:scale(.98); } }
-  @keyframes lbout{ to{ opacity:0; transform:scale(.98); } }
-
-  /* ===== toast + confetti ===== */
-  .toast{
-    position:fixed; left:50%; bottom:max(16px, calc(env(safe-area-inset-bottom) + 16px)); z-index:var(--z-toast);
-    width:max-content; max-width:calc(100vw - 32px); padding:12px 16px;
-    background:var(--inv-bg); color:var(--inv-text); border-radius:var(--r-md); box-shadow:var(--shadow-float);
-    font-size:15px; line-height:1.45; white-space:normal; overflow-wrap:anywhere; pointer-events:none;
-    opacity:0; visibility:hidden; transform:translate(-50%, 8px);
-    transition:opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out), visibility 0s linear var(--d-base);
-  }
-  .toast.on{
-    opacity:1; visibility:visible; transform:translate(-50%, 0);
-    transition:opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out), visibility 0s;
-  }
-  #confetti{ position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:var(--z-confetti); }
-  #confetti[hidden]{ display:none; }
-
-  /* ===== motion: every move plays once, then the page is still =====
-     .m-on (set in <head>) runs the hero entrance. .m-ready (set by the script once its
-     observers exist) hides the scroll pieces, so nothing stays hidden if the script fails. */
-  .hero h1 .w{ display:inline-block; }
-  .m-on .hero h1 .l1, .m-on .hero h1 .l2{ clip-path:inset(-.4em -.25em -.32em -.25em); }
-  .m-on .hero h1 .w{ animation:wrise 1s var(--ease-out) both; }
-  .m-on .hero h1 .l2 .w{ animation-delay:.12s; }
-  .m-on .hero .facts, .m-on .hero .id-pfp, .m-on .hero .id-chip{ animation:risein .7s var(--ease-out) both; }
-  .m-on .hero .hero-lead{ animation:risein .7s .34s var(--ease-out) both; }
-  .m-on .hero .hero-actions{ animation:risein .7s .44s var(--ease-out) both; }
-  .m-on .hero .hero-stats{ animation:risein .7s .56s var(--ease-out) both; }
-  .m-on .hero .pfp, .m-on .hero .orbit-chip{ animation:fadein .9s .2s var(--ease-out) both; }
-  .m-on .orbit ellipse:first-of-type{ stroke-dasharray:1000; stroke-dashoffset:1000; animation:odraw 1.6s .25s var(--ease-out) forwards; }
-  .m-on .orbit ellipse:last-of-type{ animation:fadein 1s .9s var(--ease-out) both; }
-  @keyframes wrise{ from{ transform:translateY(140%); } }
-  @keyframes risein{ from{ opacity:0; transform:translateY(14px); } }
-  @keyframes odraw{ to{ stroke-dashoffset:0; } }
-
-  /* headings rise from behind their own baseline as they reach the screen */
-  .h2w{ display:block; }
-  .m-ready .rh{ clip-path:inset(-.3em -.2em -.25em -.2em); }
-  .m-ready .rh .h2w{ translate:0 115%; transition:translate .9s var(--ease-out); }
-  .m-ready .rh.in .h2w{ translate:0 0; }
-  .m-ready .rh.done{ clip-path:none; }
-
-  /* cards and tiles: one short rise, staggered by --i */
-  .m-ready .rv{
-    opacity:0; translate:0 18px;
-    /* per-property delays: only the entrance is staggered, hover states answer at once */
-    transition:opacity .6s var(--ease-out) calc(var(--i, 0) * 60ms), translate .6s var(--ease-out) calc(var(--i, 0) * 60ms),
-               transform var(--d-base) var(--ease-out), border-color var(--d-base) var(--ease-out);
-  }
-  .m-ready .rv.in{ opacity:1; translate:0 0; }
-
-  /* experience bars draw to their length */
-  .m-ready .xp-meter i{ transform-origin:left; transform:scaleX(0); transition:transform 1.1s .15s var(--ease-out); }
-  .m-ready .xp.in .xp-meter i{ transform:scaleX(1); }
-
-  /* underline redraw: rest-state underline retracts and draws back in from the left */
-  .ul-on .textlink, .ul-on .ft-link, .ul-on .wc:hover .t, .ul-on .mark:hover .sig{ text-decoration:none; }
-  .ul{ background:linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom:3px; }
-  .ud{ background:linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom:2px; transition:background-size .35s var(--ease-out); }
-  @media (hover:hover){
-    .textlink:hover .ul, .ft-link:hover .ul{ animation:uredraw .55s var(--ease-out); }
-    .wc:hover .ud, .mark:hover .ud{ background-size:100% 1px; }
-  }
-  @keyframes uredraw{
-    0%{ background-size:100% 1px; background-position:100% 100%; }
-    45%{ background-size:0 1px; background-position:100% 100%; }
-    46%{ background-size:0 1px; background-position:0 100%; }
-    100%{ background-size:100% 1px; background-position:0 100%; }
-  }
-
-  /* work tiles: zoom, colour, caption lifts, arrow slides in */
-  .wc-cap{ transition:translate var(--d-base) var(--ease-out); }
-  .wc-go{ translate:-4px 4px; transition:opacity var(--d-fast) var(--ease-out), translate var(--d-base) var(--ease-out); }
-  @media (hover:hover) and (pointer:fine){
-    .wc:hover .wc-media img{ transform:scale(1.04); }
-    .wc:hover .wc-cap{ translate:0 -4px; }
-    .wc:hover .wc-go, .wc:focus-visible .wc-go{ translate:0 0; }
-  }
-
-  /* magnetic buttons (desktop pointer only; translate, so :active keeps its transform) */
-  .mag{ transition:color 220ms var(--ease-out), border-color 220ms var(--ease-out), translate 260ms var(--ease-out); }
-
-  /* theme switch: the new theme spreads in a circle from the toggle */
-  ::view-transition-old(root), ::view-transition-new(root){ animation:none; mix-blend-mode:normal; }
-
-  /* ===== 3D pieces: a canvas sits over a real text/element fallback ===== */
-  .hst-3d .n{ position:relative; }
-  .hst-3d canvas{ position:absolute; left:calc(-1 * min(24px, var(--gutter))); top:50%; translate:0 -50%; width:calc(100% + 2 * min(24px, var(--gutter))); height:112px; cursor:grab; touch-action:pan-y; }
-  .hst-3d canvas:active{ cursor:grabbing; }
-  .hst-3d.live .n-txt{ opacity:0; }
-  .svc-3d{ position:relative; }
-  .svc-3d:not(.live) .globe{ display:none; }
-  /* the globe floats, so the heading and text wrap round it and then run full width */
-  .globe{ float:right; width:96px; margin:0 0 var(--s-2) var(--s-4); }
-  .globe canvas{ display:block; width:96px; height:96px; border-radius:50%; cursor:grab; touch-action:pan-y; }
-  .globe canvas:active{ cursor:grabbing; }
-  .globe-hint{ display:block; margin-top:2px; text-align:center; font-size:14px; line-height:1.4; color:var(--text-3); white-space:nowrap; }
-  .svc-3d .tags{ clear:both; }
-  @media (min-width:640px){ .globe{ width:112px; margin-left:var(--s-5); } .globe canvas{ width:112px; height:112px; } }
-
-  /* live demo inside the project viewer */
-  .lb-run-row{ display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2) var(--s-4); margin-top:var(--s-4); }
-  .lb-run-row[hidden], .lb-run-row [hidden]{ display:none; }
-  .lb-demo{ display:none; }
-  .lb.demo .lb-media{ display:none; }
-  .lb.demo .lb-demo{ display:block; }
-  .lb.demo .box{ width:min(1080px, 100%); }
-  .lb.demo .lb-inner{ width:100%; }
-  .lb-demo iframe{ display:block; width:100%; aspect-ratio:3 / 4; max-height:70dvh; border:1px solid var(--line); border-radius:var(--r-md); background:#000; box-shadow:var(--shadow-float); }
-  @media (min-width:640px){ .lb-demo iframe{ aspect-ratio:16 / 10; max-height:72dvh; } }
-
-
-  /* ===== cards (2026-09-27): one ink line, one lift, nothing else ===== */
-  /* services: a 2px ink rule draws across the top, the card lifts 3px, tags darken */
-  .svc{ position:relative; transition:transform var(--d-base) var(--ease-out), border-color var(--d-base) var(--ease-out); }
-  .svc::before{
-    content:""; position:absolute; left:-1px; right:-1px; top:-1px; height:2px; background:var(--text);
-    border-radius:var(--r-md) var(--r-md) 0 0; transform:scaleX(0); transform-origin:left; transition:transform .45s var(--ease-out);
-  }
-  .svc .tags span{ transition:border-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out); }
-  .svc-go{ margin-top:var(--s-4); }
-  .svc-go svg{ transition:transform var(--d-base) var(--ease-out); }
-  @media (hover:hover) and (pointer:fine){
-    .svc:hover{ transform:translateY(-3px); border-color:var(--line-strong); }
-    .svc:hover::before{ transform:scaleX(1); }
-    .svc:hover .tags span{ border-color:var(--line-strong); color:var(--text); }
-    .svc-go:hover svg{ transform:translateX(3px); }
-  }
-
-  /* work: the frame darkens on hover; 3D tiles say they run live */
-  .wc-media{ transition:transform var(--d-fast) var(--ease-out), border-color var(--d-base) var(--ease-out); }
-  @media (hover:hover) and (pointer:fine){ .wc:hover .wc-media{ border-color:var(--text); } }
-  .wc-live{
-    position:absolute; left:8px; top:8px; z-index:1; display:inline-flex; align-items:center; gap:6px;
-    padding:2px 10px; border-radius:var(--r-full); background:var(--bg); border:1px solid var(--line-strong);
-    font-size:14px; line-height:1.4; font-weight:500; color:var(--text);
-  }
-  .wc-live::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
-
-  /* skills: each group is a panel; chips come in one after another, and invert on hover */
-  .sk-group{ background:var(--band-panel); border:1px solid var(--band-panel-line); border-radius:var(--r-md); padding:var(--s-5); }
-  .sk-group h3{ padding-bottom:var(--s-3); border-bottom:1px solid var(--band-panel-line); }
-  .sk-chips{ margin-top:var(--s-4); }
-  .sk-chips li{ transition:background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out); }
-  .m-ready .sk-group .sk-chips li{
-    opacity:0; translate:0 6px;
-    transition:opacity .4s var(--ease-out) calc(var(--j, 0) * 35ms + 120ms), translate .4s var(--ease-out) calc(var(--j, 0) * 35ms + 120ms),
-               background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out);
-  }
-  .m-ready .sk-group.in .sk-chips li{ opacity:1; translate:0 0; }
-  @media (hover:hover) and (pointer:fine){
-    .sk-group:hover{ border-color:var(--band-chip-line); }
-    .sk-chips li:hover{ background:var(--band-text); color:var(--band-bg); border-color:var(--band-text); }
-  }
-
-  /* experience: the lesson reads as a pull quote; panels answer the pointer */
-  .xp{ transition:border-color var(--d-base) var(--ease-out); }
-  .most{ background:transparent; border-left:2px solid var(--text); border-radius:0; padding:var(--s-1) 0 var(--s-1) var(--s-4); }
-  .most p{ font-family:var(--serif); font-size:18px; line-height:1.5; color:var(--text); }
-  .xp .chips span{ transition:border-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out); }
-  @media (hover:hover) and (pointer:fine){
-    .xp:hover{ border-color:var(--line-strong); }
-    .xp:hover .chips span{ border-color:var(--line-strong); color:var(--text); }
-  }
-
-  /* ===== phone slideshows (below 640px): services, work, skills, experience ===== */
-  .car-bar{ display:none; }
-  @media (max-width:639px){
-    .js .car{
-      display:flex; gap:12px; align-items:flex-start;
-      overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none;
-      margin-inline:calc(-1 * var(--gutter)); padding:4px var(--gutter) 6px; scroll-padding-inline:var(--gutter);
-      position:relative; transition:height .35s var(--ease-out);
-    }
-    .js .car::-webkit-scrollbar{ display:none; }
-    .js .car > *{ flex:0 0 86%; min-width:0; scroll-snap-align:start; }
-    .js .wgrid.car > *{ flex-basis:76%; }
-    .js .car:focus-visible{ outline-offset:-2px; }
-    .car-bar{ display:flex; align-items:center; gap:var(--s-3); margin-top:var(--s-4); }
-    .car-count{ min-width:4.5em; font-size:14px; line-height:1.4; font-weight:500; color:var(--text-2); font-variant-numeric:tabular-nums; }
-    .car-line{ position:relative; flex:1; height:1px; background:var(--line); overflow:hidden; }
-    .car-line i{ position:absolute; left:0; top:0; bottom:0; width:var(--w, 25%); background:var(--text); transition:translate .3s var(--ease-out); translate:var(--x, 0) 0; }
-    .car-btn{
-      width:44px; height:44px; flex:none; display:grid; place-items:center;
-      border:1px solid var(--line-strong); border-radius:var(--r-full); color:var(--text);
-      transition:background-color var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out);
-    }
-    .car-btn svg{ width:18px; height:18px; }
-    .car-btn:active{ transform:scale(.96); }
-    .car-btn:disabled{ opacity:.35; cursor:default; }
-    #skillstory .car-count{ color:var(--band-text-2); }
-    #skillstory .car-line{ background:var(--band-panel-line); }
-    #skillstory .car-line i{ background:var(--band-text); }
-    #skillstory .car-btn{ border-color:var(--band-chip-line); color:var(--band-text); }
-    .xp{ padding:var(--s-5) 20px; }
-  }
-
-  /* ===== reduced motion ===== */
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{ transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
-    .wc:hover .wc-media img{ transform:none; }
-    .wc:hover .wc-cap{ translate:none; }
-  }
-</style>
+<!-- styles: tokens, base, layout, one file per section, motion last (order matters) -->
+<link rel="stylesheet" href="css/tokens.css" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/layout.css" />
+<link rel="stylesheet" href="css/components/a11y.css" />
+<link rel="stylesheet" href="css/components/controls.css" />
+<link rel="stylesheet" href="css/components/header.css" />
+<link rel="stylesheet" href="css/components/hero.css" />
+<link rel="stylesheet" href="css/components/strip.css" />
+<link rel="stylesheet" href="css/components/about.css" />
+<link rel="stylesheet" href="css/components/services.css" />
+<link rel="stylesheet" href="css/components/work.css" />
+<link rel="stylesheet" href="css/components/skills.css" />
+<link rel="stylesheet" href="css/components/experience.css" />
+<link rel="stylesheet" href="css/components/contact.css" />
+<link rel="stylesheet" href="css/components/footer.css" />
+<link rel="stylesheet" href="css/components/lightbox.css" />
+<link rel="stylesheet" href="css/components/toast.css" />
+<link rel="stylesheet" href="css/components/slideshow.css" />
+<link rel="stylesheet" href="css/motion.css" />
+<!-- scripts: fetched in parallel, run by js/main.js -->
+<link rel="modulepreload" href="js/main.js" />
+<link rel="modulepreload" href="js/config.js" />
+<link rel="modulepreload" href="js/lib/dom.js" />
+<link rel="modulepreload" href="js/lib/three-kit.js" />
+<link rel="modulepreload" href="js/modules/confetti.js" />
+<link rel="modulepreload" href="js/modules/copy-email.js" />
+<link rel="modulepreload" href="js/modules/footer-light.js" />
+<link rel="modulepreload" href="js/modules/globe.js" />
+<link rel="modulepreload" href="js/modules/lightbox.js" />
+<link rel="modulepreload" href="js/modules/live-tags.js" />
+<link rel="modulepreload" href="js/modules/magnetic.js" />
+<link rel="modulepreload" href="js/modules/menu.js" />
+<link rel="modulepreload" href="js/modules/nav-state.js" />
+<link rel="modulepreload" href="js/modules/reveal.js" />
+<link rel="modulepreload" href="js/modules/service-links.js" />
+<link rel="modulepreload" href="js/modules/slideshow.js" />
+<link rel="modulepreload" href="js/modules/stat-3d.js" />
+<link rel="modulepreload" href="js/modules/theme.js" />
+<link rel="modulepreload" href="js/modules/toast.js" />
+<link rel="modulepreload" href="js/modules/underline.js" />
+<link rel="modulepreload" href="js/modules/work.js" />
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
@@ -911,7 +115,7 @@
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="id-row">
-          <span class="id-pfp"><img src="assets/profile.jpg" alt="Sudipta Biswas in a white shirt, outdoors in a garden" width="900" height="900" loading="eager" fetchpriority="high" decoding="async" /></span>
+          <span class="id-pfp"><img src="assets/images/profile.jpg" alt="Sudipta Biswas in a white shirt, outdoors in a garden" width="900" height="900" loading="eager" fetchpriority="high" decoding="async" /></span>
           <div class="id-meta">
             <ul class="facts">
               <li>Dhaka, Bangladesh<span class="sep" aria-hidden="true">/</span></li>
@@ -951,7 +155,7 @@
           </g>
         </svg>
         <figure class="pfp">
-          <img src="assets/profile.jpg" alt="Sudipta Biswas in a white shirt, outdoors in a garden" width="900" height="900" loading="eager" fetchpriority="high" decoding="async" />
+          <img src="assets/images/profile.jpg" alt="Sudipta Biswas in a white shirt, outdoors in a garden" width="900" height="900" loading="eager" fetchpriority="high" decoding="async" />
         </figure>
         <span class="chip orbit-chip"><span class="dot" aria-hidden="true"></span>Dhaka · Open to work</span>
       </div>
@@ -1048,158 +252,158 @@
     <div class="wfilter" id="wfilter" role="group" aria-label="Filter projects by type"><button type="button" class="on" aria-pressed="true" data-f="all">All</button><button type="button" aria-pressed="false" data-f="plumb">Plumbing</button><button type="button" aria-pressed="false" data-f="3d">3D &amp; Motion</button><button type="button" aria-pressed="false" data-f="video">AI Video</button><button type="button" aria-pressed="false" data-f="roof">Roofing</button><button type="button" aria-pressed="false" data-f="auto">Automotive</button><button type="button" aria-pressed="false" data-f="spa">Med Spa</button><button type="button" aria-pressed="false" data-f="shop">Retail</button><button type="button" aria-pressed="false" data-f="niche">Other trades</button><button type="button" aria-pressed="false" data-f="system">Template system</button></div>
 
     <div class="wgrid" id="wgrid">
-      <a class="wc" data-cat="plumb" data-img="assets/work/ironhand.png" data-tag="React" data-desc="Trade site with a sticky call bar, an animated hero, a before/after slider and a live service-area map." data-stack="React · TypeScript · Tailwind · Leaflet" href="assets/work/ironhand.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/ironhand.jpg?v=4" alt="Screenshot of the IRONHAND Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="816" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc" data-cat="plumb" data-img="assets/images/work/ironhand.png" data-tag="React" data-desc="Trade site with a sticky call bar, an animated hero, a before/after slider and a live service-area map." data-stack="React · TypeScript · Tailwind · Leaflet" href="assets/images/work/ironhand.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/ironhand.jpg?v=4" alt="Screenshot of the IRONHAND Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="816" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">IRONHAND Plumbing Co.</span><span class="k">Plumbing</span></span>
       </a>
 
-      <a class="wc" data-cat="3d" data-demo="demos/house-3d/index.html" data-img="assets/work/house-3d.png" data-tag="Three.js" data-desc="A cutaway residential DWV + supply model you can orbit, zoom and toggle system by system, with live labels and water flow." data-stack="Three.js · WebGL · Orbit Controls" href="assets/work/house-3d.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/house-3d.jpg?v=4" alt="Screenshot of the interactive 3D house model" loading="lazy" decoding="async" width="1000" height="848" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc" data-cat="3d" data-demo="demos/house-3d/index.html" data-img="assets/images/work/house-3d.png" data-tag="Three.js" data-desc="A cutaway residential DWV + supply model you can orbit, zoom and toggle system by system, with live labels and water flow." data-stack="Three.js · WebGL · Orbit Controls" href="assets/images/work/house-3d.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/house-3d.jpg?v=4" alt="Screenshot of the interactive 3D house model" loading="lazy" decoding="async" width="1000" height="848" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Interactive 3D House</span><span class="k">3D · Three.js</span></span>
       </a>
 
-      <a class="wc" data-cat="video" data-img="assets/work/reel-productivity-trap.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on the METR study, with an animated bar chart and a synthesised score." data-stack="FFmpeg · TTS · Motion" href="assets/work/reel-productivity-trap.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/reel-productivity-trap.jpg?v=4" alt="Frame from the short video The Productivity Trap" loading="lazy" decoding="async" width="704" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc" data-cat="video" data-img="assets/images/work/reel-productivity-trap.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on the METR study, with an animated bar chart and a synthesised score." data-stack="FFmpeg · TTS · Motion" href="assets/images/work/reel-productivity-trap.jpg" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/reel-productivity-trap.jpg?v=4" alt="Frame from the short video The Productivity Trap" loading="lazy" decoding="async" width="704" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">The Productivity Trap</span><span class="k">AI Video</span></span>
       </a>
 
-      <a class="wc" data-cat="system" data-img="assets/kit-demo.png" data-tag="React" data-desc="The template engine behind the rest: shared tokens, layout primitives and a rapid re-skin workflow across 18 niches." data-stack="React · Vite · Design System" href="assets/kit-demo.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/kit-demo.jpg?v=4" alt="Screenshot of the beautiful-websites-kit demo page" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc" data-cat="system" data-img="assets/images/kit-demo.png" data-tag="React" data-desc="The template engine behind the rest: shared tokens, layout primitives and a rapid re-skin workflow across 18 niches." data-stack="React · Vite · Design System" href="assets/images/kit-demo.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/kit-demo.jpg?v=4" alt="Screenshot of the beautiful-websites-kit demo page" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">beautiful-websites-kit</span><span class="k">Template system</span></span>
       </a>
 
-      <a class="wc" data-cat="roof" data-img="assets/work/roofing.png" data-tag="Next.js" data-desc="Roofing build with a review strip, a financing block and a process timeline, held to Core Web Vitals." data-stack="Next.js · TypeScript · Core Web Vitals" href="assets/work/roofing.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/roofing.jpg?v=4" alt="Screenshot of the Ridgeline Roofing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc" data-cat="roof" data-img="assets/images/work/roofing.png" data-tag="Next.js" data-desc="Roofing build with a review strip, a financing block and a process timeline, held to Core Web Vitals." data-stack="Next.js · TypeScript · Core Web Vitals" href="assets/images/work/roofing.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/roofing.jpg?v=4" alt="Screenshot of the Ridgeline Roofing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Ridgeline Roofing</span><span class="k">Roofing</span></span>
       </a>
 
-      <a class="wc" data-cat="3d" data-demo="demos/aether/index.html" data-img="assets/work/aether-hero.png" data-tag="WebGL" data-desc="A shader hero: noise fields rendered live in the browser and dropped in as a background component." data-stack="WebGL · GLSL · Canvas" href="assets/work/aether-hero.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/aether-hero.jpg?v=4" alt="Screenshot of the Aether shader hero" loading="lazy" decoding="async" width="1000" height="906" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc" data-cat="3d" data-demo="demos/aether/index.html" data-img="assets/images/work/aether-hero.png" data-tag="WebGL" data-desc="A shader hero: noise fields rendered live in the browser and dropped in as a background component." data-stack="WebGL · GLSL · Canvas" href="assets/images/work/aether-hero.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/aether-hero.jpg?v=4" alt="Screenshot of the Aether shader hero" loading="lazy" decoding="async" width="1000" height="906" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Aether Shader Hero</span><span class="k">3D · Shader</span></span>
       </a>
 
-      <a class="wc extra" data-cat="auto" data-img="assets/work/salem-auto.png" data-tag="Next.js" data-desc="A kinetic headline over structured business data, reviews and service areas." data-stack="Next.js · Animation · Local SEO" href="assets/work/salem-auto.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/salem-auto.jpg?v=4" alt="Screenshot of the Salem Auto Electric website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="auto" data-img="assets/images/work/salem-auto.png" data-tag="Next.js" data-desc="A kinetic headline over structured business data, reviews and service areas." data-stack="Next.js · Animation · Local SEO" href="assets/images/work/salem-auto.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/salem-auto.jpg?v=4" alt="Screenshot of the Salem Auto Electric website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Salem Auto Electric</span><span class="k">Automotive</span></span>
       </a>
 
-      <a class="wc extra" data-cat="plumb" data-img="assets/work/hargrove.png" data-tag="React" data-desc="Flagship multi-page build with ZIP check and six area pages." data-stack="React · API" href="assets/work/hargrove.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/hargrove.jpg?v=4" alt="Screenshot of the Hargrove &amp; Sons Plumbing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="plumb" data-img="assets/images/work/hargrove.png" data-tag="React" data-desc="Flagship multi-page build with ZIP check and six area pages." data-stack="React · API" href="assets/images/work/hargrove.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/hargrove.jpg?v=4" alt="Screenshot of the Hargrove &amp; Sons Plumbing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Hargrove &amp; Sons Plumbing</span><span class="k">Plumbing</span></span>
       </a>
 
-      <a class="wc extra" data-cat="shop" data-img="assets/work/nova.png" data-tag="React" data-desc="Storefront layout with product grid." data-stack="React" href="assets/work/nova.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/nova.jpg?v=4" alt="Screenshot of the NOVA Premium Electronics store page" loading="lazy" decoding="async" width="1000" height="812" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="shop" data-img="assets/images/work/nova.png" data-tag="React" data-desc="Storefront layout with product grid." data-stack="React" href="assets/images/work/nova.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/nova.jpg?v=4" alt="Screenshot of the NOVA Premium Electronics store page" loading="lazy" decoding="async" width="1000" height="812" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">NOVA Premium Electronics</span><span class="k">Retail</span></span>
       </a>
 
-      <a class="wc extra" data-cat="3d" data-demo="demos/ripple/index.html" data-img="assets/work/ripple-effect.png" data-tag="Canvas" data-desc="A pointer-reactive ripple field built as a drop-in background component." data-stack="Canvas · Shaders" href="assets/work/ripple-effect.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/ripple-effect.jpg?v=4" alt="Screenshot of the background ripple effect demo" loading="lazy" decoding="async" width="991" height="622" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="3d" data-demo="demos/ripple/index.html" data-img="assets/images/work/ripple-effect.png" data-tag="Canvas" data-desc="A pointer-reactive ripple field built as a drop-in background component." data-stack="Canvas · Shaders" href="assets/images/work/ripple-effect.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/ripple-effect.jpg?v=4" alt="Screenshot of the background ripple effect demo" loading="lazy" decoding="async" width="991" height="622" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Background Ripple Effect</span><span class="k">3D · Motion</span></span>
       </a>
 
-      <a class="wc extra" data-cat="3d" data-demo="demos/neon-drive/index.html" data-img="assets/work/neon-drive.png" data-tag="Canvas" data-desc="Neon motion study." data-stack="Canvas" href="assets/work/neon-drive.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/neon-drive.jpg?v=4" alt="Screenshot of the Neon Drive page" loading="lazy" decoding="async" width="1000" height="744" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="3d" data-demo="demos/neon-drive/index.html" data-img="assets/images/work/neon-drive.png" data-tag="Canvas" data-desc="Neon motion study." data-stack="Canvas" href="assets/images/work/neon-drive.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/neon-drive.jpg?v=4" alt="Screenshot of the Neon Drive page" loading="lazy" decoding="async" width="1000" height="744" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Neon Drive</span><span class="k">3D · Motion</span></span>
       </a>
 
-      <a class="wc extra" data-cat="3d" data-demo="demos/nightscape/index.html" data-img="assets/work/nightscape.png" data-tag="Canvas" data-desc="Animated night-scene backdrop." data-stack="Canvas" href="assets/work/nightscape.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/nightscape.jpg?v=4" alt="Screenshot of the Nightscape page" loading="lazy" decoding="async" width="1000" height="745" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="3d" data-demo="demos/nightscape/index.html" data-img="assets/images/work/nightscape.png" data-tag="Canvas" data-desc="Animated night-scene backdrop." data-stack="Canvas" href="assets/images/work/nightscape.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/nightscape.jpg?v=4" alt="Screenshot of the Nightscape page" loading="lazy" decoding="async" width="1000" height="745" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Nightscape</span><span class="k">3D · Motion</span></span>
       </a>
 
-      <a class="wc extra" data-cat="3d" data-demo="demos/garage-door/index.html" data-img="assets/work/garage-door.png" data-tag="CSS" data-desc="Scroll-driven reveal interaction." data-stack="CSS · JS" href="assets/work/garage-door.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/garage-door.jpg?v=4" alt="Screenshot of the garage door reveal page" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="3d" data-demo="demos/garage-door/index.html" data-img="assets/images/work/garage-door.png" data-tag="CSS" data-desc="Scroll-driven reveal interaction." data-stack="CSS · JS" href="assets/images/work/garage-door.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/garage-door.jpg?v=4" alt="Screenshot of the garage door reveal page" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Garage Door Reveal</span><span class="k">3D · Motion</span></span>
       </a>
 
-      <a class="wc extra" data-cat="video" data-img="assets/work/reel-context.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on managing model context." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-context.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/reel-context.jpg?v=4" alt="Frame from the short video Context Windows" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-context.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on managing model context." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-context.jpg" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/reel-context.jpg?v=4" alt="Frame from the short video Context Windows" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Context Windows</span><span class="k">AI Video</span></span>
       </a>
 
-      <a class="wc extra" data-cat="video" data-img="assets/work/reel-entry.jpg" data-tag="FFmpeg" data-desc="Short-form explainer, faceless format." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-entry.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/reel-entry.jpg?v=4" alt="Frame from the short video Entry Point" loading="lazy" decoding="async" width="700" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-entry.jpg" data-tag="FFmpeg" data-desc="Short-form explainer, faceless format." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-entry.jpg" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/reel-entry.jpg?v=4" alt="Frame from the short video Entry Point" loading="lazy" decoding="async" width="700" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Entry Point</span><span class="k">AI Video</span></span>
       </a>
 
-      <a class="wc extra" data-cat="video" data-img="assets/work/reel-git-duo.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on a two-command git flow." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-git-duo.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/reel-git-duo.jpg?v=4" alt="Frame from the short video Git Workflow Duo" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-git-duo.jpg" data-tag="FFmpeg" data-desc="Short-form explainer on a two-command git flow." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-git-duo.jpg" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/reel-git-duo.jpg?v=4" alt="Frame from the short video Git Workflow Duo" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Git Workflow Duo</span><span class="k">AI Video</span></span>
       </a>
 
-      <a class="wc extra" data-cat="video" data-img="assets/work/reel-slash.jpg" data-tag="FFmpeg" data-desc="Short-form explainer, screen-capture driven." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-slash.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/reel-slash.jpg?v=4" alt="Frame from the short video Slash Commands" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-slash.jpg" data-tag="FFmpeg" data-desc="Short-form explainer, screen-capture driven." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-slash.jpg" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/reel-slash.jpg?v=4" alt="Frame from the short video Slash Commands" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Slash Commands</span><span class="k">AI Video</span></span>
       </a>
 
-      <a class="wc extra" data-cat="video" data-img="assets/work/reel-report.jpg" data-tag="FFmpeg" data-desc="Short-form explainer with animated data panels." data-stack="FFmpeg · TTS · Motion" href="assets/work/reel-report.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/reel-report.jpg?v=4" alt="Frame from the short video Session Reports" loading="lazy" decoding="async" width="1000" height="944" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-report.jpg" data-tag="FFmpeg" data-desc="Short-form explainer with animated data panels." data-stack="FFmpeg · TTS · Motion" href="assets/images/work/reel-report.jpg" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/reel-report.jpg?v=4" alt="Frame from the short video Session Reports" loading="lazy" decoding="async" width="1000" height="944" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Session Reports</span><span class="k">AI Video</span></span>
       </a>
 
-      <a class="wc extra" data-cat="video" data-img="assets/work/reel-so-arm100.jpg" data-tag="FFmpeg" data-desc="Short-form build breakdown with real hardware footage." data-stack="FFmpeg · TTS · Captions" href="assets/work/reel-so-arm100.jpg" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/reel-so-arm100.jpg?v=4" alt="Frame from the short video about the SO-ARM100 robot arm" loading="lazy" decoding="async" width="869" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="video" data-img="assets/images/work/reel-so-arm100.jpg" data-tag="FFmpeg" data-desc="Short-form build breakdown with real hardware footage." data-stack="FFmpeg · TTS · Captions" href="assets/images/work/reel-so-arm100.jpg" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/reel-so-arm100.jpg?v=4" alt="Frame from the short video about the SO-ARM100 robot arm" loading="lazy" decoding="async" width="869" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">SO-ARM100 Robot Arm</span><span class="k">AI Video</span></span>
       </a>
 
-      <a class="wc extra" data-cat="plumb" data-img="assets/work/tidewell.png" data-tag="React" data-desc="Re-skinned from the shared component base." data-stack="React · Tailwind" href="assets/work/tidewell.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/tidewell.jpg?v=4" alt="Screenshot of the TIDEWELL Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="796" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="plumb" data-img="assets/images/work/tidewell.png" data-tag="React" data-desc="Re-skinned from the shared component base." data-stack="React · Tailwind" href="assets/images/work/tidewell.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/tidewell.jpg?v=4" alt="Screenshot of the TIDEWELL Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="796" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">TIDEWELL Plumbing Co.</span><span class="k">Plumbing</span></span>
       </a>
 
-      <a class="wc extra" data-cat="plumb" data-img="assets/work/blueline.png" data-tag="React" data-desc="Trade site variant on the same system." data-stack="React" href="assets/work/blueline.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/blueline.jpg?v=4" alt="Screenshot of the BlueLine Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="plumb" data-img="assets/images/work/blueline.png" data-tag="React" data-desc="Trade site variant on the same system." data-stack="React" href="assets/images/work/blueline.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/blueline.jpg?v=4" alt="Screenshot of the BlueLine Plumbing Co. website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">BlueLine Plumbing Co.</span><span class="k">Plumbing</span></span>
       </a>
 
-      <a class="wc extra" data-cat="spa" data-img="assets/work/figura.png" data-tag="Next.js" data-desc="Treatment menu and booking flow." data-stack="Next.js" href="assets/work/figura.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/figura.jpg?v=4" alt="Screenshot of the Figura Medspa website" loading="lazy" decoding="async" width="1000" height="876" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="spa" data-img="assets/images/work/figura.png" data-tag="Next.js" data-desc="Treatment menu and booking flow." data-stack="Next.js" href="assets/images/work/figura.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/figura.jpg?v=4" alt="Screenshot of the Figura Medspa website" loading="lazy" decoding="async" width="1000" height="876" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Figura Medspa</span><span class="k">Med Spa</span></span>
       </a>
 
-      <a class="wc extra" data-cat="spa" data-img="assets/work/glo.png" data-tag="Next.js" data-desc="Spa layout built around a service grid." data-stack="Next.js" href="assets/work/glo.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/glo.jpg?v=4" alt="Screenshot of the Glo Med Spa website" loading="lazy" decoding="async" width="1000" height="772" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="spa" data-img="assets/images/work/glo.png" data-tag="Next.js" data-desc="Spa layout built around a service grid." data-stack="Next.js" href="assets/images/work/glo.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/glo.jpg?v=4" alt="Screenshot of the Glo Med Spa website" loading="lazy" decoding="async" width="1000" height="772" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Glo Med Spa</span><span class="k">Med Spa</span></span>
       </a>
 
-      <a class="wc extra" data-cat="spa" data-img="assets/work/skin-couture.png" data-tag="React" data-desc="Editorial spa layout." data-stack="React" href="assets/work/skin-couture.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/skin-couture.jpg?v=4" alt="Screenshot of the Skin Couture Med Spa website" loading="lazy" decoding="async" width="1000" height="798" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="spa" data-img="assets/images/work/skin-couture.png" data-tag="React" data-desc="Editorial spa layout." data-stack="React" href="assets/images/work/skin-couture.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/skin-couture.jpg?v=4" alt="Screenshot of the Skin Couture Med Spa website" loading="lazy" decoding="async" width="1000" height="798" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Skin Couture Med Spa</span><span class="k">Med Spa</span></span>
       </a>
 
-      <a class="wc extra" data-cat="niche" data-img="assets/work/pressure-washing.png" data-tag="React" data-desc="Pressure-washing business site." data-stack="React" href="assets/work/pressure-washing.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/pressure-washing.jpg?v=4" alt="Screenshot of the Crisp Exterior Washing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="niche" data-img="assets/images/work/pressure-washing.png" data-tag="React" data-desc="Pressure-washing business site." data-stack="React" href="assets/images/work/pressure-washing.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/pressure-washing.jpg?v=4" alt="Screenshot of the Crisp Exterior Washing website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Crisp Exterior Washing</span><span class="k">Trade site</span></span>
       </a>
 
-      <a class="wc extra" data-cat="niche" data-img="assets/work/hvac.png" data-tag="React" data-desc="Same component base, re-skinned for HVAC." data-stack="React" href="assets/work/hvac.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/hvac.jpg?v=4" alt="Screenshot of the HVAC website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="niche" data-img="assets/images/work/hvac.png" data-tag="React" data-desc="Same component base, re-skinned for HVAC." data-stack="React" href="assets/images/work/hvac.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/hvac.jpg?v=4" alt="Screenshot of the HVAC website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">HVAC Build</span><span class="k">Trade site</span></span>
       </a>
 
-      <a class="wc extra" data-cat="niche" data-img="assets/work/concrete.png" data-tag="React" data-desc="Concrete and masonry trade site on the shared system." data-stack="React" href="assets/work/concrete.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/concrete.jpg?v=4" alt="Screenshot of the concrete and masonry website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="niche" data-img="assets/images/work/concrete.png" data-tag="React" data-desc="Concrete and masonry trade site on the shared system." data-stack="React" href="assets/images/work/concrete.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/concrete.jpg?v=4" alt="Screenshot of the concrete and masonry website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Concrete &amp; Masonry</span><span class="k">Trade site</span></span>
       </a>
 
-      <a class="wc extra" data-cat="niche" data-img="assets/work/deck.png" data-tag="React" data-desc="Deck and patio build from the template library." data-stack="React" href="assets/work/deck.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/deck.jpg?v=4" alt="Screenshot of the deck and patio website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="niche" data-img="assets/images/work/deck.png" data-tag="React" data-desc="Deck and patio build from the template library." data-stack="React" href="assets/images/work/deck.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/deck.jpg?v=4" alt="Screenshot of the deck and patio website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Deck &amp; Patio</span><span class="k">Trade site</span></span>
       </a>
 
-      <a class="wc extra" data-cat="niche" data-img="assets/work/electrical.png" data-tag="React" data-desc="Electrical trade site, same layout primitives." data-stack="React" href="assets/work/electrical.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/electrical.jpg?v=4" alt="Screenshot of the electrical contractor website" loading="lazy" decoding="async" width="1000" height="806" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="niche" data-img="assets/images/work/electrical.png" data-tag="React" data-desc="Electrical trade site, same layout primitives." data-stack="React" href="assets/images/work/electrical.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/electrical.jpg?v=4" alt="Screenshot of the electrical contractor website" loading="lazy" decoding="async" width="1000" height="806" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Electrical</span><span class="k">Trade site</span></span>
       </a>
 
-      <a class="wc extra" data-cat="niche" data-img="assets/work/landscaping.png" data-tag="React" data-desc="Landscaping re-skin of the shared component base." data-stack="React" href="assets/work/landscaping.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/landscaping.jpg?v=4" alt="Screenshot of the landscaping website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="niche" data-img="assets/images/work/landscaping.png" data-tag="React" data-desc="Landscaping re-skin of the shared component base." data-stack="React" href="assets/images/work/landscaping.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/landscaping.jpg?v=4" alt="Screenshot of the landscaping website" loading="lazy" decoding="async" width="1000" height="1000" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Landscaping</span><span class="k">Trade site</span></span>
       </a>
 
-      <a class="wc extra" data-cat="niche" data-img="assets/work/pool.png" data-tag="React" data-desc="Pool and spa build on the same system." data-stack="React" href="assets/work/pool.png" aria-haspopup="dialog">
-        <span class="wc-media"><img src="assets/thumbs/pool.jpg?v=4" alt="Screenshot of the pool and spa website" loading="lazy" decoding="async" width="1000" height="880" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
+      <a class="wc extra" data-cat="niche" data-img="assets/images/work/pool.png" data-tag="React" data-desc="Pool and spa build on the same system." data-stack="React" href="assets/images/work/pool.png" aria-haspopup="dialog">
+        <span class="wc-media"><img src="assets/images/thumbs/pool.jpg?v=4" alt="Screenshot of the pool and spa website" loading="lazy" decoding="async" width="1000" height="880" /><span class="wc-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span>
         <span class="wc-cap"><span class="t pt">Pool &amp; Spa</span><span class="k">Trade site</span></span>
       </a>
     </div>
@@ -1395,7 +599,7 @@
   <div class="box">
     <button class="x" type="button" data-close aria-label="Close preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     <div class="lb-inner">
-      <div class="lb-media"><img id="lbImg" src="assets/thumbs/ironhand.jpg?v=4" alt="" width="1000" height="816" loading="lazy" decoding="async" /></div>
+      <div class="lb-media"><img id="lbImg" src="assets/images/thumbs/ironhand.jpg?v=4" alt="" width="1000" height="816" loading="lazy" decoding="async" /></div>
       <div class="lb-demo" id="lbDemo"></div>
       <div class="cap"><h3 class="t" id="lbTitle"></h3><span class="m" id="lbTag"></span><p class="d" id="lbDesc"></p></div>
       <div class="lb-run-row" id="lbRunRow" hidden>
@@ -1408,640 +612,12 @@
 </div>
 
 <!-- ===== floating preview (kept; not wired) ===== -->
-<div class="preview" id="preview" aria-hidden="true"><img id="previewImg" src="assets/thumbs/ironhand.jpg?v=4" alt="" width="1000" height="816" loading="lazy" decoding="async" /><span class="tag" id="previewTag"></span></div>
+<div class="preview" id="preview" aria-hidden="true"><img id="previewImg" src="assets/images/thumbs/ironhand.jpg?v=4" alt="" width="1000" height="816" loading="lazy" decoding="async" /><span class="tag" id="previewTag"></span></div>
 
 <!-- ===== confetti + toast ===== -->
 <canvas id="confetti" aria-hidden="true" hidden></canvas>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>
-(function(){
-  var doc = document, root = doc.documentElement;
-  var ADDR = 'sudiptabiswas119@gmail.com';
-  var mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  function reduce(){ return mqReduce.matches; }
-  var header = doc.getElementById('nav'), main = doc.getElementById('main'), footer = doc.querySelector('footer');
-
-  /* ---- theme: bright default, dark saved in localStorage['pf-theme'] ---- */
-  var themeBtn = doc.getElementById('themeBtn');
-  function applyTheme(t){
-    if (t === 'dark') root.setAttribute('data-theme', 'dark'); else root.removeAttribute('data-theme');
-    themeBtn.setAttribute('aria-label', 'Switch to ' + (t === 'dark' ? 'light' : 'dark') + ' theme');
-    var m = doc.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim());
-    doc.dispatchEvent(new Event('pf-theme'));
-  }
-  /* the new theme spreads in a circle from the toggle (View Transitions); instant where unsupported */
-  themeBtn.addEventListener('click', function(){
-    var next = root.getAttribute('data-theme') === 'dark' ? 'bright' : 'dark';
-    try { localStorage.setItem('pf-theme', next); } catch(e){}
-    if (!doc.startViewTransition || reduce()){ applyTheme(next); return; }
-    var r = themeBtn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
-    var end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-    root.classList.remove('theme-ready');
-    var vt = doc.startViewTransition(function(){ applyTheme(next); });
-    vt.ready.then(function(){
-      root.animate({ clipPath:['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + end + 'px at ' + x + 'px ' + y + 'px)'] },
-        { duration:560, easing:'cubic-bezier(.2,.7,.2,1)', pseudoElement:'::view-transition-new(root)' });
-    }).catch(function(){});
-    var ready = function(){ root.classList.add('theme-ready'); };
-    vt.finished.then(ready, ready);
-  });
-  applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'bright');
-  requestAnimationFrame(function(){ root.classList.add('theme-ready'); });
-
-  /* ---- header hairline once the hero's first line passes under it ---- */
-  var sentinel = doc.querySelector('.hero-sentinel');
-  if ('IntersectionObserver' in window && sentinel){
-    new IntersectionObserver(function(es){ header.classList.toggle('solid', !es[0].isIntersecting); }).observe(sentinel);
-  }
-
-  /* ---- current section in the nav ---- */
-  var links = [].slice.call(doc.querySelectorAll('#siteNav .nl'));
-  if ('IntersectionObserver' in window){
-    var byId = {};
-    links.forEach(function(a){ byId[a.getAttribute('href').slice(1)] = a; });
-    var secIo = new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if (!e.isIntersecting) return;
-        links.forEach(function(a){ a.removeAttribute('aria-current'); });
-        var a = byId[e.target.id]; if (a) a.setAttribute('aria-current', 'true');
-      });
-    }, {rootMargin: '-45% 0px -50% 0px'});
-    ['top','about','services','work','skillstory','experience','contact'].forEach(function(id){
-      var s = doc.getElementById(id); if (s) secIo.observe(s);
-    });
-  }
-
-  /* ---- phone menu sheet (below 1024px) ---- */
-  var menuBtn = doc.getElementById('menuBtn'), siteNav = doc.getElementById('siteNav');
-  var mqDesk = window.matchMedia('(min-width: 1024px)');
-  var menuOpen = false, closeTimer = null;
-  function trapList(){
-    return [menuBtn].concat([].slice.call(siteNav.querySelectorAll('a[href]'))).concat([themeBtn]);
-  }
-  function lockPage(on){
-    root.style.overflow = on ? 'hidden' : '';
-    doc.body.style.overflow = on ? 'hidden' : '';
-    if (main) main.inert = on;
-    if (footer) footer.inert = on;
-  }
-  function openMenu(){
-    clearTimeout(closeTimer);
-    siteNav.classList.remove('closing');
-    siteNav.hidden = false;
-    siteNav.classList.add('open');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    menuBtn.setAttribute('aria-label', 'Close menu');
-    lockPage(true);
-    menuOpen = true;
-    var first = siteNav.querySelector('a[href]'); if (first) first.focus();
-  }
-  function closeMenu(returnFocus){
-    if (!menuOpen) return;
-    menuOpen = false;
-    menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.setAttribute('aria-label', 'Open menu');
-    lockPage(false);
-    siteNav.classList.remove('open');
-    if (reduce() || mqDesk.matches){ siteNav.hidden = true; }
-    else {
-      siteNav.classList.add('closing');
-      closeTimer = setTimeout(function(){ siteNav.classList.remove('closing'); siteNav.hidden = true; }, 140);
-    }
-    if (returnFocus && !mqDesk.matches) menuBtn.focus();
-  }
-  menuBtn.addEventListener('click', function(){ menuOpen ? closeMenu(true) : openMenu(); });
-  siteNav.addEventListener('click', function(e){
-    var a = e.target.closest('a[href]'); if (!a || !menuOpen) return;
-    var href = a.getAttribute('href');
-    closeMenu(false);
-    if (href.charAt(0) === '#'){
-      var target = doc.querySelector(href);
-      var h2 = target && target.querySelector('h2');
-      if (h2) setTimeout(function(){ h2.focus({preventScroll: true}); }, 0);
-    }
-  });
-  doc.querySelector('.mark').addEventListener('click', function(){ closeMenu(false); });
-  var onDesk = function(){ if (mqDesk.matches) closeMenu(false); };
-  if (mqDesk.addEventListener) mqDesk.addEventListener('change', onDesk); else mqDesk.addListener(onDesk);
-  doc.addEventListener('keydown', function(e){
-    if (!menuOpen) return;
-    if (e.key === 'Escape'){ closeMenu(true); return; }
-    if (e.key !== 'Tab') return;
-    var list = trapList(), i = list.indexOf(doc.activeElement);
-    e.preventDefault();
-    var next = i === -1 ? 0 : (i + (e.shiftKey ? -1 : 1) + list.length) % list.length;
-    list[next].focus();
-  });
-
-  /* ---- toast ---- */
-  var toastEl = doc.getElementById('toast'), toastTimer = null;
-  function toast(msg){
-    toastEl.classList.add('on');
-    toastEl.textContent = '';
-    toastEl.textContent = msg;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 3200);
-  }
-
-  /* ---- confetti: after a successful copy in Contact only ---- */
-  var cvs = doc.getElementById('confetti'), craf = null;
-  function fire(x, y){
-    if (!cvs || reduce()) return;
-    var ctx = cvs.getContext('2d'); if (!ctx) return;
-    cvs.hidden = false;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2), W = window.innerWidth, H = window.innerHeight;
-    cvs.width = W * dpr; cvs.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var cols = ['#0b0b0b', '#3a3a3a', '#5e5e5e', '#8a8a8a', '#b0b0b0', '#d6d6d6'], parts = [];
-    for (var i = 0; i < 60; i++){
-      var a = Math.random() * 6.283, sp = Math.random() * 7 + 3;
-      parts.push({x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 5, g: .18 + Math.random() * .1,
-                  w: Math.random() * 6 + 3, rot: Math.random() * 6, vr: (Math.random() - .5) * .5, c: cols[i % cols.length]});
-    }
-    var t0 = performance.now(), DUR = 1100;
-    cancelAnimationFrame(craf);
-    (function tick(now){
-      var k = (now - t0) / DUR;
-      ctx.clearRect(0, 0, W, H);
-      if (k >= 1){ cvs.hidden = true; craf = null; return; }
-      for (var j = 0; j < parts.length; j++){
-        var p = parts[j];
-        p.vy += p.g; p.x += p.vx; p.y += p.vy; p.vx *= .99; p.rot += p.vr;
-        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.globalAlpha = 1 - k;
-        ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.w / 2, p.w, p.w * .62); ctx.restore();
-      }
-      craf = requestAnimationFrame(tick);
-    })(t0);
-  }
-
-  /* ---- copy email: #copyHero (hero) and #celebrate (contact) ---- */
-  function copyEmail(btn, selectEl){
-    var lbl = btn.querySelector('.lbl') || btn;
-    function ok(){
-      if (!btn._w){ btn._w = true; btn.style.minWidth = btn.offsetWidth + 'px'; }
-      lbl.textContent = 'Copied';
-      clearTimeout(btn._t);
-      btn._t = setTimeout(function(){ lbl.textContent = 'Copy email'; }, 2000);
-      toast('Email address copied: ' + ADDR);
-      if (btn.id === 'celebrate'){ var r = btn.getBoundingClientRect(); fire(r.left + r.width / 2, r.top + r.height / 2); }
-    }
-    function fail(){
-      toast('Your browser blocked copying. Here is the address: ' + ADDR);
-      try { var sel = window.getSelection(); sel.removeAllRanges(); sel.selectAllChildren(selectEl); } catch(e){}
-    }
-    function fallback(){
-      var done = false, ta = doc.createElement('textarea');
-      ta.value = ADDR; ta.setAttribute('readonly', ''); ta.setAttribute('aria-hidden', 'true');
-      ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;';
-      doc.body.appendChild(ta); ta.select();
-      try { done = doc.execCommand('copy'); } catch(e){ done = false; }
-      doc.body.removeChild(ta);
-      try { btn.focus({preventScroll: true}); } catch(e){}
-      done ? ok() : fail();
-    }
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
-        navigator.clipboard.writeText(ADDR).then(ok, fallback);
-      } else { fallback(); }
-    } catch(e){ fallback(); }
-  }
-  var copyHero = doc.getElementById('copyHero'), celebrate = doc.getElementById('celebrate');
-  if (copyHero) copyHero.addEventListener('click', function(){ copyEmail(copyHero, doc.querySelector('.hero .addr')); });
-  if (celebrate) celebrate.addEventListener('click', function(){ copyEmail(celebrate, doc.querySelector('#contact .mail-txt')); });
-
-  /* ---- work: filters and show more ---- */
-  var f = doc.getElementById('wfilter'), g = doc.getElementById('wgrid'),
-      smBtn = doc.getElementById('showmore'), smTxt = doc.getElementById('smtext'),
-      smWrap = smBtn ? smBtn.parentNode : null;
-  if (f && g && smBtn){
-    var cards = [].slice.call(g.querySelectorAll('.wc'));
-    var extras = cards.filter(function(c){ return c.classList.contains('extra'); });
-    var open = false, filter = 'all';
-    var closedLabel = function(){ return 'Show ' + extras.length + ' more projects'; };
-    smTxt.textContent = closedLabel();
-    var show = function(list){ list.forEach(function(c){ c.classList.add('shown'); }); };
-    var collapse = function(){ extras.forEach(function(c){ c.classList.remove('shown'); }); };
-    smBtn.addEventListener('click', function(){
-      open = !open;
-      smBtn.classList.toggle('open', open);
-      smBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (open){ show(extras.filter(function(c){ return !c.classList.contains('hide'); })); smTxt.textContent = 'Show fewer projects'; }
-      else { collapse(); smTxt.textContent = closedLabel(); g.scrollIntoView({behavior: reduce() ? 'auto' : 'smooth', block: 'start'}); }
-    });
-    f.addEventListener('click', function(e){
-      var b = e.target.closest('button'); if (!b) return;
-      f.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); });
-      b.classList.add('on'); b.setAttribute('aria-pressed', 'true');
-      filter = b.getAttribute('data-f');
-      cards.forEach(function(c){ c.classList.toggle('hide', filter !== 'all' && c.getAttribute('data-cat') !== filter); });
-      if (filter === 'all'){
-        smWrap.style.display = '';
-        if (!open) collapse(); else show(extras);
-      } else {
-        smWrap.style.display = 'none';
-        show(extras.filter(function(c){ return !c.classList.contains('hide'); }));
-      }
-    });
-  }
-
-  /* ---- lightbox: thumbnail first, full screenshot when it lands ---- */
-  var lb = doc.getElementById('lb');
-  if (lb){
-    var lbImg = doc.getElementById('lbImg'), lbTitle = doc.getElementById('lbTitle'),
-        lbTag = doc.getElementById('lbTag'), lbDesc = doc.getElementById('lbDesc'),
-        box = lb.querySelector('.box'), xBtn = lb.querySelector('.x'),
-        opener = null, lbOpen = false, lbTimer = null, ph = null, token = 0;
-    /* live demo: the real project page runs in an iframe, only after "Run live demo" */
-    var lbDemo = doc.getElementById('lbDemo'), runRow = doc.getElementById('lbRunRow'),
-        runBtn = doc.getElementById('lbRun'), lbFull = doc.getElementById('lbFull'), hint = lb.querySelector('.hint');
-    var HINT_IMG = hint ? hint.textContent : '';
-    var stopDemo = function(){
-      lb.classList.remove('demo'); if (lbDemo) lbDemo.textContent = '';
-      if (hint) hint.textContent = HINT_IMG;
-    };
-    if (runBtn) runBtn.addEventListener('click', function(){
-      var src = opener && opener.getAttribute('data-demo');
-      if (!src) return;
-      var f = doc.createElement('iframe');
-      f.src = src; f.title = 'Live demo: ' + lbTitle.textContent; f.setAttribute('allow', 'fullscreen');
-      lbDemo.appendChild(f);
-      lb.classList.add('demo'); runBtn.hidden = true;
-      if (hint) hint.textContent = 'Live demo of the real project, running inside this page. Close it with the X.';
-      lbFull.focus();
-    });
-    var done = function(t){
-      if (t !== token) return;
-      box.removeAttribute('aria-busy'); lb.classList.remove('loading');
-    };
-    var openLb = function(card){
-      clearTimeout(lbTimer);
-      opener = card; lbOpen = true; token++;
-      var t = token, titleEl = card.querySelector('.pt'), thumb = card.querySelector('img');
-      var title = titleEl ? titleEl.textContent : '';
-      lbTitle.textContent = title;
-      lbTag.textContent = card.getAttribute('data-stack') || card.getAttribute('data-tag') || '';
-      lbDesc.textContent = card.getAttribute('data-desc') || '';
-      var demo = card.getAttribute('data-demo');
-      stopDemo();
-      if (runRow){
-        runRow.hidden = !demo; runBtn.hidden = false;
-        if (demo){
-          lbFull.href = demo;
-          runBtn.setAttribute('aria-label', 'Run the live demo of ' + title);
-          lbFull.setAttribute('aria-label', 'Open ' + title + ' full screen (opens in a new tab)');
-        }
-      }
-      if (!ph){
-        ph = doc.createElement('img'); ph.className = 'lb-ph'; ph.alt = ''; ph.setAttribute('aria-hidden', 'true');
-        lbImg.parentNode.insertBefore(ph, lbImg);
-      }
-      if (thumb) ph.setAttribute('src', thumb.getAttribute('src'));
-      box.setAttribute('aria-busy', 'true');
-      lb.classList.add('loading');
-      lbImg.onload = function(){ done(t); };
-      lbImg.onerror = function(){ if (t === token){ box.removeAttribute('aria-busy'); } };
-      lbImg.loading = 'eager';
-      lbImg.removeAttribute('width'); lbImg.removeAttribute('height');
-      lbImg.alt = title;
-      lbImg.src = card.getAttribute('data-img');
-      if (lbImg.complete && lbImg.naturalWidth) done(t);
-      lb.classList.remove('closing');
-      lb.classList.add('on');
-      lb.setAttribute('aria-hidden', 'false');
-      root.style.overflow = 'hidden';
-      [header, main, footer].forEach(function(el){ if (el) el.inert = true; });
-      xBtn.focus();
-    };
-    var closeLb = function(){
-      if (!lbOpen) return;
-      lbOpen = false;
-      lb.setAttribute('aria-hidden', 'true');
-      root.style.overflow = '';
-      [header, main, footer].forEach(function(el){ if (el) el.inert = false; });
-      var finish = function(){ lb.classList.remove('on', 'closing'); stopDemo(); };
-      if (reduce()) finish(); else { lb.classList.add('closing'); lbTimer = setTimeout(finish, 140); }
-      if (opener) opener.focus();
-    };
-    doc.querySelectorAll('#wgrid [data-img]').forEach(function(card){
-      card.addEventListener('click', function(e){ e.preventDefault(); openLb(card); });
-    });
-    lb.querySelectorAll('[data-close]').forEach(function(el){ el.addEventListener('click', closeLb); });
-    doc.addEventListener('keydown', function(e){
-      if (!lbOpen) return;
-      if (e.key === 'Escape'){ e.preventDefault(); closeLb(); }
-      else if (e.key === 'Tab'){
-        e.preventDefault();
-        var items = [xBtn, runBtn, lbFull, lbDemo && lbDemo.querySelector('iframe')].filter(function(el){ return el && !el.hidden && el.offsetParent !== null; });
-        var i = items.indexOf(doc.activeElement);
-        items[e.shiftKey ? (i <= 0 ? items.length - 1 : i - 1) : (i + 1) % items.length].focus();
-      }
-    });
-  }
-
-  /* ---- scroll: headings rise, cards and tiles come up, experience bars draw. Each plays once. ---- */
-  if (root.classList.contains('m-on')){
-    var rvIo = new IntersectionObserver(function(es){
-      var k = 0;
-      es.forEach(function(e){
-        if (!e.isIntersecting) return;
-        var el = e.target;
-        if (el.hasAttribute('data-rv-box')){
-          /* a card group reveals as one: its cards come up in order, so a phone slideshow never shows blank cards */
-          [].forEach.call(el.children, function(c){ if (c.classList.contains('rv')){ c.style.setProperty('--i', c.offsetParent ? Math.min(k++, 8) : 0); c.classList.add('in'); } });
-          rvIo.unobserve(el); return;
-        }
-        el.classList.add('in');
-        rvIo.unobserve(el);
-        if (el.classList.contains('rh')){
-          var fin = function(){ el.classList.add('done'); };
-          el.firstChild.addEventListener('transitionend', fin, { once:true });
-          setTimeout(fin, 1500);
-        }
-      });
-    }, { rootMargin:'0px 0px -8% 0px' });
-    doc.querySelectorAll('.sh h2, .contact h2').forEach(function(h){
-      var w = doc.createElement('span'); w.className = 'h2w';
-      while (h.firstChild) w.appendChild(h.firstChild);
-      h.appendChild(w); h.classList.add('rh'); rvIo.observe(h);
-    });
-    doc.querySelectorAll('.svc-grid, .wgrid, .sk-grid').forEach(function(box){
-      box.setAttribute('data-rv-box', '');
-      [].forEach.call(box.children, function(c){ c.classList.add('rv'); });
-      rvIo.observe(box);
-    });
-    doc.querySelectorAll('.sk-group').forEach(function(g){
-      g.querySelectorAll('.sk-chips li').forEach(function(li, j){ li.style.setProperty('--j', Math.min(j, 10)); });
-    });
-    doc.querySelectorAll('.xp').forEach(function(el){ rvIo.observe(el); });
-    root.classList.add('m-ready');
-  }
-
-  /* ---- work: the 3D tiles say they run live ---- */
-  doc.querySelectorAll('#wgrid .wc[data-demo] .wc-media').forEach(function(m){
-    var t = doc.createElement('span'); t.className = 'wc-live'; t.textContent = 'Live demo'; m.appendChild(t);
-  });
-
-  /* ---- service cards link to the matching work: the filter is switched on for you ---- */
-  doc.querySelectorAll('.svc-go[data-filter]').forEach(function(a){
-    a.addEventListener('click', function(){
-      var b = doc.querySelector('#wfilter [data-f="' + a.getAttribute('data-filter') + '"]');
-      if (b && !b.classList.contains('on')) b.click();
-    });
-  });
-
-  /* ---- phone slideshows (below 640px): services, work, skills, experience ----
-     Plain horizontal scroll with snap, so swipe, trackpad and keyboard all work; the bar shows
-     where you are and gives 44px previous/next buttons. Above 640 the bar is hidden and the grids return. */
-  var CHEV = function(d){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="' + d + '"/></svg>'; };
-  var mqCar = window.matchMedia('(max-width: 639px)');
-  function slideshow(track, label, noun){
-    if (!track) return;
-    track.classList.add('car');
-    /* slideshow semantics only while it is one (phones); on wider screens it is a plain grid again */
-    var mode = function(){
-      if (mqCar.matches){ track.setAttribute('role', 'region'); track.setAttribute('aria-roledescription', 'slideshow'); track.setAttribute('aria-label', label); track.tabIndex = 0; }
-      else { ['role', 'aria-roledescription', 'aria-label', 'tabindex'].forEach(function(a){ track.removeAttribute(a); }); }
-    };
-    mode();
-    if (mqCar.addEventListener) mqCar.addEventListener('change', mode); else mqCar.addListener(mode);
-    var bar = doc.createElement('div'); bar.className = 'car-bar';
-    bar.innerHTML = '<span class="car-count" aria-live="polite"></span><span class="car-line" aria-hidden="true"><i></i></span>' +
-      '<button type="button" class="car-btn" aria-label="Previous ' + noun + '">' + CHEV('M15 18l-6-6 6-6') + '</button>' +
-      '<button type="button" class="car-btn" aria-label="Next ' + noun + '">' + CHEV('M9 18l6-6-6-6') + '</button>';
-    track.parentNode.insertBefore(bar, track.nextSibling);
-    var count = bar.querySelector('.car-count'), line = bar.querySelector('.car-line i'), btns = bar.querySelectorAll('.car-btn');
-    var items = function(){ return [].filter.call(track.children, function(c){ return c.offsetParent !== null; }); };
-    var pad = function(){ return parseFloat(getComputedStyle(track).paddingLeft) || 0; };
-    var at = function(){
-      var its = items(), x = track.scrollLeft, best = 0, d = Infinity;
-      its.forEach(function(c, i){ var dd = Math.abs(c.offsetLeft - pad() - x); if (dd < d){ d = dd; best = i; } });
-      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 2) best = its.length - 1;
-      return best;
-    };
-    var pend = false;
-    var paint = function(){
-      pend = false;
-      var n = items().length, i = n ? at() : 0;
-      count.textContent = n ? (i + 1) + ' of ' + n : '';
-      line.style.setProperty('--w', (n ? 100 / n : 100) + '%');
-      line.style.setProperty('--x', (i * 100) + '%');
-      btns[0].disabled = i <= 0; btns[1].disabled = i >= n - 1;
-      /* the slideshow is as tall as the card in view, so a short card never leaves a gap above the bar */
-      var cur = items()[i];
-      if (mqCar.matches && cur){
-        var cs = getComputedStyle(track);
-        track.style.height = (cur.offsetHeight + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)) + 'px';
-      } else track.style.height = '';
-    };
-    var later = function(){ if (!pend){ pend = true; requestAnimationFrame(paint); } };
-    var go = function(i){
-      var its = items(); if (!its.length) return;
-      i = Math.max(0, Math.min(its.length - 1, i));
-      track.scrollTo({ left:its[i].offsetLeft - pad(), behavior:reduce() ? 'auto' : 'smooth' });
-      /* after Next at the foot of a long card, bring the new card's top back under the header */
-      var top = track.getBoundingClientRect().top, hh = header ? header.offsetHeight : 64;
-      if (top < hh) window.scrollBy({ top:top - hh - 12, behavior:reduce() ? 'auto' : 'smooth' });
-    };
-    btns[0].addEventListener('click', function(){ go(at() - 1); });
-    btns[1].addEventListener('click', function(){ go(at() + 1); });
-    track.addEventListener('keydown', function(e){
-      if (e.target !== track) return;
-      if (e.key === 'ArrowRight'){ e.preventDefault(); go(at() + 1); }
-      else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(at() - 1); }
-    });
-    track.addEventListener('scroll', later, { passive:true });
-    new MutationObserver(function(){ later(); }).observe(track, { subtree:false, childList:true, attributes:true, attributeFilter:['class'] });
-    [].forEach.call(track.children, function(c){ new MutationObserver(later).observe(c, { attributes:true, attributeFilter:['class'] }); });
-    window.addEventListener('resize', later);
-    if ('ResizeObserver' in window){ var ro = new ResizeObserver(later); [].forEach.call(track.children, function(c){ ro.observe(c); }); }
-    track.addEventListener('car-reset', function(){ track.scrollLeft = 0; later(); });
-    paint();
-  }
-  slideshow(doc.querySelector('.svc-grid'), 'Services', 'service');
-  slideshow(doc.getElementById('wgrid'), 'Projects', 'project');
-  slideshow(doc.querySelector('.sk-grid'), 'Skill groups', 'skill group');
-  slideshow(doc.querySelector('.xp-list'), 'Experience', 'role');
-  var wf = doc.getElementById('wfilter'), wg = doc.getElementById('wgrid');
-  if (wf && wg) wf.addEventListener('click', function(){ wg.dispatchEvent(new Event('car-reset')); });
-
-  /* ---- underlines: links keep a drawn underline that redraws from the left on hover ---- */
-  (function(){
-    function wrap(el, cls){
-      var sp = el.querySelector(':scope > span');
-      if (sp && sp.textContent.trim()){ sp.classList.add(cls); return; }
-      [].slice.call(el.childNodes).forEach(function(n){
-        if (n.nodeType === 3 && n.textContent.trim()){
-          var s = doc.createElement('span'); s.className = cls;
-          n.parentNode.insertBefore(s, n); s.appendChild(n);
-        }
-      });
-    }
-    doc.querySelectorAll('.textlink, .ft-link').forEach(function(el){ wrap(el, 'ul'); });
-    doc.querySelectorAll('.wc-cap .t, .mark .sig').forEach(function(el){ wrap(el, 'ud'); });
-    root.classList.add('ul-on');
-  })();
-
-  /* ---- magnetic buttons: mouse only, a few px toward the cursor ---- */
-  var finePtr = window.matchMedia('(hover: hover) and (pointer: fine)');
-  if (finePtr.matches && !reduce()){
-    doc.querySelectorAll('.hero .row-a .btn, .contact-row .btn, .showmore').forEach(function(b){
-      b.classList.add('mag');
-      b.addEventListener('pointermove', function(e){
-        var r = b.getBoundingClientRect();
-        var dx = (e.clientX - r.left - r.width / 2) / (r.width / 2), dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
-        b.style.translate = (dx * 6).toFixed(1) + 'px ' + (dy * 4).toFixed(1) + 'px';
-      });
-      b.addEventListener('pointerleave', function(){ b.style.translate = ''; });
-    });
-  }
-
-  /* ---- footer name: raised letters lit by a light that follows the mouse ---- */
-  var ftText = doc.querySelector('.ft-word text'), lD = doc.getElementById('ftLightD'), lS = doc.getElementById('ftLightS');
-  if (ftText && lD && lS){
-    ftText.setAttribute('filter', 'url(#ftEmboss)');
-    if (finePtr.matches){
-      var ftSvg = doc.querySelector('.ft-word'), lx = 240, ly = -120, lPend = false;
-      var setLight = function(){ lPend = false; [lD, lS].forEach(function(l){ l.setAttribute('x', lx.toFixed(0)); l.setAttribute('y', ly.toFixed(0)); }); };
-      footer.addEventListener('pointermove', function(e){
-        var r = ftSvg.getBoundingClientRect(), k = 1200 / r.width;
-        lx = (e.clientX - r.left) * k; ly = (e.clientY - r.top) * k;
-        if (!lPend){ lPend = true; requestAnimationFrame(setLight); }
-      });
-    }
-  }
-
-  /* ---- 3D: three.js loads only when a 3D piece nears the screen, and renders only while it moves ---- */
-  var hasGL = (function(){ try { var c = doc.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch(e){ return false; } })();
-  var threeP = null;
-  function three(){ return threeP || (threeP = import('three')); }
-  function cssVar(n){ return getComputedStyle(root).getPropertyValue(n).trim(); }
-  function whenNear(el, fn){
-    var io = new IntersectionObserver(function(es){ if (es[0].isIntersecting){ io.disconnect(); fn(); } }, { rootMargin:'300px 0px' });
-    io.observe(el);
-  }
-  function onDemand(step){
-    var on = false;
-    function tick(){ if (step()) requestAnimationFrame(tick); else on = false; }
-    return function(){ if (!on){ on = true; requestAnimationFrame(tick); } };
-  }
-  function view(THREE, parent, before, fov){
-    var renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, powerPreference:'low-power' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    var cv = renderer.domElement; cv.setAttribute('aria-hidden', 'true');
-    parent.insertBefore(cv, before || null);
-    var cam = new THREE.PerspectiveCamera(fov, 1, .1, 5000);
-    var v = { THREE:THREE, renderer:renderer, scene:new THREE.Scene(), cam:cam, cv:cv };
-    v.size = function(){ var w = cv.clientWidth, h = cv.clientHeight; if (w && h){ renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); } };
-    v.draw = function(){ renderer.render(v.scene, cam); };
-    return v;
-  }
-  function dragX(cv, onMove, onEnd){
-    var down = false, lx = 0, lt = 0, vel = 0;
-    cv.addEventListener('pointerdown', function(e){ down = true; lx = e.clientX; lt = e.timeStamp; vel = 0; try { cv.setPointerCapture(e.pointerId); } catch(err){} });
-    cv.addEventListener('pointermove', function(e){
-      if (!down) return;
-      var dx = e.clientX - lx; vel = dx / Math.max(e.timeStamp - lt, 1) * 16; lx = e.clientX; lt = e.timeStamp;
-      onMove(dx);
-    });
-    var up = function(){ if (down){ down = false; onEnd(vel); } };
-    cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
-    return function(){ return down; };
-  }
-
-  /* the "3D" stat: the real glyphs of Literata, extruded; drag to turn, it swings back to face you */
-  var stat = doc.querySelector('.hst-3d');
-  if (stat && hasGL) whenNear(stat, function(){
-    Promise.all([three(), import('three/addons/loaders/FontLoader.js'), import('three/addons/geometries/TextGeometry.js'),
-      fetch('assets/literata-3d.typeface.json').then(function(r){ return r.json(); })]).then(function(m){
-      var THREE = m[0], font = new m[1].FontLoader().parse(m[3]);
-      var n = stat.querySelector('.n'), v = view(THREE, n, null, 30);
-      var fs0 = parseFloat(getComputedStyle(n).fontSize);
-      var geo = new m[2].TextGeometry('3D', { font:font, size:fs0, depth:fs0 * .3, curveSegments:10, bevelEnabled:true, bevelThickness:fs0 * .012, bevelSize:fs0 * .005, bevelSegments:2 });
-      geo.center();
-      /* face = the text colour, sides = the page's muted grey, so the depth reads when it turns */
-      var mat = new THREE.MeshStandardMaterial({ color:cssVar('--text'), roughness:.42, metalness:.2 });
-      var side = new THREE.MeshStandardMaterial({ color:cssVar('--text-3'), roughness:.6, metalness:.1 });
-      var mesh = new THREE.Mesh(geo, [mat, side]);
-      v.scene.add(mesh, new THREE.AmbientLight(0xffffff, 1.1));
-      var key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(-.6, .9, 1.2); v.scene.add(key);
-      var rim = new THREE.DirectionalLight(0xffffff, 1.2); rim.position.set(1, -.2, -.6); v.scene.add(rim);
-      var place = function(){
-        v.size();
-        var W = v.cv.clientWidth, H = v.cv.clientHeight, fs = parseFloat(getComputedStyle(n).fontSize);
-        /* the mesh stays on the camera axis (no side faces at rest); a view offset moves it to where the text was */
-        var Wf = W * 3, Hf = H * 3;
-        v.cam.aspect = Wf / Hf; v.cam.position.set(0, 0, (Hf / 2) / Math.tan(15 * Math.PI / 180));
-        var c = doc.createElement('canvas').getContext('2d');
-        c.font = getComputedStyle(n).fontWeight + ' ' + fs + 'px ' + getComputedStyle(n).fontFamily;
-        var t = c.measureText('3D');
-        var inkX = (t.actualBoundingBoxRight - t.actualBoundingBoxLeft) / 2;
-        var asc = t.fontBoundingBoxAscent || fs * .9, des = t.fontBoundingBoxDescent || fs * .25;
-        var base = (fs - (asc + des)) / 2 + asc;
-        var inkY = base - (t.actualBoundingBoxAscent - t.actualBoundingBoxDescent) / 2;
-        var s = fs / fs0; mesh.scale.set(s, s, s);
-        var px = (n.getBoundingClientRect().left - v.cv.getBoundingClientRect().left) + inkX, py = H / 2 + (inkY - fs / 2);
-        v.cam.setViewOffset(Wf, Hf, Wf / 2 - px, Hf / 2 - py, W, H);
-      };
-      place();
-      var rot = reduce() ? 0 : -1.25, vel = 0, dragging;
-      var step = function(){
-        if (!dragging()){ vel += -rot * .05; vel *= .84; rot += vel; }
-        mesh.rotation.y = rot; v.draw();
-        return dragging() || Math.abs(rot) > .0005 || Math.abs(vel) > .0005;
-      };
-      var kick = onDemand(step);
-      dragging = dragX(v.cv, function(dx){ rot += dx * .012; kick(); }, function(vv){ vel = vv * .012; kick(); });
-      mesh.rotation.y = rot; v.draw(); stat.classList.add('live'); kick();
-      new ResizeObserver(function(){ place(); v.draw(); }).observe(n);
-      doc.addEventListener('pf-theme', function(){ mat.color.set(cssVar('--text')); side.color.set(cssVar('--text-3')); v.draw(); });
-    }).catch(function(){ stat.classList.remove('live'); });
-  });
-
-  /* the globe in the "3D and motion" card: drag to spin, with the dot on Dhaka */
-  var gHost = doc.querySelector('.svc-3d .globe');
-  if (gHost && hasGL) whenNear(gHost.closest('.svc-3d'), function(){
-    three().then(function(THREE){
-      var card = gHost.closest('.svc-3d'); card.classList.add('live');
-      var v = view(THREE, gHost, gHost.firstChild, 28); v.size();
-      var ll = function(lat, lon){ var a = lat * Math.PI / 180, b = lon * Math.PI / 180; return new THREE.Vector3(Math.cos(a) * Math.sin(b), Math.sin(a), Math.cos(a) * Math.cos(b)); };
-      var pts = [], la, lo;
-      for (la = -60; la <= 60; la += 30) for (lo = 0; lo < 360; lo += 6) pts.push(ll(la, lo), ll(la, lo + 6));
-      for (lo = 0; lo < 360; lo += 30) for (la = -90; la < 90; la += 6) pts.push(ll(la, lo), ll(la + 6, lo));
-      var lineMat = new THREE.LineBasicMaterial({ color:cssVar('--text-2') });
-      var dotMat = new THREE.MeshBasicMaterial({ color:cssVar('--text') });
-      var rimMat = new THREE.LineBasicMaterial({ color:cssVar('--text-2'), fog:false });
-      var spin = new THREE.Group();
-      spin.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), lineMat));
-      var dot = new THREE.Mesh(new THREE.SphereGeometry(.06, 16, 12), dotMat); dot.position.copy(ll(23.8, 90.4)); spin.add(dot);
-      var tilt = new THREE.Group(); tilt.rotation.set(.18, 0, -.41); tilt.add(spin);
-      var circ = []; for (var i = 0; i <= 96; i++){ var a = i / 96 * Math.PI * 2; circ.push(new THREE.Vector3(Math.cos(a), Math.sin(a), 0)); }
-      var dist = 1.06 / Math.tan(14 * Math.PI / 180);
-      v.cam.position.set(0, 0, dist);
-      v.scene.add(tilt, new THREE.Line(new THREE.BufferGeometry().setFromPoints(circ), rimMat));
-      v.scene.fog = new THREE.Fog(cssVar('--surface'), dist - 1, dist + 1.5);
-      var home = -90.4 * Math.PI / 180, rot = reduce() ? home : home - 1.6, vel = 0, intro = !reduce(), dragging;
-      var step = function(){
-        if (!dragging()){
-          if (intro){ vel += (home - rot) * .035; vel *= .86; } else vel *= .95;
-          rot += vel;
-        }
-        spin.rotation.y = rot; v.draw();
-        var moving = dragging() || Math.abs(vel) > .0004 || (intro && Math.abs(home - rot) > .0005);
-        if (!moving) intro = false;
-        return moving;
-      };
-      var kick = onDemand(step);
-      dragging = dragX(v.cv, function(dx){ intro = false; rot += dx * .01; kick(); }, function(vv){ vel = vv * .01; kick(); });
-      spin.rotation.y = rot; v.draw(); kick();
-      new ResizeObserver(function(){ v.size(); v.draw(); }).observe(v.cv);
-      doc.addEventListener('pf-theme', function(){
-        lineMat.color.set(cssVar('--text-2')); rimMat.color.set(cssVar('--text-2')); dotMat.color.set(cssVar('--text'));
-        v.scene.fog.color.set(cssVar('--surface')); v.draw();
-      });
-    }).catch(function(){ gHost.closest('.svc-3d').classList.remove('live'); });
-  });
-})();
-</script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

@@ -2,3 +2,11 @@
 .DS_Store
 *.log
 Thumbs.db
+
+# local working files, never deployed
+__old*.html
+bw.html
+.uipro/
+.impeccable/
+CLAUDE.md
+PRODUCT.md
