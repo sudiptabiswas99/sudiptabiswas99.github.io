@@ -34,7 +34,7 @@
 .wc{ display:block; min-width:0; color:var(--text); cursor:pointer; }
 .js .wc.extra{ display:none; }
 .js .wc.extra.shown{ display:block; animation:tilefade var(--d-base) var(--ease-out); }
-.wc.hide, .js .wc.hide{ display:none; }
+.wc.hide, .js .wc.hide, .js .wc.extra.shown.hide{ display:none; }
 @keyframes tilefade{ from{ opacity:0; } }
 .wc-media{
   position:relative; display:block; aspect-ratio:1; overflow:hidden;
