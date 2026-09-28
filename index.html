@@ -19,6 +19,19 @@
   try { if (localStorage.getItem("pf-theme") === "dark") r.setAttribute("data-theme","dark"); } catch(e){}
   /* motion runs once per element, never on reduced motion */
   try { if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) r.classList.add("m-on"); } catch(e){}
+  /* a reload always opens at the top: no restored scroll, no #hash jump; fresh visits and back/forward are untouched */
+  try {
+    var n = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+    if (n ? n.type === "reload" : (performance.navigation && performance.navigation.type === 1)) {
+      var h = history, sr = "scrollRestoration" in h;
+      if (sr) h.scrollRestoration = "manual";
+      if (location.hash) h.replaceState(null, "", location.pathname + location.search);
+      var top = function(){ var s = r.style.scrollBehavior; r.style.scrollBehavior = "auto"; scrollTo(0, 0);
+        requestAnimationFrame(function(){ r.style.scrollBehavior = s; if (sr) h.scrollRestoration = "auto"; }); };
+      addEventListener("load", top);
+      addEventListener("pageshow", function f(e){ removeEventListener("pageshow", f); if (!e.persisted) top(); });
+    }
+  } catch(e){}
 })();
 </script>
 <!-- three.js r180 is self-hosted in assets/vendor/three (jsDelivr reset Chrome connections) and only fetched when a 3D piece scrolls near the screen -->
