@@ -4,201 +4,162 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WebGL Shader Hero: Showcase</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ------------------------------------------------------------------
-     Aether Hero: vanilla port of the "AetherHero" React/Next component
-     (aether-hero.tsx). No build step, no dependencies. Recreates the
-     DemoOne configuration 1:1:
-       - full-viewport living WebGL2 fragment shader (aurora / rainbow
-         light streaks over black), animated by a `time` uniform via RAF
-       - DPR capped at 2, ResizeObserver-driven canvas fit
-       - readability overlay gradient (top-dark -> transparent)
-       - left-aligned Space Grotesk hero: title, subtitle, primary +
-         ghost CTAs, identical copy, sizing and button styling.
-     The shader GLSL (#version 300 es) is byte-for-byte the original.
-     ------------------------------------------------------------------ */
+  /* Aurora ribbon hero. Own WebGL 1 fragment shader (value noise + fbm),
+     written for this showcase. No libraries, no build step, no video. */
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{background:#000;color:#fff;overflow-x:hidden;
-    font-family:'Space Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+  body{background:#05060a;color:#f4f6fb;overflow-x:hidden;
+    font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
 
-  .aether-hero{height:100vh;position:relative;overflow:hidden}
+  .hero{position:relative;min-height:100vh;overflow:hidden;display:grid;align-items:end}
+  .hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .hero .shade{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(0deg,rgba(5,6,10,.92) 0%,rgba(5,6,10,.35) 45%,rgba(5,6,10,0) 75%)}
 
-  /* shader canvas (background) */
-  .aether-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
-    user-select:none;touch-action:none}
-
-  /* readability overlay */
-  .aether-overlay{position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(180deg,#000000bb 0%,#00000055 40%,transparent)}
-
-  /* content layer (align = left) */
-  .aether-content{position:relative;z-index:2;height:100%;display:flex;
-    align-items:center;justify-content:flex-start;padding:min(6vw,64px);color:#fff}
-  .aether-inner{width:100%;max-width:960px;text-align:left}
-
-  .aether-inner h1{margin:0;font-weight:700;line-height:1.04;letter-spacing:-.02em;
-    font-size:clamp(2.2rem,6vw,4.5rem);text-shadow:0 6px 36px rgba(0,0,0,.45)}
-  .aether-sub{margin-top:1rem;font-size:clamp(1rem,2vw,1.25rem);line-height:1.6;
-    opacity:.9;text-shadow:0 4px 24px rgba(0,0,0,.35);max-width:900px}
-
-  .aether-cta{display:inline-flex;gap:12px;margin-top:2rem;flex-wrap:wrap}
-  .aether-btn{padding:12px 18px;border-radius:12px;color:#fff;text-decoration:none;
-    font-weight:600;font-family:inherit;font-size:1rem;line-height:1;display:inline-flex;
-    align-items:center;transition:transform .18s ease, box-shadow .18s ease}
-  .aether-btn--primary{
-    background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),0 10px 30px rgba(0,0,0,.2);
-    -webkit-backdrop-filter:blur(6px) saturate(120%);backdrop-filter:blur(6px) saturate(120%)}
-  .aether-btn--ghost{background:transparent;opacity:.85;
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
-    -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
-  .aether-btn:hover{transform:translateY(-1px)}
-  .aether-btn--primary:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 14px 38px rgba(0,0,0,.28)}
-  .aether-btn--ghost:hover{opacity:1}
+  .copy{position:relative;z-index:1;padding:clamp(24px,7vw,88px);max-width:880px}
+  .copy h1{font-weight:700;font-size:clamp(2rem,6.4vw,4.8rem);line-height:1.02;letter-spacing:-.025em}
+  .copy p{margin-top:18px;font-size:clamp(1rem,1.9vw,1.2rem);line-height:1.6;color:#c9cfdb;max-width:620px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+  .row button{font:inherit;font-weight:600;font-size:.98rem;min-height:44px;padding:0 20px;border-radius:6px;
+    cursor:pointer;color:#05060a;background:#f4f6fb;border:1px solid #f4f6fb}
+  .row button.alt{color:#f4f6fb;background:transparent;border-color:rgba(244,246,251,.45)}
+  .row button:hover{filter:brightness(.92)}
+  .row button:focus-visible{outline:2px solid #9fd8ff;outline-offset:3px}
 </style>
 </head>
 <body>
-  <section class="aether-hero" aria-label="Hero">
-    <canvas class="aether-canvas" role="img" aria-label="Aurora hero background"></canvas>
-    <div class="aether-overlay" aria-hidden="true"></div>
-    <div class="aether-content">
-      <div class="aether-inner">
-        <h1>Build launch-grade UI in hours.</h1>
-        <p class="aether-sub">Animated WebGL backdrop, crisp type, and accessible CTAs. Drop it into any Next.js page.</p>
-        <div class="aether-cta">
-          <a class="aether-btn aether-btn--primary" href="#docs">Explore Docs</a>
-          <a class="aether-btn aether-btn--ghost" href="https://github.com/rahil1202">GitHub</a>
-        </div>
+  <section class="hero" aria-label="Hero">
+    <canvas id="sky" role="img" aria-label="Animated aurora ribbons"></canvas>
+    <div class="shade" aria-hidden="true"></div>
+    <div class="copy">
+      <h1>Light that moves behind the words.</h1>
+      <p>A hand-written fragment shader draws these aurora ribbons live on the GPU. The text stays sharp and readable on top.</p>
+      <div class="row">
+        <button type="button" id="pause" aria-pressed="false">Pause motion</button>
+        <button type="button" id="shift" class="alt">Shift colours</button>
       </div>
     </div>
   </section>
 
 <script>
 (function () {
-  // ---- Shaders (byte-for-byte from aether-hero.tsx) ----
-  var FRAG = `#version 300 es
-precision highp float;
-out vec4 O;
-uniform float time;
-uniform vec2 resolution;
-#define FC gl_FragCoord.xy
-#define R resolution
-#define T time
-#define S smoothstep
-#define MN min(R.x,R.y)
-float pattern(vec2 uv) {
-  float d=.0;
-  for (float i=.0; i<3.; i++) {
-    uv.x+=sin(T*(1.+i)+uv.y*1.5)*.2;
-    d+=.005/abs(uv.x);
+  var FRAG = [
+    'precision mediump float;',
+    'uniform float uT;',
+    'uniform vec2 uRes;',
+    'uniform float uHue;',
+    'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
+    'float noise(vec2 p){',
+    '  vec2 i = floor(p); vec2 f = fract(p);',
+    '  f = f * f * (3.0 - 2.0 * f);',
+    '  float a = hash(i), b = hash(i + vec2(1.0, 0.0));',
+    '  float c = hash(i + vec2(0.0, 1.0)), d = hash(i + vec2(1.0, 1.0));',
+    '  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);',
+    '}',
+    'float fbm(vec2 p){',
+    '  float v = 0.0; float amp = 0.5;',
+    '  for (int i = 0; i < 5; i++) { v += amp * noise(p); p = p * 2.03 + vec2(1.7, 9.2); amp *= 0.5; }',
+    '  return v;',
+    '}',
+    'void main(){',
+    '  vec2 p = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;',
+    '  vec3 col = vec3(0.0);',
+    '  for (int i = 0; i < 4; i++) {',
+    '    float fi = float(i);',
+    '    float y = 0.34 - 0.13 * fi + 0.32 * (fbm(vec2(p.x * 0.9 + fi * 3.1, uT * 0.07 + fi * 1.3)) - 0.5);',
+    '    float d = abs(p.y - y);',
+    '    float core = 0.006 / (d + 0.004);',
+    '    float up = p.y - y;',
+    '    float veil = (1.0 - smoothstep(0.0, 0.35, up)) * step(0.0, up) * 0.3;',
+    '    float flick = 0.45 + 0.55 * fbm(vec2(p.x * 4.0 - uT * 0.25, fi * 7.0 + uT * 0.05));',
+    '    vec3 tint = 0.5 + 0.5 * cos(6.28318 * (uHue + fi * 0.16 + vec3(0.0, 0.33, 0.67)));',
+    '    col += tint * (core + veil) * flick;',
+    '  }',
+    '  col += vec3(0.02, 0.025, 0.05) * (1.0 - length(p));',
+    '  col = 1.0 - exp(-col * 0.75);',
+    '  gl_FragColor = vec4(col, 1.0);',
+    '}'
+  ].join('\n');
+
+  var VERT = 'attribute vec2 aPos; void main(){ gl_Position = vec4(aPos, 0.0, 1.0); }';
+
+  var canvas = document.getElementById('sky');
+  var pauseBtn = document.getElementById('pause');
+  var shiftBtn = document.getElementById('shift');
+  var gl = canvas.getContext('webgl', { antialias: false, alpha: false }) ||
+           canvas.getContext('experimental-webgl');
+  if (!gl) { pauseBtn.disabled = true; shiftBtn.disabled = true; return; } // text stays on the dark background
+
+  function shader(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
   }
-  return d;
-}
-vec3 scene(vec2 uv) {
-  vec3 col=vec3(0);
-  uv=vec2(atan(uv.x,uv.y)*2./6.28318,-log(length(uv))+T);
-  for (float i=.0; i<3.; i++) {
-    int k=int(mod(i,3.));
-    col[k]+=pattern(uv+i*6./MN);
-  }
-  return col;
-}
-void main() {
-  vec2 uv=(FC-.5*R)/MN;
-  vec3 col=vec3(0);
-  float s=12., e=9e-4;
-  col+=e/(sin(uv.x*s)*cos(uv.y*s));
-  uv.y+=R.x>R.y?.5:.5*(R.y/R.x);
-  col+=scene(uv);
-  O=vec4(col,1.);
-}`;
+  var vs = shader(gl.VERTEX_SHADER, VERT);
+  var fs = shader(gl.FRAGMENT_SHADER, FRAG);
+  if (!vs || !fs) return;
+  var prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
 
-  var VERT = `#version 300 es
-precision highp float;
-in vec2 position;
-void main(){ gl_Position = vec4(position, 0.0, 1.0); }
-`;
-
-  var DPR_MAX = 2;
-  var CLEAR = [0, 0, 0, 1];
-
-  var canvas = document.querySelector('.aether-canvas');
-  var gl = canvas.getContext('webgl2', { alpha: true, antialias: true });
-  if (!gl) { return; } // graceful: black hero + overlay + text remain readable
-
-  function compile(src, type) {
-    var sh = gl.createShader(type);
-    gl.shaderSource(sh, src);
-    gl.compileShader(sh);
-    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-      var info = gl.getShaderInfoLog(sh) || 'Unknown shader error';
-      gl.deleteShader(sh);
-      throw new Error(info);
-    }
-    return sh;
-  }
-  function createProgram(vs, fs) {
-    var v = compile(vs, gl.VERTEX_SHADER);
-    var f = compile(fs, gl.FRAGMENT_SHADER);
-    var prog = gl.createProgram();
-    gl.attachShader(prog, v);
-    gl.attachShader(prog, f);
-    gl.linkProgram(prog);
-    gl.deleteShader(v);
-    gl.deleteShader(f);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-      var info = gl.getProgramInfoLog(prog) || 'Program link error';
-      gl.deleteProgram(prog);
-      throw new Error(info);
-    }
-    return prog;
-  }
-
-  var prog;
-  try { prog = createProgram(VERT, FRAG); }
-  catch (e) { console.error(e); return; }
-
-  var verts = new Float32Array([-1, 1, -1, -1, 1, 1, 1, -1]);
   var buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  var aPos = gl.getAttribLocation(prog, 'aPos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+  var uT = gl.getUniformLocation(prog, 'uT');
+  var uRes = gl.getUniformLocation(prog, 'uRes');
+  var uHue = gl.getUniformLocation(prog, 'uHue');
 
-  gl.useProgram(prog);
-  var posLoc = gl.getAttribLocation(prog, 'position');
-  gl.enableVertexAttribArray(posLoc);
-  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-  var uniTime = gl.getUniformLocation(prog, 'time');
-  var uniRes = gl.getUniformLocation(prog, 'resolution');
-  gl.clearColor(CLEAR[0], CLEAR[1], CLEAR[2], CLEAR[3]);
-
-  function fit() {
-    var dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, DPR_MAX));
-    var rect = canvas.getBoundingClientRect();
-    var W = Math.floor(Math.max(1, rect.width) * dpr);
-    var H = Math.floor(Math.max(1, rect.height) * dpr);
-    if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; }
-    gl.viewport(0, 0, canvas.width, canvas.height);
+  var scale = Math.min(window.devicePixelRatio || 1, 1.5);
+  function size() {
+    var w = Math.max(1, Math.round(canvas.clientWidth * scale));
+    var h = Math.max(1, Math.round(canvas.clientHeight * scale));
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    gl.viewport(0, 0, w, h);
   }
-  fit();
-  var ro = new ResizeObserver(fit);
-  ro.observe(canvas);
-  window.addEventListener('resize', fit);
 
-  function loop(now) {
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(prog);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    if (uniRes) gl.uniform2f(uniRes, canvas.width, canvas.height);
-    if (uniTime) gl.uniform1f(uniTime, now * 1e-3);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    requestAnimationFrame(loop);
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var running = !reduce;
+  var clock = 12.0, last = 0, hue = 0.52, raf = 0;
+
+  function draw() {
+    size();
+    gl.uniform1f(uT, clock);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform1f(uHue, hue);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
-  requestAnimationFrame(loop);
+  function frame(now) {
+    if (last) clock += Math.min(0.05, (now - last) / 1000);
+    last = now;
+    draw();
+    raf = running ? requestAnimationFrame(frame) : 0;
+  }
+  function setRunning(on) {
+    running = on;
+    pauseBtn.textContent = on ? 'Pause motion' : 'Play motion';
+    pauseBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
+    last = 0;
+    if (on && !raf) raf = requestAnimationFrame(frame);
+  }
+
+  pauseBtn.addEventListener('click', function () { setRunning(!running); });
+  shiftBtn.addEventListener('click', function () { hue = (hue + 0.23) % 1; if (!running) draw(); });
+  window.addEventListener('resize', function () { if (!running) draw(); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && raf) { cancelAnimationFrame(raf); raf = 0; }
+    else if (!document.hidden && running && !raf) { last = 0; raf = requestAnimationFrame(frame); }
+  });
+
+  setRunning(running);
+  if (!running) draw();
 })();
 </script>
 </body>

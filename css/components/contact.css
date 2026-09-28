@@ -35,3 +35,26 @@
   .contact-card{ padding:var(--s-8) var(--s-8) var(--s-7); }
   .contact .sub{ font-size:19px; }
 }
+/* Brand marks in the contact card: the official files, unmodified, in the colours each brand allows.
+   GitHub Invertocat: black #000 or white #fff (github.com/logos). LinkedIn [in]: the official
+   black or white PNG (brand.linkedin.com/in-logo). WhatsApp glyph: Meta's black #111b21 or white #fff
+   (whatsappbrand.com). Dark mark on a light button, white mark on a dark one, including the hover fill. */
+.contact-row .brand-gh{ fill:#000; }
+.contact-row .brand-wa{ fill:#111b21; }
+.contact-row .brand-li{ display:inline-flex; flex:none; width:18px; }
+.contact-row .brand-li img{ display:block; width:18px; height:auto; }
+.contact-row .brand-li .li-w{ display:none; }
+:root[data-theme="dark"] .contact-row .brand-gh,
+:root[data-theme="dark"] .contact-row .brand-wa{ fill:#fff; }
+:root[data-theme="dark"] .contact-row .brand-li .li-k{ display:none; }
+:root[data-theme="dark"] .contact-row .brand-li .li-w{ display:block; }
+@media (hover:hover){
+  .contact-row .btn-secondary:hover .brand-gh,
+  .contact-row .btn-secondary:hover .brand-wa{ fill:#fff; }
+  .contact-row .btn-secondary:hover .brand-li .li-k{ display:none; }
+  .contact-row .btn-secondary:hover .brand-li .li-w{ display:block; }
+  :root[data-theme="dark"] .contact-row .btn-secondary:hover .brand-gh{ fill:#000; }
+  :root[data-theme="dark"] .contact-row .btn-secondary:hover .brand-wa{ fill:#111b21; }
+  :root[data-theme="dark"] .contact-row .btn-secondary:hover .brand-li .li-k{ display:block; }
+  :root[data-theme="dark"] .contact-row .btn-secondary:hover .brand-li .li-w{ display:none; }
+}

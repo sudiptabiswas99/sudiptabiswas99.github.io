@@ -3,150 +3,128 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Background Ripple Effect: Showcase</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Cell grid ripple</title>
 <style>
-  /* ------------------------------------------------------------------
-     Background Ripple Effect: vanilla port of the Aceternity
-     "BackgroundCells" React/framer-motion component.
-     No build step, no dependencies. Behaviour matched 1:1:
-       - faint neutral grid across the top band, fading out downward
-       - blue grid lines revealed in a 75px radius around the cursor
-       - each cell glows sky-cyan on hover ([0 -> 1 -> 0.5] opacity)
-       - clicking a cell fires a ripple whose reach + duration scale
-         with distance from the clicked cell (peak = 1 - dist*0.1,
-         duration = dist * 200ms), identical to the original.
-     ------------------------------------------------------------------ */
-  :root{ --cell:48px; --reveal:75px; }
+  /* Interactive cell grid on one canvas: cells near the pointer light up,
+     a click or tap sends a ring wave across the grid. Written for this
+     showcase. No libraries, no build step. Draws only while something moves. */
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{font-family:'Inter',system-ui,sans-serif;background:#020617;color:#fff;overflow-x:hidden}
+  body{background:#070b12;color:#eef2f7;overflow-x:hidden;
+    font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
 
-  /* container == BackgroundCells (h-screen flex justify-center overflow-hidden bg-slate-950) */
-  .bc{position:relative;min-height:100vh;display:flex;justify-content:center;overflow:hidden;background:#020617}
-  .bc-core{position:absolute;inset:0}
+  .stage{position:relative;min-height:100vh;overflow:hidden;touch-action:manipulation}
+  .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair}
+  .fade{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(7,11,18,0) 0%,rgba(7,11,18,.25) 45%,#070b12 88%)}
 
-  /* the clipped 20rem band at the top (h-[20rem] overflow-hidden) */
-  .bc-band{position:absolute;top:0;left:0;right:0;height:20rem;overflow:hidden}
-
-  /* neutral interactive grid (base Pattern, opacity .5, z-30) */
-  .bc-grid{position:absolute;inset:0;z-index:30;opacity:.5;
-    display:grid;grid-auto-rows:var(--cell)}
-  .bc-cell{border-left:1px solid #525252;border-bottom:1px solid #525252;position:relative}
-  .bc-cell > .g{position:absolute;inset:0;background:rgba(14,165,233,.3);
-    opacity:0;transition:opacity .4s ease-out;pointer-events:none}
-  .bc-cell:hover > .g{animation:gHover .5s cubic-bezier(.34,1.56,.64,1) forwards}
-  @keyframes gHover{0%{opacity:0}55%{opacity:.9}100%{opacity:.5}}
-
-  /* blue grid lines revealed around the cursor (masked overlay, z-20) */
-  .bc-blue{position:absolute;inset:0;z-index:20;pointer-events:none;
-    background-image:
-      repeating-linear-gradient(to right,  #3b82f6 0 1px, transparent 1px var(--cell)),
-      repeating-linear-gradient(to bottom, #3b82f6 0 1px, transparent 1px var(--cell));
-    -webkit-mask-image:radial-gradient(var(--reveal) circle at var(--mx,-999px) var(--my,-999px), #000, transparent);
-            mask-image:radial-gradient(var(--reveal) circle at var(--mx,-999px) var(--my,-999px), #000, transparent)}
-
-  /* bottom fade (slate-950 masked transparent->black, z-40) */
-  .bc-fade{position:absolute;inset:0;z-index:40;pointer-events:none;background:#020617;
-    -webkit-mask-image:linear-gradient(to bottom,transparent,#000);
-            mask-image:linear-gradient(to bottom,transparent,#000)}
-
-  /* headline (content z-50, mt-40, pointer-events-none) */
-  .bc-content{position:relative;z-index:50;margin-top:10rem;padding:0 24px;
-    pointer-events:none;user-select:none;text-align:center}
-  .bc-content h1{font-weight:500;line-height:1.05;font-size:clamp(1.9rem,7vw,4.5rem);
-    background:linear-gradient(to bottom,#f5f5f5,#a3a3a3);
-    -webkit-background-clip:text;background-clip:text;color:transparent}
-
-  /* tiny caption so the showcase explains itself */
-  .bc-note{position:fixed;left:0;right:0;bottom:22px;z-index:60;text-align:center;
-    font-size:.82rem;color:#64748b;pointer-events:none}
-  .bc-note b{color:#93c5fd;font-weight:600}
+  .copy{position:relative;z-index:1;pointer-events:none;user-select:none;text-align:center;
+    padding:clamp(120px,26vh,220px) 20px 0}
+  .copy h1{font-weight:600;font-size:clamp(1.9rem,6.5vw,4.4rem);line-height:1.05;letter-spacing:-.02em}
+  .copy p{margin:16px auto 0;max-width:520px;font-size:clamp(1rem,1.8vw,1.15rem);line-height:1.55;color:#a9b4c4}
+  .hint{position:absolute;left:0;right:0;bottom:22px;z-index:1;text-align:center;pointer-events:none;
+    font-size:.9rem;color:#7d8899}
 </style>
 </head>
 <body>
-  <div class="bc" data-ripple>
-    <div class="bc-core">
-      <div class="bc-band">
-        <div class="bc-blue"></div>
-        <div class="bc-grid"></div>
-        <div class="bc-fade"></div>
-      </div>
+  <div class="stage" id="stage">
+    <canvas id="grid" aria-hidden="true"></canvas>
+    <div class="fade" aria-hidden="true"></div>
+    <div class="copy">
+      <h1>Every cell answers<br>the pointer.</h1>
+      <p>A grid drawn on one canvas. Nearby cells brighten as you move, and each click sends a wave out from that spot.</p>
     </div>
-    <div class="bc-content">
-      <h1>Background cell animation<br>with framer motion</h1>
-    </div>
+    <p class="hint">Move to light the grid. Click or tap to send a wave.</p>
   </div>
-  <div class="bc-note">move the cursor for the <b>blue reveal</b>, hover a cell to <b>glow</b>, click for a <b>ripple</b></div>
 
 <script>
 (function () {
-  var CELL = 48;
-  document.querySelectorAll('[data-ripple]').forEach(function (root) {
-    var band = root.querySelector('.bc-band');
-    var grid = root.querySelector('.bc-grid');
-    var blue = root.querySelector('.bc-blue');
-    var cells = [];   // {el, g, r, c}
-    var cols = 0, rows = 0;
+  var SIZE = 44;            // cell size in CSS px
+  var GLOW_R = 130;         // pointer glow radius in CSS px
+  var WAVE_SPEED = 520;     // px per second
+  var WAVE_WIDTH = 70;      // thickness of the wave front in px
+  var WAVE_LIFE = 1.6;      // seconds
 
-    function build() {
-      var bandH = band.clientHeight || 320;
-      cols = Math.ceil(window.innerWidth / CELL) + 1;
-      rows = Math.ceil(bandH / CELL) + 2;
-      grid.style.gridTemplateColumns = 'repeat(' + cols + ',' + CELL + 'px)';
-      grid.textContent = '';
-      cells = [];
-      var frag = document.createDocumentFragment();
-      for (var r = 0; r < rows; r++) {
-        for (var c = 0; c < cols; c++) {
-          var cell = document.createElement('div');
-          cell.className = 'bc-cell';
-          var g = document.createElement('div');
-          g.className = 'g';
-          cell.appendChild(g);
-          frag.appendChild(cell);
-          cells.push({ g: g, r: r, c: c });
-        }
-      }
-      grid.appendChild(frag);
+  var stage = document.getElementById('stage');
+  var canvas = document.getElementById('grid');
+  var ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  var dpr = 1, W = 0, H = 0, cols = 0, rows = 0;
+  var px = -1e4, py = -1e4;          // pointer, canvas coords
+  var waves = [];                    // {x, y, t0}
+  var raf = 0;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = stage.clientWidth; H = stage.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cols = Math.ceil(W / SIZE) + 1; rows = Math.ceil(H / SIZE) + 1;
+    draw(performance.now());
+  }
+
+  function draw(now) {
+    ctx.clearRect(0, 0, W, H);
+    var ox = (W % SIZE) / 2 - SIZE / 2, oy = 0;
+    var live = [];
+    for (var k = 0; k < waves.length; k++) {
+      var age = (now - waves[k].t0) / 1000;
+      if (age < WAVE_LIFE) live.push({ x: waves[k].x, y: waves[k].y, r: age * WAVE_SPEED, fade: 1 - age / WAVE_LIFE });
     }
 
-    // click ripple: peak opacity = 1 - dist*0.1, duration = dist*200ms
-    grid.addEventListener('click', function (e) {
-      var cell = e.target.closest('.bc-cell');
-      if (!cell) return;
-      var idx = Array.prototype.indexOf.call(grid.children, cell);
-      var cr = Math.floor(idx / cols), cc = idx % cols;
-      cells.forEach(function (o) {
-        var dist = Math.hypot(o.r - cr, o.c - cc);
-        var peak = Math.max(0, 1 - dist * 0.1);
-        if (peak <= 0) return;
-        o.g.animate(
-          [{ opacity: 0 }, { opacity: peak }, { opacity: 0 }],
-          { duration: Math.max(140, dist * 200), easing: 'ease-out' }
-        );
-      });
-    });
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var x = ox + c * SIZE, y = oy + r * SIZE;
+        var cx = x + SIZE / 2, cy = y + SIZE / 2;
+        var dx = cx - px, dy = cy - py;
+        var near = Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy) / GLOW_R);
+        var lit = near * near * 0.55;
+        for (var w = 0; w < live.length; w++) {
+          var wx = cx - live[w].x, wy = cy - live[w].y;
+          var off = Math.abs(Math.sqrt(wx * wx + wy * wy) - live[w].r);
+          if (off < WAVE_WIDTH) lit += (1 - off / WAVE_WIDTH) * live[w].fade * 0.75;
+        }
+        if (lit > 0.01) {
+          ctx.fillStyle = 'rgba(94,196,255,' + Math.min(0.8, lit).toFixed(3) + ')';
+          ctx.fillRect(x + 1, y + 1, SIZE - 2, SIZE - 2);
+        }
+        // grid line: faint everywhere, brighter where lit
+        ctx.strokeStyle = 'rgba(160,178,204,' + (0.09 + Math.min(0.5, lit * 0.6)).toFixed(3) + ')';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + 0.5, y + 0.5, SIZE, SIZE);
+      }
+    }
+    waves = waves.filter(function (wv) { return (now - wv.t0) / 1000 < WAVE_LIFE; });
+    return live.length > 0;
+  }
 
-    // mouse-follow blue reveal (mask centre tracks cursor, band-relative)
-    root.addEventListener('mousemove', function (e) {
-      var rect = band.getBoundingClientRect();
-      blue.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-      blue.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-    });
-    root.addEventListener('mouseleave', function () {
-      blue.style.setProperty('--mx', '-999px');
-      blue.style.setProperty('--my', '-999px');
-    });
+  function tick(now) {
+    var moving = draw(now);
+    raf = moving ? requestAnimationFrame(tick) : 0;
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(tick); }
 
-    var t;
-    window.addEventListener('resize', function () {
-      clearTimeout(t); t = setTimeout(build, 150);
-    });
-    build();
+  function local(e) {
+    var b = canvas.getBoundingClientRect();
+    return { x: e.clientX - b.left, y: e.clientY - b.top };
+  }
+  stage.addEventListener('pointermove', function (e) {
+    var p = local(e); px = p.x; py = p.y; kick();
   });
+  stage.addEventListener('pointerleave', function () { px = py = -1e4; kick(); });
+  stage.addEventListener('pointerdown', function (e) {
+    var p = local(e);
+    if (reduce) { px = p.x; py = p.y; kick(); return; }
+    waves.push({ x: p.x, y: p.y, t0: performance.now() });
+    if (waves.length > 6) waves.shift();
+    kick();
+  });
+
+  var t;
+  window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(resize, 120); });
+  resize();
 })();
 </script>
 </body>
