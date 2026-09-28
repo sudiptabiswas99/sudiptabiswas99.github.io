@@ -15,6 +15,7 @@ import { initFooterLight } from './modules/footer-light.js';
 import { initStat3d } from './modules/stat-3d.js';
 import { initGlobe } from './modules/globe.js';
 import { initBadge } from './modules/badge/index.js';
+import { initCountUp } from './modules/count-up.js';
 
 initTheme();
 initBadge();
@@ -30,3 +31,4 @@ initSlideshows();
 initFooterLight();
 initStat3d();
 initGlobe();
+initCountUp();

@@ -24,3 +24,6 @@
   .wc:hover .wc-media img{ transform:none; }
   .wc:hover .wc-cap{ translate:none; }
 }
+
+/* Count-up numbers (js/modules/count-up.js): equal-width digits so a number never jiggles while it counts */
+.hst .n, .ct-n, .at-n, .xp-num b{ font-variant-numeric:tabular-nums; }
