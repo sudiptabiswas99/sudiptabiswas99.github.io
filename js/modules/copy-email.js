@@ -2,10 +2,9 @@
 import { ADDR } from '../config.js';
 import { doc } from '../lib/dom.js';
 import { toast } from './toast.js';
-import { fire } from './confetti.js';
 
 export function initCopyEmail(){
-  /* ---- copy email: #copyHero (hero) and #celebrate (contact) ---- */
+  /* copy email: #copyHero (hero) and #celebrate (contact). The label says Copied and the toast shows the address. */
   function copyEmail(btn, selectEl){
     var lbl = btn.querySelector('.lbl') || btn;
     function ok(){
@@ -14,7 +13,6 @@ export function initCopyEmail(){
       clearTimeout(btn._t);
       btn._t = setTimeout(function(){ lbl.textContent = 'Copy email'; }, 2000);
       toast('Email address copied: ' + ADDR);
-      if (btn.id === 'celebrate'){ var r = btn.getBoundingClientRect(); fire(r.left + r.width / 2, r.top + r.height / 2); }
     }
     function fail(){
       toast('Your browser blocked copying. Here is the address: ' + ADDR);

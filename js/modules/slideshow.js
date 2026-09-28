@@ -1,10 +1,9 @@
-/* Phone slideshows (below 640px): services, work, skills, experience. */
+/* Phone slideshows (below 640px): services, work, content results, AI tools, skills and experience. */
 import { MQ_SLIDES } from '../config.js';
 import { doc, header, reduce } from '../lib/dom.js';
 
 export function initSlideshows(){
-  /* ---- phone slideshows (below 640px): services, work, skills, experience ----
-     Plain horizontal scroll with snap, so swipe, trackpad and keyboard all work; the bar shows
+  /* Plain horizontal scroll with snap, so swipe, trackpad and keyboard all work; the bar shows
      where you are and gives 44px previous/next buttons. Above 640 the bar is hidden and the grids return. */
   var CHEV = function(d){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="' + d + '"/></svg>'; };
   var mqCar = window.matchMedia(MQ_SLIDES);
@@ -52,7 +51,7 @@ export function initSlideshows(){
       var its = items(); if (!its.length) return;
       i = Math.max(0, Math.min(its.length - 1, i));
       track.scrollTo({ left:its[i].offsetLeft - pad(), behavior:reduce() ? 'auto' : 'smooth' });
-      /* after Next at the foot of a long card, bring the new card's top back under the header */
+      /* after Next at the foot of a long card, scroll up so the new card's top sits under the header */
       var top = track.getBoundingClientRect().top, hh = header ? header.offsetHeight : 64;
       if (top < hh) window.scrollBy({ top:top - hh - 12, behavior:reduce() ? 'auto' : 'smooth' });
     };
@@ -75,6 +74,7 @@ export function initSlideshows(){
   slideshow(doc.getElementById('wgrid'), 'Projects', 'project');
   slideshow(doc.querySelector('.sk-grid'), 'Skill groups', 'skill group');
   slideshow(doc.querySelector('.xp-list'), 'Experience', 'role');
+  slideshow(doc.querySelector('.ct-list'), 'Social media results', 'result');
   slideshow(doc.querySelector('.at-grid'), 'AI tools', 'tool');
   var wf = doc.getElementById('wfilter'), wg = doc.getElementById('wgrid');
   if (wf && wg) wf.addEventListener('click', function(){ wg.dispatchEvent(new Event('car-reset')); });

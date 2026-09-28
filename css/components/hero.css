@@ -23,7 +23,7 @@
 .hero h1 .l1, .hero h1 .l2{ display:block; }
 .hero h1 .l2{ padding-left:.06em; }
 .hero-lead{ margin-top:var(--s-4); font-size:clamp(17px, calc(.45vw + 15.5px), 21px); line-height:1.55; color:var(--text-2); }
-.hero-lead b{ color:var(--text); white-space:nowrap; }  /* keeps "short-form video" from breaking at its hyphen */
+.hero-lead b{ color:var(--text); white-space:nowrap; }  /* keeps each bold phrase ("AI automation") on one line */
 .hero-actions{ margin-top:20px; }
 .row-a{ display:flex; flex-wrap:wrap; gap:var(--s-2); }
 .row-b{ margin-top:var(--s-2); display:flex; flex-wrap:wrap; align-items:center; column-gap:var(--s-4); }
@@ -37,7 +37,6 @@
 }
 .hst .n{ font-family:var(--serif); font-weight:400; font-size:clamp(32px, calc(2vw + 22px), 48px); line-height:1; letter-spacing:-0.02em; color:var(--text); }
 .hst .l{ margin-top:var(--s-2); font-size:14px; line-height:1.4; color:var(--text-3); }
-.scrollcue{ display:none; }
 
 /* phones: the badge takes the empty side of the hero and hangs from the header, as on desktop (badge.css
    sizes the stage). It carries his photo, so the round portrait steps aside; without scripts it stays.
@@ -72,8 +71,6 @@
 @media (max-width:374px){
   .id-pfp{ width:88px; height:88px; }
   .facts{ font-size:14px; }
-  .hero .btn{ padding:0 14px; }
-  .hero .btn svg{ display:none; }
 }
 @media (min-width:640px){
   .hero{ padding-bottom:var(--s-7); }
@@ -97,9 +94,6 @@
   .portrait-rig{ min-height:560px; }
   .hero-stats{ margin-top:var(--s-7); }
 }
-@media (min-width:1280px){
-  .scrollcue{ display:block; position:absolute; right:var(--gutter); bottom:0; font-size:14px; line-height:1.4; color:var(--text-3); }
-}
 
 /* ===== 3D pieces: a canvas sits over a real text/element fallback ===== */
 .hst-3d .n{ position:relative; }
@@ -107,7 +101,7 @@
 .hst-3d canvas:active{ cursor:grabbing; }
 .hst-3d.live .n-txt{ opacity:0; }
 
-/* landscape phones: a short screen still shows Email me and Download CV without scrolling */
+/* landscape phones: a short screen still shows Email me and View CV without scrolling */
 @media (max-height:500px) and (orientation:landscape){
   .hero{ padding-top:calc(var(--header-h) + 8px); }
   .hero-copy{ align-self:start; }  /* not centred against the taller badge column */
@@ -119,23 +113,6 @@
   .hero-actions{ margin-top:var(--s-3); }
 }
 
-/* View CV sits beside Email me; on narrow and short screens Download shrinks to a 48px icon square (its
-   label stays for screen readers and in the tooltip) so all three stay on one row above the fold */
-@media (max-width:479px), (max-height:500px) and (orientation:landscape){
-  .hero .btn.btn-dl{ width:48px; padding:0; flex:none; }
-  .hero .btn.btn-dl svg{ display:block; }
-  .hero .btn-dl .btn-t{ position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
-}
-/* 480 to 831px the copy column sits beside the badge and is narrower than the three labelled buttons
-   (485px, measured in WebKit and Chromium), so Download went to a row of its own. Keyed to the actions
-   box itself: the square appears whenever the labelled row cannot fit. Under 330px of column the
-   buttons share the row out, so a wrap reads Email me on top, View CV and the square below, edge to edge. */
-.hero-actions{ container:cta / inline-size; }
-@container cta (max-width:489px){
-  .hero .btn.btn-dl{ width:48px; padding:0; flex:none; }
-  .hero .btn.btn-dl svg{ display:block; }
-  .hero .btn-dl .btn-t{ position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
-}
-@container cta (max-width:329px){
-  .hero .row-a > .btn:not(.btn-dl){ flex:1 1 auto; }
-}
+/* The hero has two buttons: Email me and View CV. Below 640px and on short landscape screens View CV is a
+   48px icon square (.btn-ico, css/components/controls.css), so both stay on one row above the fold.
+   The CV download lives in the contact card. */

@@ -19,7 +19,7 @@ export function initStat3d(){
       var side = new THREE.MeshStandardMaterial({ color:cssVar('--text-3'), roughness:.6, metalness:.1 });
       var mesh = new THREE.Mesh(geo, [mat, side]);
       v.scene.add(mesh, new THREE.AmbientLight(0xffffff, 1.1));
-      var key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(-.6, .9, 1.2); v.scene.add(key);
+      var lamp = new THREE.DirectionalLight(0xffffff, 2.2); lamp.position.set(-.6, .9, 1.2); v.scene.add(lamp);
       var rim = new THREE.DirectionalLight(0xffffff, 1.2); rim.position.set(1, -.2, -.6); v.scene.add(rim);
       var place = function(){
         v.size();

@@ -15,6 +15,15 @@
   background:var(--text-2); transform:translateY(101%);
   transition:transform 220ms var(--ease-out);
 }
+/* the drawn CV icons (a page with an eye, a page with an arrow) need 20px to read, 22px when shown alone */
+.btn .i-cv{ width:20px; height:20px; }
+/* phones and short landscape screens: a .btn-ico button (View CV in the hero, both CV buttons in the
+   contact card) is a 48px icon square. The label stays for screen readers, and in the tooltip */
+@media (max-width:639px), (max-height:500px) and (orientation:landscape){
+  .btn.btn-ico{ width:48px; padding:0; flex:none; }
+  .btn.btn-ico .i-cv{ width:22px; height:22px; }
+  .btn-ico .btn-t{ position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+}
 .btn-secondary{ background:transparent; color:var(--text); border-color:var(--line-strong); }
 .btn-secondary::after{ background:var(--inv-bg); }
 .btn:active{ transform:translateY(1px); }

@@ -1,5 +1,5 @@
-/* Toast message and confetti canvas. */
-/* ===== toast + confetti ===== */
+/* Toast message. */
+/* ===== toast ===== */
 .toast{
   position:fixed; left:50%; bottom:max(16px, calc(env(safe-area-inset-bottom) + 16px)); z-index:var(--z-toast);
   width:max-content; max-width:calc(100vw - 32px); padding:12px 16px;
@@ -12,5 +12,3 @@
   opacity:1; visibility:visible; transform:translate(-50%, 0);
   transition:opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out), visibility 0s;
 }
-#confetti{ position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:var(--z-confetti); }
-#confetti[hidden]{ display:none; }

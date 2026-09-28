@@ -1,72 +1,72 @@
-/* Experience panels, duration meter, and the lesson pull quote. */
+/* Experience and education: the CV's four groups (Experience, Additional experience, Projects, Education) in its
+   order, each under a plain heading with a rule, like the CV's section heads. */
 /* ===== experience ===== */
 #experience{ padding-top:var(--section-lg); }
-.xp-list{ display:grid; gap:var(--s-5); }
-/* The note (.most) and the chips follow .xp-body in the DOM. Below 800 .xp-body is display:contents
-   and `order` shows lead, note, bullets, chips; from 800 the panel is two columns (see below). */
-.xp{ display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:20px; }
-.xp-meta{ display:grid; grid-template-columns:minmax(0,1fr); justify-items:start; row-gap:var(--s-3); }
-.xp-dur{ display:flex; align-items:baseline; gap:var(--s-2); }
-.xp-dur b{ font-family:var(--serif); font-weight:400; font-size:clamp(32px, calc(2vw + 22px), 48px); line-height:1; letter-spacing:-0.02em; color:var(--text); }
-.xp-dur span{ font-size:14px; line-height:1.4; color:var(--text-3); }
-.xp-meter{ width:120px; height:3px; }
-.xp-meter i{ display:block; height:100%; width:var(--w); background:var(--text); }
-.xp-when{ display:flex; flex-direction:column; row-gap:2px; line-height:1.45; }
-.xp-when .d{ font-size:15px; color:var(--text-2); }
-.xp-when .s{ font-size:14px; color:var(--text-3); }
-.xp-body{ display:contents; }
-.xp h3{ margin-top:var(--s-4); }
-.xp .org{ margin-top:4px; font-size:15px; line-height:1.45; color:var(--text-3); }
-.xp .lead{ margin-top:var(--s-4); color:var(--text-2); }
-.xp .chips{ order:3; }
-/* the link out to the full section (Content, AI tools, Projects) sits under the bullets at every width */
-.xp .xp-go{ order:2; align-self:flex-start; }
-.xp .nw{ white-space:nowrap; }
-.most{ order:1; max-width:33rem; margin-top:var(--s-4); padding:var(--s-4); background:var(--surface-2); border-radius:var(--r-sm); }
-.most b{ display:block; font-weight:600; font-size:14px; line-height:1.4; color:var(--text); }
-.most p{ margin-top:4px; font-size:16px; line-height:1.6; color:var(--text-2); }
-.xp ul{ order:2; display:grid; gap:var(--s-2); margin-top:var(--s-4); }
-.xp li{ position:relative; padding-left:18px; font-size:16px; line-height:1.6; color:var(--text-2); }
-.xp li::before{ content:""; position:absolute; left:0; top:.8em; width:6px; height:1px; background:var(--text-3); }
-.xp li b{ color:var(--text); }
-/* line length: 30em (lead 510px, bullets 480px) and the 33rem note box hold every line to 75 characters or fewer in Hanken */
-.xp .lead, .xp li{ max-width:30em; }
-@media (min-width:640px){
-  .xp{ padding:var(--s-6); }
-  .xp-when{ flex-direction:row; flex-wrap:wrap; column-gap:12px; align-items:baseline; }
+.xp-h{
+  margin:var(--s-8) 0 var(--s-5); padding-bottom:var(--s-3); border-bottom:1px solid var(--line);
+  font-family:var(--serif); font-weight:400; font-size:clamp(22px, calc(.8vw + 16px), 28px); line-height:1.2;
+  letter-spacing:-0.01em; color:var(--text);
 }
-/* 640-799: the number gets a fixed track, so the dates start at the same x in all 7 panels */
-@media (min-width:640px) and (max-width:799px){
-  .xp-meta{ grid-template-columns:12rem minmax(0,1fr); column-gap:var(--s-5); align-items:baseline; }
-  .xp-dur{ grid-column:1; grid-row:1; }
-  .xp-when{ grid-column:2; grid-row:1; }
-  .xp-meter{ grid-column:1; grid-row:2; }
-}
-/* 800+: two columns. Dates, meter and the note on the left; the text with its chips under it on the right.
-   The websites panel (.lg, 6 bullets) puts its chips under the note instead. 800-1023 splits 3:4 in favour
-   of the text; 1024+ splits 1:1. Measured: no column of any panel has more than 150px of empty space. */
-@media (min-width:800px){
-  .xp{ display:grid; grid-template-columns:minmax(0, 3fr) minmax(0, 4fr); grid-template-rows:auto auto 1fr; column-gap:var(--s-6); row-gap:0; align-items:start; }
-  .xp-meta{ grid-column:1; grid-row:1; }
-  .xp-body{ display:block; grid-column:2; grid-row:1 / span 2; min-width:0; }
-  .xp h3{ margin-top:0; }
-  .xp-when{ flex-direction:column; }
-  .xp > .most{ grid-column:1; grid-row:2 / span 2; margin-top:var(--s-5); }
-  .xp > .chips{ grid-column:2; grid-row:3; }
-  .xp.lg .xp-body{ grid-row:1 / span 3; }
-  .xp.lg > .most{ grid-row:2; }
-  .xp.lg > .chips{ grid-column:1; grid-row:3; }
-}
-@media (min-width:1024px){
-  .xp{ grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); column-gap:var(--s-7); }
-}
+.sh + .xp-h{ margin-top:0; }
+.xp-grid{ display:grid; gap:var(--s-4); }
 
-/* experience: the lesson reads as a pull quote; panels answer the pointer */
-.xp{ transition:border-color var(--d-base) var(--ease-out); }
-.most{ background:transparent; border-left:2px solid var(--text); border-radius:0; padding:var(--s-1) 0 var(--s-1) var(--s-4); }
-.most p{ font-family:var(--serif); font-size:18px; line-height:1.5; color:var(--text); }
-.xp .chips span{ transition:border-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out); }
+/* one card: a top line (the count, or the dates), the title and who it was for, then 2 or 3 bullets and a link */
+.xp{
+  display:flex; flex-direction:column; min-width:0; padding:20px;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
+  transition:border-color var(--d-base) var(--ease-out);
+}
+.xp-num{ display:flex; flex-wrap:wrap; align-items:baseline; column-gap:var(--s-2); }
+.xp-num b{ font-family:var(--serif); font-weight:400; font-size:clamp(34px, calc(1.4vw + 24px), 44px); line-height:1; letter-spacing:-0.02em; color:var(--text); }
+.xp-num span{ font-size:14px; line-height:1.4; color:var(--text-3); }
+.xp-when{ display:flex; flex-wrap:wrap; column-gap:var(--s-3); font-size:15px; line-height:1.45; color:var(--text-2); }
+.xp-when span + span{ color:var(--text-3); }
+.xp h4{ margin:var(--s-3) 0 0; text-wrap:balance; font-family:var(--serif); font-weight:500; font-size:clamp(20px, calc(.4vw + 17px), 24px); line-height:1.2; letter-spacing:-0.01em; color:var(--text); }
+.xp .org{ margin-top:4px; font-size:15px; line-height:1.45; color:var(--text-3); }
+.xp-text{ display:flex; flex-direction:column; flex:1 1 auto; }
+.xp ul{ display:grid; gap:var(--s-2); margin-top:var(--s-4); }
+.xp li{ position:relative; max-width:36em; padding-left:18px; font-size:16px; line-height:1.6; color:var(--text-2); }
+.xp li::before{ content:""; position:absolute; left:2px; top:calc(.8em - 2px); width:5px; height:5px; border-radius:50%; background:var(--text-3); }
+/* the link sits at the foot of the card, so links line up across a row */
+.xp .xp-go{ align-self:flex-start; margin-top:auto; padding-top:var(--s-3); }
+
+/* the lesson reads as a pull quote with a 2px rule */
+.most{ max-width:33rem; margin-top:var(--s-5); padding:var(--s-1) 0 var(--s-1) var(--s-4); border-left:2px solid var(--text); }
+.most b{ display:block; font-weight:600; font-size:14px; line-height:1.4; color:var(--text); }
+.most p{ margin-top:4px; font-family:var(--serif); font-size:18px; line-height:1.5; color:var(--text); }
+
 @media (hover:hover) and (pointer:fine){
   .xp:hover{ border-color:var(--line-strong); }
-  .xp:hover .chips span{ border-color:var(--line-strong); color:var(--text); }
+}
+
+@media (min-width:640px){
+  .xp{ padding:var(--s-6); }
+  .xp-grid{ gap:var(--s-5); }
+}
+
+/* 640-1023: one card per row, as a ledger. The count or the dates sit in a fixed left track, so they line up
+   at the same x in every card; the title, bullets, link and lesson run in the right track. */
+@media (min-width:640px) and (max-width:1023px){
+  .xp{ display:grid; grid-template-columns:10.5rem minmax(0, 1fr); column-gap:var(--s-6); align-items:start; }
+  .xp-head{ display:contents; }
+  .xp-num, .xp-when{ grid-column:1; grid-row:1 / span 4; flex-direction:column; align-items:flex-start; }
+  .xp-num span{ margin-top:var(--s-2); }
+  .xp h4, .xp .org, .xp-text, .xp .most{ grid-column:2; }
+  .xp h4{ margin-top:0; }
+}
+
+/* 1024+: the four smaller roles sit two by two at equal height, the three projects three across. A wide card
+   (web developer, internship, degree) splits in two; its right column starts at the same x as the text of the
+   second card below it: inner gap = grid gap + both card paddings + both borders. */
+@media (min-width:1024px){
+  .xp-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .xp-proj{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+  .xp-wide{
+    grid-column:1 / -1; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); grid-template-rows:auto 1fr;
+    column-gap:calc(var(--s-5) + 2 * var(--s-6) + 2px); align-items:start;
+  }
+  .xp-wide .xp-head{ grid-column:1; grid-row:1; }
+  .xp-wide .xp-text{ grid-column:2; grid-row:1 / span 2; }
+  .xp-wide .most{ grid-column:1; grid-row:2; }
+  .xp-wide ul{ margin-top:0; }
 }

@@ -1,68 +1,46 @@
-/* AI tools section (#automation): the Claude Code skills, agents and scripts from the CV. */
-/* Each card is its text plus a terminal panel with real code or real output from the tool.
-   Below 1280 the panel sits under the text, full width; from 1280 it fills the card's right side.
-   Below 640 the cards are a swipe slideshow (js/modules/slideshow.js, css/components/slideshow.css). */
+/* AI tools section (#automation): four short cards, each a brief idea of one tool or agent team I built.
+   No tool names, no code (Sudipta's calls, 2026-09-28). Styled like the services cards: surface,
+   hairline border, a 2px ink rule and a 3px lift on hover. From 768 every card is one full-width row
+   with the title on the left and the text on the right, so the columns line up down the section. The
+   agent team card leads with its number above the title. Below 640 the cards are a swipe slideshow
+   (js/modules/slideshow.js, css/components/slideshow.css). */
 #automation{ padding-block:var(--section-md); }
-.at-grid{ display:grid; gap:var(--s-5); }
+.at-grid{ display:grid; gap:var(--s-4); }
 
 .at{
-  --term-bg:var(--band-bg);
-  display:flex; flex-direction:column;
-  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
-  transition:border-color var(--d-base) var(--ease-out);
+  position:relative; display:flex; flex-direction:column;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:var(--s-5);
+  transition:transform var(--d-base) var(--ease-out), border-color var(--d-base) var(--ease-out);
 }
-/* dark theme: the band colour is too close to the card, so the panel sinks to the page colour */
-:root[data-theme="dark"] .at{ --term-bg:var(--bg); }
-
-.at-text{ padding:20px; }
-.at-kind{ font-size:14px; line-height:1.4; color:var(--text-3); }
+.at::before{
+  content:""; position:absolute; left:-1px; right:-1px; top:-1px; height:2px; background:var(--text);
+  border-radius:var(--r-md) var(--r-md) 0 0; transform:scaleX(0); transform-origin:left; transition:transform .45s var(--ease-out);
+}
 .at h3{
-  margin-top:var(--s-2);
   font-family:var(--serif); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 26px);
   line-height:1.2; letter-spacing:-0.01em; color:var(--text);
 }
-.at-text > p:not(.at-kind){ margin-top:var(--s-3); color:var(--text-2); }
-.at .tags span{ overflow-wrap:anywhere; transition:border-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out); }
-.at-go{ margin-top:var(--s-4); }
-.at-go svg{ transition:transform var(--d-base) var(--ease-out); }
-
-/* the terminal panel: zero chroma, band tokens, system monospace for the code only */
-.at-proof{
-  display:flex; flex-direction:column; min-width:0;
-  background:var(--term-bg); color:var(--band-text);
-  border-radius:0 0 calc(var(--r-md) - 1px) calc(var(--r-md) - 1px);
-}
-.at-proof figcaption{
-  padding:var(--s-3) 20px;
-  font-size:14px; line-height:1.45; color:var(--band-text-2);
-  border-bottom:1px solid var(--band-panel-line);
-}
-.at-proof pre{
-  margin:0; padding:var(--s-4) 20px 20px;
-  font-family:ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size:14px; line-height:1.5; color:var(--band-text);
-  white-space:pre-wrap; overflow-wrap:anywhere; tab-size:4;
-}
-.at-proof code{ font:inherit; }
-.at-proof .pr{ color:var(--band-text-2); user-select:none; -webkit-user-select:none; }
-
-@media (min-width:640px){
-  .at-text{ padding:var(--s-6); }
-  .at-proof figcaption{ padding-inline:var(--s-6); }
-  .at-proof pre{ padding:20px var(--s-6) var(--s-6); }
+.at p{ margin-top:var(--s-3); max-width:56ch; color:var(--text-2); }
+.at .at-n{
+  margin:0 0 var(--s-3); font-family:var(--serif); font-weight:400; font-size:clamp(44px, calc(2.4vw + 32px), 72px);
+  line-height:1; letter-spacing:-0.02em; color:var(--text);
 }
 
-/* 1280+: text on the left, the panel fills the right side at the card's full height. The panel gets
-   7 of 11 parts so 80-character code lines fit unwrapped; below 1280 it sits full width under the text. */
-@media (min-width:1280px){
-  .at{ display:grid; grid-template-columns:minmax(0, 4fr) minmax(0, 7fr); align-items:stretch; }
-  .at-text{ padding:var(--s-7) var(--s-6) var(--s-7) var(--s-7); }
-  .at-proof{ border-radius:0 calc(var(--r-md) - 1px) calc(var(--r-md) - 1px) 0; }
-  .at-proof figcaption{ padding:var(--s-4) var(--s-6); }
+@media (min-width:640px){ .at{ padding:var(--s-6); } }
+@media (min-width:768px){
+  .at-grid{ gap:var(--s-5); }
+  .at{
+    display:grid; grid-template-columns:minmax(0,2fr) minmax(0,3fr); grid-template-areas:"h p";
+    column-gap:var(--s-6); align-items:start;
+  }
+  .at h3{ grid-area:h; }
+  .at p:not(.at-n){ grid-area:p; margin-top:0; }
+  /* the lead card: the big number over the heading on the left, the text beside the heading */
+  .at-lead{ grid-template-areas:"n ." "h p"; }
+  .at-lead .at-n{ grid-area:n; margin:0 0 var(--s-4); font-size:clamp(96px, calc(6vw + 50px), 144px); }
 }
 
 @media (hover:hover) and (pointer:fine){
-  .at:hover{ border-color:var(--line-strong); }
-  .at:hover .tags span{ border-color:var(--line-strong); color:var(--text); }
-  .at-go:hover svg{ transform:translate(2px, -2px); }
+  .at:hover{ transform:translateY(-3px); border-color:var(--line-strong); }
+  .at:hover::before{ transform:scaleX(1); }
 }

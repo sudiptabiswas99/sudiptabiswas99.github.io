@@ -19,7 +19,6 @@
 .lb:not(.loading) .lb-ph{ display:none; }
 .lb .cap{ margin-top:var(--s-4); }
 .lb .cap .t{ font-family:var(--serif); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 26px); line-height:1.2; letter-spacing:-0.01em; color:var(--text); }
-.lb .cap .m{ display:block; margin-top:4px; font-size:14px; line-height:1.4; color:var(--text-3); }
 .lb .cap .d{ margin-top:var(--s-2); max-width:65ch; font-size:16px; line-height:1.6; color:var(--text-2); }
 .lb .hint{ margin-top:var(--s-3); font-size:14px; line-height:1.4; color:var(--text-3); }
 .lb .x{

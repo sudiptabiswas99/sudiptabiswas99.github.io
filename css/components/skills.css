@@ -8,20 +8,25 @@
 .sk-group h3{ color:var(--band-text); }
 .sk-chips{ display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
 .sk-chips li{ font-size:15px; line-height:1.4; color:var(--band-text); padding:6px 12px; border:1px solid var(--band-chip-line); border-radius:var(--r-sm); }
-@media (min-width:640px){ .sk-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
-@media (min-width:1280px){ .sk-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); gap:var(--s-7) var(--s-6); } }
+/* 6 panels in the CV's order. Panels in a row share one height, and each gets a width that fits
+   its chips, so no panel is left with a big empty foot. 640px up: 2 a row. */
+@media (min-width:640px){
+  .sk-grid{ grid-template-columns:repeat(12, minmax(0,1fr)); gap:var(--s-5); align-items:stretch; }
+  .sk-web{ grid-column:span 6; }  .sk-ai{ grid-column:span 6; }
+  .sk-data{ grid-column:span 4; } .sk-social{ grid-column:span 8; }
+  .sk-net{ grid-column:span 6; }  .sk-lang{ grid-column:span 6; }
+}
+@media (min-width:1280px){ .sk-grid{ gap:var(--s-6); } }
 
-/* skills: each group is a panel; chips come in one after another, and invert on hover */
+/* skills: each group is a panel; chips are always visible and invert on hover */
 .sk-group{ background:var(--band-panel); border:1px solid var(--band-panel-line); border-radius:var(--r-md); padding:var(--s-5); }
 .sk-group h3{ padding-bottom:var(--s-3); border-bottom:1px solid var(--band-panel-line); }
 .sk-chips{ margin-top:var(--s-4); }
+/* the CV's "(basic)" items: their own labelled row under the main chips, drawn with a dashed edge */
+.sk-sub{ margin-top:var(--s-4); font-size:14px; line-height:1.4; color:var(--band-text-2); }
+.sk-sub + .sk-chips{ margin-top:var(--s-2); }
+.sk-basic li{ border-style:dashed; }
 .sk-chips li{ transition:background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out); }
-.m-ready .sk-group .sk-chips li{
-  opacity:0; translate:0 6px;
-  transition:opacity .4s var(--ease-out) calc(var(--j, 0) * 35ms + 120ms), translate .4s var(--ease-out) calc(var(--j, 0) * 35ms + 120ms),
-             background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out);
-}
-.m-ready .sk-group.in .sk-chips li{ opacity:1; translate:0 0; }
 @media (hover:hover) and (pointer:fine){
   .sk-group:hover{ border-color:var(--band-chip-line); }
   .sk-chips li:hover{ background:var(--band-text); color:var(--band-bg); border-color:var(--band-text); }

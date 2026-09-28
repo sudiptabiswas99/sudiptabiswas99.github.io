@@ -34,12 +34,14 @@
   --maxw:1280px;
   --header-h:64px;
 
-  --r-sm:2px; --r-md:12px; --r-full:999px;
+  /* square-ish corners everywhere (2026-09-28): 12px cards and 999px pills read as a stock AI/SaaS kit.
+     --r-full is an alias of --r-sm until the component files switch to --r-sm; do not set it back to a pill. */
+  --r-sm:2px; --r-md:4px; --r-full:var(--r-sm);
 
   --d-fast:150ms; --d-base:200ms; --d-slow:350ms;
   --ease-out:cubic-bezier(.2,.7,.2,1); --ease-in:cubic-bezier(.4,0,1,1);
 
-  --z-header:50; --z-toast:80; --z-lightbox:90; --z-confetti:95; --z-skip:100;
+  --z-header:50; --z-toast:80; --z-lightbox:90; --z-skip:100;
 }
 @media (max-width:374px){ :root{ --gutter:16px; } }
 @media (min-width:640px){  :root{ --gutter:32px; } }

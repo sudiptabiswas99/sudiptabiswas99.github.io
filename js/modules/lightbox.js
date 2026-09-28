@@ -6,7 +6,7 @@ export function initLightbox(){
   var lb = doc.getElementById('lb');
   if (lb){
     var lbImg = doc.getElementById('lbImg'), lbTitle = doc.getElementById('lbTitle'),
-        lbTag = doc.getElementById('lbTag'), lbDesc = doc.getElementById('lbDesc'),
+        lbDesc = doc.getElementById('lbDesc'),
         box = lb.querySelector('.box'), xBtn = lb.querySelector('.x'),
         opener = null, lbOpen = false, lbTimer = null, ph = null, token = 0;
     /* live demo: the real project page runs in an iframe, only after "Run live demo" */
@@ -39,7 +39,6 @@ export function initLightbox(){
       var t = token, titleEl = card.querySelector('.pt'), thumb = card.querySelector('img');
       var title = titleEl ? titleEl.textContent : '';
       lbTitle.textContent = title;
-      lbTag.textContent = card.getAttribute('data-stack') || card.getAttribute('data-tag') || '';
       lbDesc.textContent = card.getAttribute('data-desc') || '';
       var demo = card.getAttribute('data-demo');
       var live = card.getAttribute('data-live'), code = card.getAttribute('data-code'), url = live || code;

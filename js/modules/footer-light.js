@@ -2,7 +2,6 @@
 import { doc, footer, finePtr } from '../lib/dom.js';
 
 export function initFooterLight(){
-  /* ---- footer name: raised letters lit by a light that follows the mouse ---- */
   var ftText = doc.querySelector('.ft-word text'), lD = doc.getElementById('ftLightD'), lS = doc.getElementById('ftLightS');
   if (ftText && lD && lS){
     ftText.setAttribute('filter', 'url(#ftEmboss)');

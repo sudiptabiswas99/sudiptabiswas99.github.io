@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Background Ripple Effect — Showcase</title>
+<title>Background Ripple Effect: Showcase</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   /* ------------------------------------------------------------------
-     Background Ripple Effect — vanilla port of the Aceternity
+     Background Ripple Effect: vanilla port of the Aceternity
      "BackgroundCells" React/framer-motion component.
      No build step, no dependencies. Behaviour matched 1:1:
        - faint neutral grid across the top band, fading out downward
@@ -17,7 +17,7 @@
        - each cell glows sky-cyan on hover ([0 -> 1 -> 0.5] opacity)
        - clicking a cell fires a ripple whose reach + duration scale
          with distance from the clicked cell (peak = 1 - dist*0.1,
-         duration = dist * 200ms) — identical to the original.
+         duration = dist * 200ms), identical to the original.
      ------------------------------------------------------------------ */
   :root{ --cell:48px; --reveal:75px; }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -79,7 +79,7 @@
       <h1>Background cell animation<br>with framer motion</h1>
     </div>
   </div>
-  <div class="bc-note">move the cursor for the <b>blue reveal</b> · hover a cell to <b>glow</b> · click for a <b>ripple</b></div>
+  <div class="bc-note">move the cursor for the <b>blue reveal</b>, hover a cell to <b>glow</b>, click for a <b>ripple</b></div>
 
 <script>
 (function () {

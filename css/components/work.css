@@ -18,8 +18,13 @@
 .wfilter button:active{ transform:translateY(1px); }
 .wfilter button.on{ background:var(--inv-bg); color:var(--inv-text); border-color:var(--inv-bg); }
 @media (hover:hover){ .wfilter button:not(.on):hover{ border-color:var(--text); color:var(--text); } }
+/* 640px and up the buttons wrap as inline boxes in balanced lines, so no button is left alone on the last line */
 @media (min-width:640px){
-  .wfilter{ flex-wrap:wrap; overflow:visible; margin-inline:0; padding-inline:0; }
+  .wfilter{
+    display:block; text-wrap:balance; overflow:visible;
+    margin-inline:0; margin-bottom:calc(var(--s-5) - 6px - var(--s-2)); padding-inline:0;
+  }
+  .wfilter button{ display:inline-block; vertical-align:top; margin:0 var(--s-2) var(--s-2) 0; }
 }
 
 .wgrid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px 12px; }

@@ -7,7 +7,7 @@
 .about-body p{ max-width:56ch; margin:0 0 var(--s-4); color:var(--text-2); }
 .about-body p:last-child{ margin-bottom:0; }
 .about-body b{ color:var(--text); }
-.facts-list{ max-width:44rem; border-top:1px solid var(--line); }  /* keeps the one-column rows (768–1023) under ~72ch */
+.facts-list{ max-width:44rem; border-top:1px solid var(--line); }  /* keeps the one-column rows (768 to 1023px) under about 72ch */
 .facts-list .row{ display:grid; grid-template-columns:7.5rem minmax(0,1fr); gap:var(--s-4); padding:var(--s-4) 0; border-bottom:1px solid var(--line); }
 .facts-list dt{ font-weight:500; font-size:14px; line-height:1.45; color:var(--text-3); padding-top:1px; }
 .facts-list dd{ font-size:16px; line-height:1.45; color:var(--text); }

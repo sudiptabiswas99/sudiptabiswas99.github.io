@@ -119,7 +119,9 @@
 }
 
 .face__head{ display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); min-height:24px; }
-.face__mark{ font-family:var(--serif); font-size:26px; font-weight:500; line-height:1; letter-spacing:-0.02em; }
+.face__mark{ display:block; line-height:0; }
+.face__mark-svg{ display:block; height:32px; width:auto; }
+.face__mark .visually-hidden{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
 .face__meta{ font-size:13px; line-height:1.3; color:var(--card-ink-3); }
 
 /* front */

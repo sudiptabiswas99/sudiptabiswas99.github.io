@@ -1,55 +1,46 @@
-/* Social media and content section (#content): the social media work from the CV, described in text.
-   Order: the role on a rule, the job as a ruled list, then the two ad panels. No client names and no
-   images of client posts (Sudipta's call, 2026-09-28); the list and the panels just stack on phones. */
+/* Social media and content section (#content): the one content role on the CV, described in text.
+   Order: the role on a rule, then four results as number cards (33 scripts, 20 reels, 24 DM guides,
+   13 accounts tracked), then a short plain list of the rest. No client names, no tool names and no
+   images of client posts (Sudipta's calls, 2026-09-28). Below 640 the cards are a swipe slideshow
+   (js/modules/slideshow.js, css/components/slideshow.css). */
 #content{ padding-block:var(--section-md); }
 
-/* ---- the role: three facts on a rule, the same look as the About facts list ---- */
+/* the role: two facts on a rule, the same look as the About facts list */
 .ct-role{ display:grid; border-top:1px solid var(--line); }
 .ct-role > div{ display:grid; grid-template-columns:4.5rem minmax(0,1fr); gap:var(--s-4); padding:var(--s-3) 0; border-bottom:1px solid var(--line); }
 .ct-role dt{ font-weight:500; font-size:14px; line-height:1.45; color:var(--text-3); padding-top:1px; }
 .ct-role dd{ font-size:16px; line-height:1.45; color:var(--text); }
 @media (min-width:768px){
-  .ct-role{ grid-template-columns:repeat(3, minmax(0,1fr)); column-gap:var(--s-5); border-bottom:1px solid var(--line); }
-  .ct-role > div{ grid-template-columns:minmax(0,1fr); gap:2px; padding:var(--s-4) 0; border-bottom:0; }
+  .ct-role{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:var(--s-5); border-bottom:1px solid var(--line); }
+  .ct-role > div{ grid-template-columns:minmax(0,1fr); align-content:start; gap:2px; padding:var(--s-4) 0; border-bottom:0; }
 }
 
-
-/* ---- blocks ---- */
-.ct-jobs, .ct-ads{ margin-top:var(--s-7); }
-.ct-jobs > h3{
-  font-family:var(--serif); font-weight:500; font-size:clamp(22px, calc(.8vw + 17px), 30px);
-  line-height:1.2; letter-spacing:-0.01em; color:var(--text);
-}
-@media (min-width:1024px){ .ct-jobs, .ct-ads{ margin-top:var(--s-8); } }
-
-/* ---- the job: a ruled list, 1 / 2 / 3 columns ---- */
-.ct-jobs > h3{ margin-bottom:var(--s-5); }
-.ct-list{ display:grid; gap:var(--s-5); }
-.ct-list li{ min-width:0; padding-top:var(--s-4); border-top:1px solid var(--line-strong); }
-.ct-list h4{ margin:0; font-family:var(--serif); font-weight:500; font-size:20px; line-height:1.25; color:var(--text); }
-.ct-list p{ margin-top:var(--s-2); font-size:16px; line-height:1.6; color:var(--text-2); }
-.ct-list b, .ct-ad b{ color:var(--text); }
-.ct-list .tags, .ct-ad .tags{ margin-top:var(--s-4); }
-@media (min-width:640px){ .ct-list{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-6) var(--s-6); } }
-@media (min-width:1024px){ .ct-list{ grid-template-columns:repeat(3, minmax(0,1fr)); gap:var(--s-6) var(--s-7); } }
-
-/* ---- the two ad panels: client work described, not shown ---- */
-.ct-ads{ display:grid; gap:var(--s-4); }
-.ct-ad{
+/* the four results: a serif number over a short heading, cards like the services ones */
+.ct-list{ display:grid; gap:var(--s-4); margin-top:var(--s-6); }
+.ct-list > article{
   min-width:0; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:20px;
   transition:border-color var(--d-base) var(--ease-out);
 }
-.ct-kick{ font-size:14px; line-height:1.4; color:var(--text-3); }
-.ct-ad h3{
-  margin-top:var(--s-2); font-family:var(--serif); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 26px);
+.ct-n{ font-family:var(--serif); font-weight:400; font-size:clamp(44px, calc(2.4vw + 32px), 72px); line-height:1; letter-spacing:-0.02em; color:var(--text); }
+.ct-list h3{
+  margin-top:var(--s-3); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 26px);
   line-height:1.2; letter-spacing:-0.01em; color:var(--text);
 }
-.ct-ad p:not(.ct-kick){ margin-top:var(--s-3); color:var(--text-2); }
-.ct-ad .ct-note{ font-size:15px; line-height:1.5; color:var(--text-3); }
-.ct-ad .tags span{ transition:border-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out); }
+.ct-list p:not(.ct-n){ margin-top:var(--s-3); max-width:46ch; font-size:16px; line-height:1.6; color:var(--text-2); }
 @media (hover:hover) and (pointer:fine){
-  .ct-ad:hover{ border-color:var(--line-strong); }
-  .ct-ad:hover .tags span{ border-color:var(--line-strong); color:var(--text); }
+  .ct-list > article:hover{ border-color:var(--line-strong); }
 }
-@media (min-width:640px){ .ct-ad{ padding:var(--s-6); } }
-@media (min-width:800px){ .ct-ads{ grid-template-columns:minmax(0,3fr) minmax(0,2fr); gap:var(--s-5); } }
+@media (min-width:640px){
+  .ct-list{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--s-5); }
+  .ct-list > article{ padding:var(--s-6); }
+}
+@media (min-width:1024px){ .ct-list{ margin-top:var(--s-7); } }
+
+/* the rest of the job: a plain list on hairline rules, no bullets */
+.ct-sub{
+  margin-top:var(--s-7); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 24px);
+  line-height:1.2; letter-spacing:-0.01em; color:var(--text);
+}
+.ct-more{ margin-top:var(--s-4); border-top:1px solid var(--line); }
+.ct-more li{ padding:var(--s-3) 0; border-bottom:1px solid var(--line); font-size:16px; line-height:1.55; color:var(--text-2); }
+@media (min-width:640px){ .ct-more li{ padding:var(--s-4) 0; } }

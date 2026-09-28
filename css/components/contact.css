@@ -20,10 +20,12 @@
 .contact-row.links{ margin-top:var(--s-3); }
 .contact-row .btn{ white-space:nowrap; }
 .contact-row .btn-mail{ white-space:normal; overflow-wrap:anywhere; }
+.contact .wa-note{ max-width:52ch; margin:var(--s-6) auto 0; padding-top:var(--s-5); border-top:1px solid var(--line); font-size:17px; color:var(--text-2); text-wrap:balance; }
+.contact-row.wa-row{ margin-top:var(--s-3); }
 @media (max-width:639px){
   .contact-row .btn{ flex:1 1 100%; }
   .contact-row.links .btn{ flex:1 1 calc(50% - 4px); }
-  .contact-row.links .btn.cv{ flex-basis:100%; }
+  .contact-row.links .btn.btn-ico{ flex:none; width:48px; padding:0; }
 }
 @media (max-width:374px){
   .contact-row .btn{ padding:0 12px; }

@@ -13,7 +13,7 @@
 .mark:active{ transform:translateY(1px); }
 @media (min-width:375px){ .mark .sig{ font-size:22px; } }
 @media (min-width:700px){ .mark .who{ display:inline; } }  /* the subtitle needs 700px beside the Menu button (measured) */
-@media (min-width:1100px) and (max-width:1359px){ .mark .who{ display:none; } }  /* 8 nav links: the subtitle only fits beside them from 1360px */
+@media (min-width:1100px){ .mark .who{ display:none; } }  /* beside the 8 nav links the subtitle pushed the header 30px past its edge (measured at 1440 and 1920) */
 @media (hover:hover){ .mark:hover .sig{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px; } }
 
 .nav-end{ display:flex; align-items:center; gap:var(--s-2); }

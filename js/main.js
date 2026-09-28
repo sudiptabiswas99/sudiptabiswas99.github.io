@@ -1,4 +1,6 @@
-/* Entry point: starts each module once, in the order the page needs them. Nothing else lives here. */
+/* Entry point: starts each module once, in the order the page needs them. Nothing else lives here.
+   underline.js and magnetic.js are no longer started (2026-09-28: template tells); delete them with their
+   importmap and modulepreload lines in index.html. */
 import { initTheme } from './modules/theme.js';
 import { initNavState } from './modules/nav-state.js';
 import { initMenu } from './modules/menu.js';
@@ -9,8 +11,6 @@ import { initReveal } from './modules/reveal.js';
 import { initLiveTags } from './modules/live-tags.js';
 import { initServiceLinks } from './modules/service-links.js';
 import { initSlideshows } from './modules/slideshow.js';
-import { initUnderlines } from './modules/underline.js';
-import { initMagnetic } from './modules/magnetic.js';
 import { initFooterLight } from './modules/footer-light.js';
 import { initStat3d } from './modules/stat-3d.js';
 import { initGlobe } from './modules/globe.js';
@@ -27,8 +27,6 @@ initReveal();
 initLiveTags();
 initServiceLinks();
 initSlideshows();
-initUnderlines();
-initMagnetic();
 initFooterLight();
 initStat3d();
 initGlobe();
