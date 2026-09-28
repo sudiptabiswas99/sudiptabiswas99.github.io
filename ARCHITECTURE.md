@@ -19,8 +19,11 @@ css/
     a11y.css            screen-reader text, skip link
     controls.css        buttons, text links, chips
     header.css          fixed header, desktop nav, phone menu sheet
-    hero.css  strip.css  about.css  services.css  work.css  skills.css
-    experience.css  contact.css  footer.css  lightbox.css  toast.css  slideshow.css
+    hero.css  strip.css  about.css  services.css  work.css  content.css  automation.css  skills.css
+    experience.css  contact.css  footer.css  lightbox.css  toast.css  slideshow.css  badge.css
+                        content.css styles #content as text only (role, job list, ad panels): no
+                        images of client posts since 2026-09-28. hero.css holds .btn-dl, the icon-only
+                        hero download button below 480px and on short landscape screens
   motion.css            entrances, scroll reveals, underline redraw, magnetic buttons, theme wipe,
                         reduced motion. Loaded last on purpose
 js/
@@ -45,16 +48,16 @@ assets/
                         importmap in index.html points "three" and "three/addons/" here; no CDN at runtime
   images/               portraits, project shots, qr-portfolio.svg; thumbs/ for tiles, work/ for the
                         full-size viewer. qr-portfolio.svg is a real QR for
-                        https://sudiptabiswas99.github.io/, shown on the badge's back face
+                        https://sudiptabiswas99.github.io/, shown on the badge's back face. There is no
+                        content/ folder: the reel posters and carousel slides were deleted 2026-09-28
   fonts/                literata-3d.typeface.json (the "3" and "D" glyphs for the 3D stat)
   Sudipta_Biswas_CV.pdf kept at this path on purpose: the URL may already be in applications
 demos/                  six standalone project builds, copied unchanged from ~/Documents/All_Site/.
                         Each is its own app with its own inline code; the rules below do not apply
-work.html               older standalone work page, not linked from index.html
 ```
 
-three.js itself is not in the repo: the `<head>` importmap points `three` at jsDelivr, and it is only
-fetched when a 3D piece scrolls near the screen.
+three.js is self-hosted in assets/vendor/three/: the `<head>` importmap points `three` there, and it is
+only fetched when a 3D piece scrolls near the screen.
 
 ## Where things go
 
@@ -73,13 +76,16 @@ fetched when a 3D piece scrolls near the screen.
 | the hanging badge's mouse, touch or keyboard input | js/modules/badge/pointer.js |
 | the hanging badge's look (card, strap, clip, geometry) | css/components/badge.css |
 | the hanging badge's text (name, role, chip, QR caption) | index.html, in .portrait-rig |
+| the CV buttons ("View CV" opens the PDF, "Download CV (PDF)" downloads it) | index.html in three places: hero, phone menu sheet, contact card; hero icon-only size in css/components/hero.css (.btn-dl) |
 
 ## Add a feature (example: a testimonials strip)
 
 1. The markup goes in index.html, in its section.
 2. css/components/testimonials.css, linked in `<head>` before css/motion.css.
-3. js/modules/testimonials.js exporting `initTestimonials()`, with a `modulepreload` link in `<head>`.
+3. js/modules/testimonials.js exporting `initTestimonials()`, with a `modulepreload` link in `<head>`
+   and an entry in the importmap.
 4. One import and one call in js/main.js.
+5. Bump every `?v=` on CSS and JS URLs in index.html to the next number (all at `?v=10` on 2026-09-28).
 
 ## Rules
 
@@ -90,6 +96,9 @@ fetched when a 3D piece scrolls near the screen.
 - A helper moves to js/lib/ only when a second module needs it.
 - Soft caps: 200 lines per JS file, 300 per CSS file. Past that, split by component or feature.
 - Motion plays once and stops: 0 running animations and 0 animation frames at rest.
+- Names (2026-09-28): the only person named in visible text and alts is Sudipta Biswas. Clients are
+  described ("a US creator brand", "Med spa, Austin"), never named; URLs and file names may keep business
+  names. Trust Bank and AIUB stay. Full rule in CLAUDE.md.
 
 ## Check
 

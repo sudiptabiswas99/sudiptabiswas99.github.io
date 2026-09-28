@@ -28,7 +28,7 @@ export function initReveal(){
       while (h.firstChild) w.appendChild(h.firstChild);
       h.appendChild(w); h.classList.add('rh'); rvIo.observe(h);
     });
-    doc.querySelectorAll('.svc-grid, .wgrid, .sk-grid, .at-grid, .ct-reels, .ct-list, .ct-slides, .ct-ads').forEach(function(box){
+    doc.querySelectorAll('.svc-grid, .wgrid, .sk-grid, .at-grid, .ct-list, .ct-ads').forEach(function(box){
       box.setAttribute('data-rv-box', '');
       [].forEach.call(box.children, function(c){ c.classList.add('rv'); });
       rvIo.observe(box);

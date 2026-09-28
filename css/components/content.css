@@ -1,8 +1,6 @@
-/* Social media and content section (#content): the reels, ads, carousels and posts from the CV. */
-/* Order: the role on a rule, four posted reels (9:16 posters that open Instagram), the job as a ruled list,
-   one LinkedIn carousel (3 slides), then the two ad panels. Images are greyscale like the work tiles; the
-   reel posters go to colour on hover because they are links. Below 640 the reels and the slides are phone
-   slideshows (js/modules/slideshow.js, css/components/slideshow.css); the list and the panels just stack. */
+/* Social media and content section (#content): the social media work from the CV, described in text.
+   Order: the role on a rule, the job as a ruled list, then the two ad panels. No client names and no
+   images of client posts (Sudipta's call, 2026-09-28); the list and the panels just stack on phones. */
 #content{ padding-block:var(--section-md); }
 
 /* ---- the role: three facts on a rule, the same look as the About facts list ---- */
@@ -15,56 +13,14 @@
   .ct-role > div{ grid-template-columns:minmax(0,1fr); gap:2px; padding:var(--s-4) 0; border-bottom:0; }
 }
 
-/* ---- blocks: a heading column beside the examples from 1024 ---- */
-.ct-split, .ct-jobs, .ct-ads{ margin-top:var(--s-7); }
-.ct-split{ display:grid; gap:var(--s-5); }
-.ct-side h3, .ct-jobs > h3{
+
+/* ---- blocks ---- */
+.ct-jobs, .ct-ads{ margin-top:var(--s-7); }
+.ct-jobs > h3{
   font-family:var(--serif); font-weight:500; font-size:clamp(22px, calc(.8vw + 17px), 30px);
   line-height:1.2; letter-spacing:-0.01em; color:var(--text);
 }
-.ct-side p{ margin-top:var(--s-3); max-width:46ch; color:var(--text-2); }
-.ct-side .textlink{ margin-top:var(--s-2); }
-.ct-side .textlink svg{ transition:transform var(--d-base) var(--ease-out); }
-@media (hover:hover) and (pointer:fine){ .ct-side .textlink:hover svg{ transform:translate(2px, -2px); } }
-@media (min-width:1024px){
-  .ct-split, .ct-jobs, .ct-ads{ margin-top:var(--s-8); }
-  .ct-split{ grid-template-columns:minmax(0,1fr) minmax(0,3fr); gap:var(--s-7); align-items:start; }
-}
-
-/* ---- reels: 9:16 posters, caption under the image (the work tile pattern) ---- */
-.ct-reels{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px 12px; }
-@media (min-width:640px){ .ct-reels{ grid-template-columns:repeat(4, minmax(0,1fr)); gap:24px 16px; } }
-.reel{ display:block; min-width:0; color:var(--text); }
-.reel-media{
-  position:relative; display:block; aspect-ratio:9 / 16; overflow:hidden;
-  border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2);
-  transition:transform var(--d-fast) var(--ease-out), border-color var(--d-base) var(--ease-out);
-}
-.reel-media img{
-  width:100%; height:100%; object-fit:cover; filter:grayscale(1);
-  transition:filter var(--d-slow) var(--ease-out), transform 400ms var(--ease-out);
-}
-.reel-go{
-  position:absolute; top:8px; right:8px; width:32px; height:32px; display:grid; place-items:center;
-  border-radius:50%; background:var(--bg); border:1px solid var(--line-strong); color:var(--text);
-  opacity:0; translate:-4px 4px; transition:opacity var(--d-fast) var(--ease-out), translate var(--d-base) var(--ease-out);
-}
-.reel-go svg{ width:14px; height:14px; }
-.reel-cap{ display:grid; gap:2px; margin-top:var(--s-3); }
-.reel-cap .t{ font-weight:600; font-size:15px; line-height:1.35; color:var(--text); }
-.reel-cap .k{ font-size:14px; line-height:1.4; color:var(--text-2); }
-.reel-cap .d{ font-size:14px; line-height:1.4; color:var(--text-3); font-variant-numeric:tabular-nums; }
-.reel:focus-visible{ outline:none; }
-.reel:focus-visible .reel-media{ outline:2px solid var(--focus); outline-offset:3px; }
-.reel:focus-visible .reel-media img{ filter:grayscale(0); }
-.reel:focus-visible .reel-go{ opacity:1; translate:0 0; }
-.reel:active .reel-media{ transform:scale(.98); }
-@media (hover:hover) and (pointer:fine){
-  .reel:hover .reel-media{ border-color:var(--text); }
-  .reel:hover .reel-media img{ filter:grayscale(0); transform:scale(1.03); }
-  .reel:hover .reel-go{ opacity:1; translate:0 0; }
-  .reel:hover .t{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; }
-}
+@media (min-width:1024px){ .ct-jobs, .ct-ads{ margin-top:var(--s-8); } }
 
 /* ---- the job: a ruled list, 1 / 2 / 3 columns ---- */
 .ct-jobs > h3{ margin-bottom:var(--s-5); }
@@ -76,17 +32,6 @@
 .ct-list .tags, .ct-ad .tags{ margin-top:var(--s-4); }
 @media (min-width:640px){ .ct-list{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-6) var(--s-6); } }
 @media (min-width:1024px){ .ct-list{ grid-template-columns:repeat(3, minmax(0,1fr)); gap:var(--s-6) var(--s-7); } }
-
-/* ---- one LinkedIn carousel: 3 slides at 4:5, greyscale, numbered under each ---- */
-.ct-slides{ display:grid; gap:var(--s-4); margin:0; padding:0; list-style:none; }
-.ct-slides li{ min-width:0; }
-.ct-slides img{
-  width:100%; height:auto; aspect-ratio:4 / 5; object-fit:cover; filter:grayscale(1);
-  border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2);
-}
-.sl-k{ display:block; margin-top:var(--s-2); font-size:14px; line-height:1.4; color:var(--text-3); }
-@media (max-width:639px){ .ct-slides{ max-width:26rem; } }
-@media (min-width:640px){ .ct-slides{ grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; } }
 
 /* ---- the two ad panels: client work described, not shown ---- */
 .ct-ads{ display:grid; gap:var(--s-4); }
@@ -108,14 +53,3 @@
 }
 @media (min-width:640px){ .ct-ad{ padding:var(--s-6); } }
 @media (min-width:800px){ .ct-ads{ grid-template-columns:minmax(0,3fr) minmax(0,2fr); gap:var(--s-5); } }
-
-/* ---- phone slideshows: narrower cards so the next poster or slide peeks in ---- */
-@media (max-width:639px){
-  .js .ct-reels.car > *{ flex-basis:62%; }
-  .js .ct-slides.car{ max-width:none; }
-  .js .ct-slides.car > *{ flex-basis:78%; }
-}
-
-@media (prefers-reduced-motion:reduce){
-  .reel:hover .reel-media img{ transform:none; }
-}

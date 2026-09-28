@@ -118,3 +118,24 @@
   .hero-lead{ margin-top:var(--s-3); max-width:none; font-size:16px; line-height:1.45; }
   .hero-actions{ margin-top:var(--s-3); }
 }
+
+/* View CV sits beside Email me; on narrow and short screens Download shrinks to a 48px icon square (its
+   label stays for screen readers and in the tooltip) so all three stay on one row above the fold */
+@media (max-width:479px), (max-height:500px) and (orientation:landscape){
+  .hero .btn.btn-dl{ width:48px; padding:0; flex:none; }
+  .hero .btn.btn-dl svg{ display:block; }
+  .hero .btn-dl .btn-t{ position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+}
+/* 480 to 831px the copy column sits beside the badge and is narrower than the three labelled buttons
+   (485px, measured in WebKit and Chromium), so Download went to a row of its own. Keyed to the actions
+   box itself: the square appears whenever the labelled row cannot fit. Under 330px of column the
+   buttons share the row out, so a wrap reads Email me on top, View CV and the square below, edge to edge. */
+.hero-actions{ container:cta / inline-size; }
+@container cta (max-width:489px){
+  .hero .btn.btn-dl{ width:48px; padding:0; flex:none; }
+  .hero .btn.btn-dl svg{ display:block; }
+  .hero .btn-dl .btn-t{ position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+}
+@container cta (max-width:329px){
+  .hero .row-a > .btn:not(.btn-dl){ flex:1 1 auto; }
+}
