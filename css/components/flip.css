@@ -17,23 +17,41 @@
      opacity keeps both faces focusable and in the accessibility tree */
   transition:opacity 0s linear .28s;
 }
-@media (min-width:640px){ .js .flip-face{ padding:var(--s-6); } }
+@media (min-width:640px){ .js .flip-face{ padding:var(--s-6); } .js .flip-front{ padding-bottom:var(--s-4); } .js .flip-cue{ right:var(--s-6); } }
 
-/* front: the name, centred, a small index top left and a turn-over cue bottom right */
+/* front (2026-09-30, "specimen cards"): the name set large at the top left, a line drawing of the work under it,
+   filling the rest of the card like a plate in an old instruction manual; "Fig. 01" and the turn-over cue on the foot line */
 .js .flip-front{
-  position:relative; display:grid; align-content:center; justify-items:center; text-align:center;
-  min-height:clamp(208px, calc(8vw + 150px), 260px); padding-block:var(--s-7);
+  position:relative; display:grid; grid-template-rows:auto minmax(0,1fr) auto; gap:var(--s-5);
+  min-height:clamp(300px, calc(10vw + 200px), 380px); padding-bottom:var(--s-4);
 }
-.js .flip-front::before{
-  content:counter(flip, decimal-leading-zero); content:counter(flip, decimal-leading-zero) / "";
-  position:absolute; top:var(--s-4); left:var(--s-5);
+.js .flip-front h3{
+  max-width:16ch; font-family:var(--serif); font-weight:500; font-size:clamp(28px, calc(1.6vw + 14px), 40px);
+  line-height:1.08; letter-spacing:-0.015em; text-wrap:balance; color:var(--text);
+}
+.js .flip-front .at-n{ margin:0 0 var(--s-2); }
+.js .flip-front::after{
+  content:"Fig. " counter(flip, decimal-leading-zero); content:"Fig. " counter(flip, decimal-leading-zero) / "";
+  grid-row:3; align-self:end; padding-top:var(--s-3); border-top:1px solid var(--line);
   font-family:var(--sans); font-size:14px; line-height:1.4; font-weight:500; letter-spacing:.04em;
   font-variant-numeric:tabular-nums; color:var(--text-3);
 }
-.js .flip-front h3{ max-width:15ch; font-size:clamp(24px, calc(1.1vw + 18px), 34px); line-height:1.15; text-wrap:balance; }
+.js .flip-front::before{ display:none; }
+.spec-art{ display:none; }
+.js .spec-art{
+  display:block; grid-row:2; align-self:end; width:100%; height:auto; aspect-ratio:2 / 1;
+  color:var(--text); overflow:visible;
+}
+.js .at .spec-art{ aspect-ratio:300 / 130; }
+.spec-art *{ vector-effect:non-scaling-stroke; stroke-width:1.25px; }
+.spec-art .fill{ fill:currentColor; stroke:none; }
+.spec-art .dash{ stroke-dasharray:3 3; }
+.spec-art .thin, .spec-art .h{ stroke:var(--line-strong); }
+.spec-art .lens{ fill:var(--surface); stroke:none; }
+.spec-art text{ fill:currentColor; stroke:none; font-family:var(--sans); font-size:11px; font-weight:500; text-anchor:middle; }
 .flip-cue{ display:none; }
 .js .flip-cue{
-  display:block; position:absolute; right:var(--s-4); bottom:var(--s-4); width:22px; height:22px; color:var(--text-3);
+  display:block; position:absolute; right:var(--s-5); bottom:var(--s-4); width:22px; height:22px; color:var(--text-3);
   transition:color var(--d-base) var(--ease-out);
 }
 .js .flip-cue svg{ display:block; width:100%; height:100%; }
@@ -76,8 +94,18 @@
 }
 
 /* cards in one row share its height, whichever face is taller */
-@media (min-width:640px){
-  /* not below 640: there the rows are slideshows whose track height follows the card, and in WebKit the two fed each other */
-  .js .svc-grid > .flip, .js .at-grid > .flip{ align-self:stretch; }
-  .js .flip-in{ height:100%; }
+.js .svc-grid > .flip, .js .at-grid > .flip{ align-self:stretch; }
+.js .flip-in{ height:100%; }
+
+/* examples on the back: 2 or 3 small real thumbnails, square cut, hairline edge */
+.flip-ex{ contain:inline-size; min-width:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:var(--s-2); width:100%; margin-top:var(--s-4); }
+.flip-ex img{ display:block; width:100%; max-width:100%; min-width:0; height:auto; aspect-ratio:1; object-fit:cover; object-position:top; border:1px solid var(--line); border-radius:var(--r-sm); background:var(--surface-2); }
+.js .flip-back .flip-ex + .svc-go{ margin-top:auto; }
+
+/* phone slideshow (css/components/slideshow.css): slideshow.js sets the track's height from the cards, and WebKit
+   resolved .flip-in's 100% against that height, so the cards grew every pass (4148px measured 2026-09-30).
+   There the card sizes to its own content. */
+@media (max-width:639px){
+  .js .car > .flip{ align-self:flex-start; }
+  .js .car .flip-in{ height:auto; }
 }

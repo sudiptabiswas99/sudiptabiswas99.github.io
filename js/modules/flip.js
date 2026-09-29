@@ -13,7 +13,7 @@ export function initFlip(){
     if (!front || !back) return;
     var k = doc.createElement('span');
     k.className = 'flip-kicker'; k.setAttribute('aria-hidden', 'true');
-    k.textContent = [].map.call(front.children, function(c){ return c.textContent.trim(); }).join(' ').replace(/\s+/g, ' ');
+    k.textContent = [].filter.call(front.children, function(c){ return !c.classList.contains('spec-art'); }).map(function(c){ return c.textContent.trim(); }).join(' ').replace(/\s+/g, ' ');
     back.insertBefore(k, back.firstChild);
     var cue = doc.createElement('span');
     cue.className = 'flip-cue'; cue.setAttribute('aria-hidden', 'true'); cue.innerHTML = CUE;

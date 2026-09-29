@@ -37,3 +37,12 @@
   .at:hover{ transform:translateY(-3px); border-color:var(--line-strong); }
   .at:hover::before{ transform:scaleX(1); }
 }
+
+/* specimen cards (2026-09-30): 4 cards, 4 a row from 1100px (3 would leave one alone) */
+@media (min-width:1100px){ .at-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); } .at .flip-front h3{ font-size:clamp(24px, calc(.8vw + 16px), 28px); } }
+.js .at-lead .flip-front .at-n{ font-size:clamp(44px, calc(2vw + 30px), 64px); }
+/* the agent team card has its number above the title: one more row on its front */
+.js .at-lead .flip-front{ grid-template-rows:auto auto minmax(0,1fr) auto; row-gap:0; }
+.js .at-lead .flip-front h3{ grid-row:2; }
+.js .at-lead .flip-front .spec-art{ grid-row:3; margin-top:var(--s-5); }
+.js .at-lead .flip-front::after{ grid-row:4; margin-top:var(--s-5); }
