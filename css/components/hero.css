@@ -94,6 +94,16 @@
   .portrait-rig{ min-height:560px; }
   .hero-stats{ margin-top:var(--s-7); }
 }
+/* 1024 and up: copy and badge are one unit. The copy column takes the width of its widest line (capped at
+   46rem), the badge column is a fixed 340px (card 280px + the swing margin js/modules/badge/ needs for scale 1),
+   and the pair starts at the page's left edge like the header logo. The stats row ignores its own content
+   width (width:0; min-width:100%) and spans exactly the pair, so the rule and the 4 numbers close the unit. */
+@media (min-width:1024px){
+  .hero .wrap{ display:grid; grid-template-columns:fit-content(100%); justify-content:center; }
+  .hero-grid{ grid-template-columns:fit-content(46rem) 340px; column-gap:clamp(48px, 4vw, 64px); }
+  .hero h1{ font-size:clamp(96px, calc(7vw + 50px), 168px); }
+  .hero-stats{ width:0; min-width:100%; }
+}
 
 /* ===== 3D pieces: a canvas sits over a real text/element fallback ===== */
 .hst-3d .n{ position:relative; }
