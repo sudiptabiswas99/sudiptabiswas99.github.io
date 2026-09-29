@@ -76,5 +76,8 @@
 }
 
 /* cards in one row share its height, whichever face is taller */
-.js .svc-grid > .flip, .js .at-grid > .flip{ align-self:stretch; }
-.js .flip-in{ height:100%; }
+@media (min-width:640px){
+  /* not below 640: there the rows are slideshows whose track height follows the card, and in WebKit the two fed each other */
+  .js .svc-grid > .flip, .js .at-grid > .flip{ align-self:stretch; }
+  .js .flip-in{ height:100%; }
+}
