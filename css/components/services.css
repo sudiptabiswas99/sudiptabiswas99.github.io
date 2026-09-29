@@ -1,7 +1,7 @@
 /* Services cards, their hover ink line, and the drag-to-spin globe. */
 /* ===== services ===== */
 #services{ padding-block:var(--section-md); }
-.svc-grid{ display:grid; gap:var(--s-4); }
+.svc-grid{ display:grid; gap:var(--s-4); counter-reset:flip; }
 .svc{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:var(--s-5); }
 .svc h3, .xp h3, .sk-group h3{ font-family:var(--serif); font-weight:500; font-size:clamp(20px, calc(.6vw + 17px), 26px); line-height:1.2; letter-spacing:-0.01em; }
 .svc h3, .xp h3{ color:var(--text); }
@@ -11,9 +11,10 @@
 /* each card is a column: the link sits at the foot, so links line up across a row */
 .svc{ display:flex; flex-direction:column; align-items:flex-start; }
 .svc > *{ max-width:100%; }
-.svc > .svc-top{ align-self:stretch; }
-.svc > :nth-last-child(2){ margin-bottom:var(--s-4); }
-.svc > .svc-go{ margin-top:auto; }
+.svc > .svc-top, .svc .flip-back > .svc-top{ align-self:stretch; }
+.svc > :nth-last-child(2), .svc .flip-back > :nth-last-child(2){ margin-bottom:var(--s-4); }
+.svc > .svc-go, .svc .flip-back > .svc-go{ margin-top:auto; }
+/* since 2026-09-29 the cards flip (css/components/flip.css): the name on the front, the rest on the back */
 @media (min-width:640px){ .svc{ padding:var(--s-6); } }
 /* 6 cards, 2 a row from 768px: 3 even rows, no card left alone */
 @media (min-width:768px){ .svc-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-5); } }

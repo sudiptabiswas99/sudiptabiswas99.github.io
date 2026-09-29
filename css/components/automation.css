@@ -1,11 +1,11 @@
 /* AI tools section (#automation): four short cards, each a brief idea of one tool or agent team I built.
    No tool names, no code (Sudipta's calls, 2026-09-28). Styled like the services cards: surface,
-   hairline border, a 2px ink rule and a 3px lift on hover. From 768 every card is one full-width row
-   with the title on the left and the text on the right, so the columns line up down the section. The
-   agent team card leads with its number above the title. Below 640 the cards are a swipe slideshow
+   hairline border. Since 2026-09-29 each is a flip card (css/components/flip.css, js/modules/flip.js):
+   the front shows the title, the back the text; from 768 they sit two a row. The agent team card
+   keeps its number above the title on the front. Below 640 the cards are a swipe slideshow
    (js/modules/slideshow.js, css/components/slideshow.css). */
 #automation{ padding-block:var(--section-md); }
-.at-grid{ display:grid; gap:var(--s-4); }
+.at-grid{ display:grid; gap:var(--s-4); counter-reset:flip; }
 
 .at{
   position:relative; display:flex; flex-direction:column;
@@ -28,16 +28,9 @@
 
 @media (min-width:640px){ .at{ padding:var(--s-6); } }
 @media (min-width:768px){
-  .at-grid{ gap:var(--s-5); }
-  .at{
-    display:grid; grid-template-columns:minmax(0,2fr) minmax(0,3fr); grid-template-areas:"h p";
-    column-gap:var(--s-6); align-items:start;
-  }
-  .at h3{ grid-area:h; }
-  .at p:not(.at-n){ grid-area:p; margin-top:0; }
-  /* the lead card: the big number over the heading on the left, the text beside the heading */
-  .at-lead{ grid-template-areas:"n ." "h p"; }
-  .at-lead .at-n{ grid-area:n; margin:0 0 var(--s-4); font-size:clamp(96px, calc(6vw + 50px), 144px); }
+  /* flip cards since 2026-09-29 (css/components/flip.css): two a row, the name on the front, the text on the back */
+  .at-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-5); }
+  .at-lead .at-n{ font-size:clamp(64px, calc(2.4vw + 46px), 88px); }
 }
 
 @media (hover:hover) and (pointer:fine){

@@ -1,0 +1,80 @@
+/* Flip cards (js/modules/flip.js), used by #services and #automation. The front shows only the card's name,
+   the back everything else. A mouse hover, keyboard focus inside the card, or a tap on touch screens
+   (.is-flipped) turns it over. Both faces share one grid cell, so the card is as tall as its taller face and
+   nothing moves when it flips. Without JS (.js missing) the faces simply stack as one plain card. */
+.js .flip{ display:grid; perspective:1600px; background:none; border:0; padding:0; counter-increment:flip; }
+.js .flip::before{ display:none; }
+.js .flip-in{
+  display:grid; position:relative; min-width:0;
+  -webkit-transform-style:preserve-3d; transform-style:preserve-3d;
+  transition:transform .56s cubic-bezier(.65,0,.35,1);
+}
+.js .flip-face{
+  grid-area:1 / 1; min-width:0;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:var(--s-5);
+  -webkit-backface-visibility:hidden; backface-visibility:hidden; transform:rotateY(0deg);
+  /* the faces also swap opacity at the half-way point (edge on), for WebKit paths that ignore backface-visibility;
+     opacity keeps both faces focusable and in the accessibility tree */
+  transition:opacity 0s linear .28s;
+}
+@media (min-width:640px){ .js .flip-face{ padding:var(--s-6); } }
+
+/* front: the name, centred, a small index top left and a turn-over cue bottom right */
+.js .flip-front{
+  position:relative; display:grid; align-content:center; justify-items:center; text-align:center;
+  min-height:clamp(208px, calc(8vw + 150px), 260px); padding-block:var(--s-7);
+}
+.js .flip-front::before{
+  content:counter(flip, decimal-leading-zero); content:counter(flip, decimal-leading-zero) / "";
+  position:absolute; top:var(--s-4); left:var(--s-5);
+  font-family:var(--sans); font-size:14px; line-height:1.4; font-weight:500; letter-spacing:.04em;
+  font-variant-numeric:tabular-nums; color:var(--text-3);
+}
+.js .flip-front h3{ max-width:15ch; font-size:clamp(24px, calc(1.1vw + 18px), 34px); line-height:1.15; text-wrap:balance; }
+.flip-cue{ display:none; }
+.js .flip-cue{
+  display:block; position:absolute; right:var(--s-4); bottom:var(--s-4); width:22px; height:22px; color:var(--text-3);
+  transition:color var(--d-base) var(--ease-out);
+}
+.js .flip-cue svg{ display:block; width:100%; height:100%; }
+
+/* back: a small repeat of the name (hidden from screen readers, the h3 already says it), then the content */
+.js .flip-back{ opacity:0; transform:rotateY(180deg); display:flex; flex-direction:column; align-items:flex-start; pointer-events:none; }
+.js .flip-back > *{ max-width:100%; }
+.flip-kicker{ display:none; }
+.js .flip-back p{ margin-top:0; }
+.js .flip-kicker{ display:block; margin-bottom:var(--s-2); font-size:14px; line-height:1.4; font-weight:500; color:var(--text-3); }
+
+/* flipped: tapped on touch, or a keyboard focus inside it (a card with no link gets tabindex=0 from flip.js) */
+.js .flip.is-flipped .flip-in, .js .flip:focus-visible .flip-in, .js .flip:has(:focus-visible) .flip-in{ transform:rotateY(180deg); }
+.js .flip.is-flipped .flip-back, .js .flip:focus-visible .flip-back, .js .flip:has(:focus-visible) .flip-back{ pointer-events:auto; opacity:1; }
+.js .flip.is-flipped .flip-front, .js .flip:focus-visible .flip-front, .js .flip:has(:focus-visible) .flip-front{ pointer-events:none; opacity:0; }
+.js .flip:focus-visible{ outline:2px solid var(--focus); outline-offset:3px; border-radius:var(--r-md); }
+@supports not selector(:has(a)){
+  .js .flip:focus-within .flip-in{ transform:rotateY(180deg); }
+  .js .flip:focus-within .flip-back{ pointer-events:auto; opacity:1; }
+  .js .flip:focus-within .flip-front{ opacity:0; }
+}
+@media (hover:hover) and (pointer:fine){
+  .js .flip:hover{ transform:none; }
+  .js .flip:hover .flip-in{ transform:rotateY(180deg); }
+  .js .flip:hover .flip-back{ pointer-events:auto; opacity:1; }
+  .js .flip:hover .flip-front{ pointer-events:none; opacity:0; }
+}
+
+/* reduced motion: no turn, a quick crossfade between the faces */
+@media (prefers-reduced-motion:reduce){
+  .js .flip-in, .js .flip.is-flipped .flip-in, .js .flip:focus-visible .flip-in, .js .flip:has(:focus-visible) .flip-in, .js .flip:hover .flip-in{ transform:none; transition:none; }
+  .js .flip-face{ transform:none; transition:opacity .18s linear; }
+  .js .flip-back{ opacity:0; }
+  .js .flip.is-flipped .flip-back, .js .flip:focus-visible .flip-back, .js .flip:has(:focus-visible) .flip-back{ opacity:1; }
+  .js .flip.is-flipped .flip-front, .js .flip:focus-visible .flip-front, .js .flip:has(:focus-visible) .flip-front{ opacity:0; }
+  @media (hover:hover) and (pointer:fine){
+    .js .flip:hover .flip-back{ opacity:1; }
+    .js .flip:hover .flip-front{ opacity:0; }
+  }
+}
+
+/* cards in one row share its height, whichever face is taller */
+.js .svc-grid > .flip, .js .at-grid > .flip{ align-self:stretch; }
+.js .flip-in{ height:100%; }
